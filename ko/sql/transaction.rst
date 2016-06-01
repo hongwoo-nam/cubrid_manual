@@ -277,24 +277,41 @@ CUBRID에서 트랜잭션 격리 수준의 기본 설정은 :ref:`isolation-leve
 *   **SERIALIZABLE**\은 읽기 연산 시 트랜잭션 간 간섭을 불허한다.
 
 
-## gichoi ##
 .. _mvcc-snapshot:
 
-Multiversion Concurrency Control
-================================
+다중 버전 동시성 제어 (Multiversion Concurrency Control)
+========================================================
 
-CUBRID previous versions managed isolation levels using the well known two phase locking protocol. In this protocol, a transaction obtains a shared lock before it reads an object, and an exclusive lock before it updates the object so that conflicting operations are not executed simultaneously. If transaction *T1* requires a lock, the system checks if the requested lock conflicts with the existing one. If it does, transaction *T1* enters a standby state and delays the lock. If another transaction *T2* releases the lock, transaction *T1* resumes and obtains it. Once the lock is released, the transaction do not require any new locks. 
+CUBRID 10 이전의 하위 버전들은 격리(isolation) 수준을 잘 알려진 2단계 잠금(2 Phase Locking) 프로토콜을 사용하여 관리했다. 이 프로토콜에서는, 트랜잭션은 객체를 읽기 전에 공유 잠금(shared lock)을 획득하고, 객체를 변경하기 전에는 독점 잠금(exclusive lock)을 획득하여, 충돌이 발생하는 두 연산(operation) 이 동시에 실행되지 못하도록 한다. 만약 트랜잭션 T1이 잠금을 요청하면 시스템은 요청된 잠금이 기존 잠금과 충돌이 발생하는 지를 체크한다. 만약 잠금 충돌이 발생하면,  T1 은 대기 상태에 들어가 잠금 연산이 지연된다. 만일 그 잠금을 잡고 있던 다른 트랜잭션 T2 가 그 잠금을 해제하면, 트랜잭션 T1은 재시작하여 그 잠금을 획득한다. 일단 잠금이 해제되면, 그 트랜잭션은 더 이상 그 잠금을 요청하지 않는다. 
 
-CUBRID 10.0 replaced the two phase locking protocol with a Multiversion Concurrency Control (MVCC) protocol. Unlike two phase locking, MVCC does not block readers to access objects being modified by concurrent transactions. MVCC duplicates rows, creating multiple versions on each update. Never blocking readers is important for workloads involving mostly value reads from the database, commonly used in read-world scenarios. Exclusive locks are still required before updating objects. 
+CUBRID 10.0 은 2단계 잠금 프로토콜을 대신하여 다중버전 동시성 제어(MVCC) 프로토콜을 도입했다. 2단계 잠금 프로토콜과는 달리, MVCC 프로토콜은 병행수행되는 다른 트랜잭션이 변경하고 있는 객체를 접근하고자 하는 reader 트랜잭션을 대기시키지 않는다. 대신, MVCC 는 그 레코드를 복제함으로써 각 변경에 대한 다중 버전을 생성한다. reader 트랜잭션을 대기시키지 않는 것이 아주 중요한데, 특히, read 중심의 업무 시나리오에서 공통적으로 사용되는, 대부분의 값 읽기를 포함하는 워크로드에 아주 중요하다. 물론, 객체를 변경하기 전에는 여전히 독점 잠금이 필요하다. 
 
-MVCC is also known for providing point in time consistent view of the database and for being particularly adept at implementing true **snapshot isolation** with less performance costs than other methods of concurrency.
+MVCC 는 또한 특정 시점의 데이터베이스의 일관성 있는 관점을 제공하며, 다른 동시성 제어 기법보다 더 적은 성능 비용으로 진정한  snapshot isolation을 제공하는 것으로 유명하다. 
 
-Versioning, visibility and snapshot
------------------------------------
+다중 버젼, 가시성, 스냅샷
+—————————————————————————
+MVCC는 각 데이터베이스 레코드에 대해 다중 버전을 유지한다. 레코드의 각 버전은 그 레코드의 삽입자 또는 삭제자에 의해 MVCCID 로 표시된다. 
+MVCCID 는 각 변경 트랜잭션을 유일하게 구분하는 ID 이다. 이런 식별자는 각 변경자를 식별하는 데 아주 유용하고 변경에 대한 시점을 지정하는 데 유용하다. 
 
-MVCC maintains multiple versions for each database row. Each version is marked by its inserter and deleter with MVCCID's - unique identifiers for writer transactions. These markers are useful to identify the author of a change and to place the change on a timeline.
+트랜잭션 T1이 새 레코드를 삽입할 때, 그 트랜잭션은 그 레코드의 첫 버전을 생성하고 그것에 대한 유일한 식별자 MVCCID1 를 삽입ID 로 설정한다. 이  MVCCID는 레코드 헤더의 메타 데이터로 저장된다. 
 
-When a transaction *T1* inserts a new row, it creates its first version and sets its unique identifier *MVCCID1* as insert id. The MVCCID is stored as meta-data in record header:
+트랜잭션 T1 이 완료(commit)할 때까지는 다른 트랜잭션은 이 레코드의 새 값을 보지 못한다. MVCCID가 그 레코드의 변경자를 식별하는 데 도움을 주며, 변경 시점을 지정하게 해준다. 이렇게 함으로써 다른 트랜잭션이 그 변경에 대해서 타당한 지 아닌 지 알수 있도록 해준다. 이러한 경우에, 이 레코드를 체크하는 임의의 트랜잭션은 MVCCID1 을 발견하게 되고, 그 변경자가 여전히 활성 상태인 것을 알게 됨으로써, 그 변경은 여전히 자신이 참조할 수 있는 상태가 아니라는 것을 알게된다. 
+
+트랜잭션 T1 이 완료한 이후에는, 새 트랜잭션 T2가 T1이 변경했던 레코드를 참조할 수 있고, 삭제하기로 결정한다. T2는 실제로 그 레코드를 삭제하지는 않음으로써 다른 트랜잭션이 참조하도록 허용한다. 대신에, 그 레코드에 대한 독점 잠금을 획득하여 다른 트랜잭션이 변경하지 못하도록 하고, 삭제되었음을 그 레코드에 표시한다. 이 트랜잭션은 삭제 시 또 다른 MVCCID를 부여함으로써 다른 트랜잭션들이 그 레코드의 삭제자를 식별할 수 있도록 한다. 
+
+만일 트랜재션 T2가 한 레코드 값을 변경하고자 하면, 기존 버전과 유사한 새 버전을 생성해야 한다. 두 버전은 트랜잭션 T2의 MVCCID로 표시되며, 기존 버전은 삭제용, 새 버전은 삽입용으로 표시된다. 기존 버전은 또한 새 버전에 대한 링크를 저장한다. 이러한 레코드의 관계는 다음 그림과 같이 표현된다. 
+
+현재, T2만이 레코드의 새 버전을 볼 수 있으며, 반면에 다른 모든 트랜잭션들은 기존의 첫 버전만을 참조하게 될 것이다. 실행 중인 트랜잭션에 의해서 해당 버전을 볼 수 있느냐 없는냐 하는 특성은 가시성(visibility)이라 한다. 이 가시성은 각 트랜잭션에 상대적이며, 일부 트랜잭션은 그 버전을 볼 수 있고 다른 트랜잭션들은 볼 수 없게 된다. 
+
+트랜잭션 T2가 레코드를 변경한 후 완료하지는 않은 상태에서 시작하는 트랜잭션 T3는 변경된 레코드의 새 버전을 보지 못한다. 심지어 T2가 완료된 이후에도 마찬가지다. 한 버전의 T3에 대한 가시성은 T3가 시작할 때 그 버전의 삽입자와 삭제자의 상태에 달려있다. 또한, T3의 생존기간 동안에 동일하게 유지된다. 
+
+사실상, 데이터베이스의 모든 버전의 가시성은 트랜잭션이 시작한 이후에 발생한 변경에 의존적이지는 않다. 더구나, 추가된 새 버젼은 그 트랜잭션에게는 무시된다. 결과적으로, 데이터베이스에서 모든 가시적인 버전의 집합은 변하지 않고 남아있게 되며 그 트랜잭션에 대한 스냅샷을 형성한다.  그러므로, 이 MVCC에 의해서 스냅샷 격리(snapshot isolation)가 제공되며 각 트랜잭션에서 수행되는 모든 read 질의문이 데이터베이스 일관성있는 뷰를 보는 것이 보장된다. 
+
+CUBRID 10.0 에서, 스냅샷은 모든 타당하지 못한 MVCCID에 대한 필터(filter)이다. 스냅샷이 지정되기 전에 완료되지 않은 트랜잭션의 MVCCID는 모두 타당하지 못하다. 새 트랜잭션이 시작할 때마다 스냅샷 필터를 변경하는 것을 피하기 위해서, 스냅샷은 두 개의 경계 MVCCID로 결정된다: 활성 트랜잭션중 가장 적은 MVCCID와 완료된 트랜잭션중 가장 큰 MVCCID. 경계 사이에 존재하는 활성 MVCCID 의 목록만이 저장된다. 완료 트랜잭션 중 가장 큰 MVCCID 보다 큰 MVCCID를 갖도록 스냅샷이 보장된 이후에 시작한 트랜잭션은 자동적으로 타당하지 못한 것으로 고려된다. 가장 작은 활성 MVCCID보다 적은 임의의 MVCCID는 자동적으로 타당한 것으로 고려된다. 
+
+버전 가시성을 결정하는 스냅샷 필터 알고리즘은 삽입과 삭제에 사용되는 MVCCID 표시자를 질의한다. 
+
+
 
 .. image:: /images/transaction_inserted_record.png
 
@@ -307,14 +324,6 @@ After *T1* commits, a new transaction *T2* finds the row and decides to remove i
 If *T2* decides instead to update one of the record values, it must create a new version. Both versions are marked with transaction MVCCID, old version for delete and new version for insert. Old version also stores a link to the location of new version, and the row representations looks like this:
 
 .. image:: /images/transaction_updated_record.png
-
-Currently, only *T2* can see second row version, while all other transaction will continue to access the first version. The property of a version to be seen or not to be seen by running transactions is called **visibility**. The visibility property is relative to each transaction, some can consider it true, whereas others can consider it false.
-
-A transaction *T3* that starts after *T2* executes row update, but before *T2* commits, will not be able to see its new version, not even after *T2* commits. The visibility of one version towards *T3* depends on the state of its inserter and deleter when *T3* started and preserves its status for the lifetime of *T3*.
-
-As a matter of fact, the visibility of all versions in database towards on transaction does not depend on the changes that occur after transaction is started. Moreover, any new version added is also ignored. Consequently, the set of all visible versions in the database remains unchanged and form the snapshot of the transaction. Hence, **snapshot isolation** is provided by MVCC and it is a guarantee that all read queries made in a transaction see a consistent view of the database.
-
-In CUBRID 10.0, **snapshot** is a filter of all invalid MVCCID's. An MVCCID is invalid if it is not committed before the snapshot is taken. To avoid updating the snapshot filter whenever a new transaction starts, the snapshot is defined using two border MVCCID's: the lowest active MVCCID and the highest committed MVCCID. Only a list of active MVCCID values between the border is saved. Any transaction starting after snapshot is guaranteed to have an MVCCID bigger than highest committed and is automatically considered invalid. Any MVCCID below lowest active must be committed and is automatically considered valid.
 
 The snapshot filter algorithm that decides a version visibility queries the MVCCID markers used for insert and delete:
 
@@ -330,12 +339,13 @@ The snapshot filter algorithm that decides a version visibility queries the MVCC
 
 Table explained:
 
-*   **Valid insert MVCCID, valid delete MVCCID:** Version was inserted and deleted (and both committed) before snapshot, hence it is not visible.
-*   **Valid insert MVCCID, invalid delete MVCCID:** Version was inserted and committed, but it was not deleted or it was recently deleted, hence it is visible.
-*   **Invalid insert MVCCID, invalid delete MVCCID:** Inserter did not commit before snapshot, and record is not deleted or delete was also not committed, hence version is not visible.
-*   **Invalid insert MVCCID, valid delete MVCCID:** Inserter did not commit and deleter did - impossible case. If deleter is not the same as inserter, it could not see the version, and if it is, both insert and delete MVCCID must be valid or invalid.
+. valid..., valid... : 스냅샷 이전에 버전 삽입/삭제 (그리고 완료됨), 그러므로 참조 가능
+. valid..., invalid...: 버전 삽입 및 완료, 그러나 삭제 안됨 또는 최근 삭제됨, 그러므로 가시적
+. invalid..., invalid...: 스냅샷 이전에 삽입자 완료 안한 상태, 레코드 삭제 안됨 또는 완료 안됨, 그러므로 가시적이지 않음
+. invalid..., valid...: 삽입자는 완료 안함, 삭제자는 완료함 - 불가능 경우. 만일 삭제자가 삽입자와 같지 않다면, 버전 보지 못함. 만일 같다면, 삽입/삭제 MVCCID 는 타당 또는 타당하지 않음
 
-Let's see how snapshot works (**REPEATABLE READ** isolation will be used to keep same snapshot during entire transaction):
+이제 스냅샷이 어떻게 동작하는 지 확인해 보자 (**REPEATABLE READ** 격리 수준을 사용하여 전체 트랜잭션 동안의 동일 스냅샷 유지)
+
 **Example 1: Inserting a new row**
 
 +-------------------------------------------------------------------+-----------------------------------------------------------------------------------+
@@ -587,79 +597,84 @@ Let's see how snapshot works (**REPEATABLE READ** isolation will be used to keep
 VACUUM
 ------
 
-Creating new versions for each update and keeping old versions on delete could lead to unlimited database size growth, definitely a major issue for a database. Therefore, a clean up system is necessary, to remove obsolete data and reclaim the occupied space for reuse.
+각 변경에 대한 새 버전 생성과 삭제에 대한 기존 버전을 유지하는 것은 데이터베이스 크기를 무제한으로 필요로 하게 될 것이고, 데이터베이스에 대한 아주 중요한 이슈가 될 수 있다. 그러므로, 클린업 시스템이 필요하며, 오래된 불필요한 데이터를 제거하고, 그 데이터가 차지하고 있던 공간을 회수해야 한다. 
 
-Each row version goes through same stages:
+각각의 레코드 버전은 다음과 같은 동일한 단계를 거치게 된다. 
 
-  1. newly inserted, not committed, visible only to its inserter.
-  2. committed, invisible to preceding transactions, visible to future transactions.
-  3. deleted, not committed, visible to other transactions, invisible to the deleter.
-  4. committed, still visible to preceding transactions, invisible to future transactions.
-  5. invisible to all active transactions.
-  6. removed from database.
+1. 새로 삽입되었으나 아직 완료안된 상태: 삽입자에게만 보임
+2. 삽입 완료 상태: 이전 트랜잭션에는 보이지 않고, 이후 트랜잭션에는 보임
+3. 삭제되었으나 완료안된 상태: 다른 트랜잭션에 보이고, 삭제가 자신에게는 보이지 않음 
+4. 삭제 완료 상태: 이전 트랜잭션에 여전히 보이고, 이후 트랜잭션에 보이지 않음
+5. 모든 활성 트랜재션에 보이지 않는 상태
+6. 데이터베이스에서 제거되는 상태
 
-The role of the clean up system is to get versions from stage 5 to 6. This system is called **VACUUM** in CUBRID.
+이 클린업 시스템의 역할은 단계 5와 6에서 버전을 제거한다. 이 클린업 시스템을 CUBRID에서는 VACCUM 이라 불린다. 
 
-**VACUUM** system was developed with the guidance of three principles:
+이 **VACCUM** 시스템은 세 가지 원칙 하에서 개발되었다. 
 
-*   **VACUUM** must be correct and complete. **VACUUM** should never remove data still visible to some and it should not miss any obsolete data.
-*   **VACUUM** must be discreet. Since clean-up process changes database content, there may be some interference in the activity of live transactions, but it must be kept to the minimum possible.
-*   **VACUUM** must be fast and efficient. If **VACUUM** is too slow and if it starts lagging, the database state can deteriorate, thus the overall performance can be affected.
+* **VACCUM**은 정확하고 완변해야 한다. 일부 트랜잭션에 보이는 데이터를 절대 제거하면 안되며, 오래된 불필요한 데이터의 제거를 놓치면 안된다. 
+* **VACCUM**은 이산적(discrete) 이어야 한다. 클린업 프로세스는 데이터베이스의 상태를 변경하는 것이기 때문에, 활성 트랜잭션의 실행을 일정 부분 간섭이 발생할 수 있다. 그러나, 이 간섭이 가능한 한 최소화되어야 한다. 
+* **VACCUM**은 빠르고 효율적이어야 한다. 너무 느리거나 지지부진하면, 데이터베이스의 상태가 악화될 수 있고, 이로 인해 전체적인 성능이 영향받을 수 있다. 
 
-With these principles in mind, **VACUUM** implementation uses existing recovery logging, because:
 
-*   The address is kept among recovery data for both heap and index changes. This allows **VACUUM** go directly to target, rather than scanning the database.
-*   Processing log data rarely interferes with the work of active workers.
+이러한 세 가지 원칙을 염두에 두고서, **VACCUM** 은 기존 복구 로깅을 사용하여 구현된다. 이유는 다음과 같다. 
 
-Log recovery was adapted to **VACUUM** needs by adding MVCCID information to logged data. **VACUUM** can decide based on MVCCID if the log entry is ready to be processed. MVCCID's that are still visible to active transactions cannot be processed. In due time, each MVCCID becomes old enough and all changes using the MVCCID become invisible.
+. 힙(heap)과 인덱스의 변경에 대해서, 데이터 주소가 복구 데이터에 유지된다. 이로 인해서, VACCUM은 데이터베이스를 스캔하는 대신에 직접 해당 객체에 접근할 수 있다.
+. 로그 데이터를 처리하는 것은 활성 작업자와의 간섭이 드물다. 
 
-Each transaction keeps the oldest MVCCID it considers active. The oldest MVCCID considered active by all running transactions is determined by the smallest oldest MVCCID of all transactions. Anything below this value is invisible and **VACUUM** can clean.
+로그 데이터에 MVCCID를 추가함으로써, 로그 복구가 VACCUM에 적용되었다. MVCCID에 기반해서, VACCUM은 로그 엔트리가 처리 준비가 되었는 지 결정할 수 있다. 여전히 활성 트랜잭션에 보이는 MVCCID는 처리할 수 없다. 적절한 시점에, 각 MVCCID는 충분히 오래되어 불필요하게 되고, 그 MVCCID를 사용한 모든 변경이 참조할 수 없게 된다. 
 
-VACUUM Parallel Execution
-+++++++++++++++++++++++++
+각 트랜잭션은 참조할 수 있는 가장 오래된 활성 MVCCID를 유지한다. 모든 실행 트랜잭션이 활성이라고 보는 가장 오래된 MVCCID가 모든 트랜잭션의 가장 오래된 MVCCID로 결정된다. 이 값 이하의 어떤 MVCCID도 더 이상 참조될 수 없는 상태가 되며 VACCUM이 클린업할 수 있는 상태가 된다. 
 
-According to the third principle of **VACUUM** it must be fast and it should not fall behind active workers. It is obvious that one thread cannot handle all the **VACUUM** works if system workload is heavy, thus it had to be parallelized.
 
-To achieve parallelization, the log data was split into fixed size blocks. Each block generates one vacuum job, when the time is right (the most recent MVCCID can be vacuumed, which means all logged operations in the block can be vacuumed). Vacuum jobs are picked up by multiple **VACUUM Workers** that clean the database based on relevant log entries found in the log block. The tracking of log blocks and generating vacuum jobs is done by the **VACUUM Master**.
+VACCUM 병행 실행
+++++++++++++++++
 
-VACUUM Data
+VACCUM의 세번째 원칙에 따르면, VACCUM은 빨라야 하며 활성 작업자에 뒤쳐져서는 안된다. 명확한 것은 시스템 워크로드가 심하면 한 쓰레드가 모든 VACCUM 작업을 처리할 수 없다. 그러므로, 병행 처리되어야 한다. 
+
+병행 처리가 되려면, 로드 데이터는 고정 길이의 블럭으로 분할되어야 한다. 각 블럭은 적절한 시점에 하나의 VACCUM 작업을 생성한다. 적절한 시점이란, 그 블럭에 로그된 모든 연산이 클린업될 수 있는 상태를 의미하는, 즉, 가장 최근의 MVCCID가 클린업될 수 있는 시점을 말한다. VACCUM 작업자(쓰레드)는 로그 블럭에서 발견된 연관된 로그 엔트리에 기반하여 데이터베이스를 클린업할 수 있으며, 여러 개의 VACCUM 작업자가 VACCUM 작업을 픽업하여 처리한다. 로그 블럭의 추적과 VACCUM 작업을 생성하는 것은 VACCUM Master에 의해서 처리된다. 
+
+
+VACUUM 데이터 
++++++++++++++
+
+로그 블럭에서 집계된 데이터는 VACCUM 데이터 파일에 저장된다. 연산별로 실행되는 VACCUM 작업은 시점적으로 나중에 실행될 수 있기 때문에, 그 데이터는 그 작업이 실행될 수 있을 때까지 저정되어야 한다. 설사 서버에 장애가 발생하더라도 그 데이터는 남아 있어야 한다. 어떤 연산도 leak 이 발생하거나 클린업되지 못하면 안된다. 만일 서버에 장애가 발생하면, 그 작업은 두번 실행될 수도 있으나, 전혀 실행되지 않는 것보다 낫다고 할 수 있다. 
+
+클린업 작업이 성공적으로 수행된 후에는, 처리된 로그 블럭에 집계된 데이터는 제거된다. 
+
+집계된 로그 블럭 데이터는 VACCUM 데이터로 바로 추가되지는 않는다. latch-free 버퍼를 사용함으로써, (로그 블럭과 집계된 데이터를 생성하는) 활성 작업 쓰레드가 VUCCUM 시스템과 동기화하는 것을 피하도록 해준다. VACCUM Master 가 주기적으로 깨어나서, 버퍼에 있는 모든 데이터를 VACCUM 데이터로 덤프하고, 이미 처리된 데이터를 제거하고, (자원이 이용 가능하면) 새 작업을 생성한다. 
+
+
+VACUUM 작업 
 +++++++++++
 
-Aggregated data on log blocks is stored in vacuum data file. Since the vacuum job generated by an operations occurs later in time, the data must be saved until the job can be executed, and it must also be persistent even if the server crashes. No operation is allowed to leak and not be vacuumed. If the server crashes, some jobs may be executed twice, which is preferable to not being executed at all.
+VACCUM 작업 실행 단계는 다음과 같다. 
 
-After a job has been successfully executed, the aggregated data on the processed log block is removed.
+1. 로그 사전 페치 : VACUUM Master 또는 작업 쓰레드가 그 작업에 의해 처리될 로그 페이지를 사전 페치한다. 
+2. 각 로그 레코드에 대해 다음 단계를 반복한다. 
+	1. 로그 레코드 판독(read)
+	2. 삭제된 파일 체크. 만일 로그 레코드가 삭제된 파일을 가리키고 있으면, 다음 로그 레코드로 진행
+	3. 인덱스 클린업을 실행하고 heap OID를 수집한다. 
+		. 만일 로그 레코드가 인덱스에 속하면, 즉시 클린업을 실행한다. 
+		. 만일 로그 레코드가 heap에 속하면, 나중에 클린업될 OID를 수집한다. 
+3. 수집된 OID를 기반으로 heap 클린업을 수행한다. 
+4. 작업을 완료한다. 해당 작업을 완료한 것으로 VACCUM 데이터에 표시한다.
 
-Aggregated log block data is not added directly to vacuum data. A latch-free buffer is used to avoid synchronizing active working threads (which generate the log blocks and their aggregated data) with the vacuum system. **VACUUM Master** wakes up periodically, dumps everything in buffer to vacuum data, removes data already process and generates new jobs (if available).
 
-VACUUM jobs
-+++++++++++
-
-Vacuum job execution steps:
-
-  1. **Log pre-fetch**. Vacuum master or workers pre-fetch log pages to be processed by the job.
-  2. **Repeat for each log record**:
-
-    1. **Read** log record.
-    2. **Check dropped file.** If the log record points to dropped file, proceed to next log record.
-    3. **Execute index vacuum and collect heap OID's**
-
-      * If log record belongs to index, execute vacuum immediately.
-      * If log record belongs to heap, collect OID to be vacuumed later.
-
-  3. **Execute heap vacuum** based on collected OID's.
-  4. **Complete job.** Mark the job as completed in vacuum data.
 
 Several measures were taken to ease log page reading and to optimize vacuum execution.
 
-Tracking dropped files
-++++++++++++++++++++++
+삭제된 파일 추적
+++++++++++++++++
 
-When a transaction drops a table or an index, it usually locks the affected table(s) and prevents others from accessing it. Opposed to active workers, **VACUUM** Workers are not allowed to use locking system, for two reasons: interference with active workers must be kept to the minimum, and **VACUUM** system is never supposed to stop as long as it has data to clean. Moreover, **VACUUM** is not allowed to skip any data that needs cleaning. This has two consequences:
+트랜잭션이 테이블이나 인덱스를 삭제할 때, 일상적으로 영향받는 테이블에 잠금을 걸어서 다른 트랜잭션이 접근하는 것을 방지한다. 활성 작업자들과는 반대로, VACCUM 작업자는 최소한으로 유지되어야 하고, VACCUM 시스템은 청소할 데이터가 남아 있는 한 멈추어서는 안된다. 게다가, VACCUM은 청소가 필요한 데이터를 어떤 것도 간과해서는 안된다. 
 
-  1. **VACUUM** doesn't stop from cleaning a file belonging to a dropped table or a dropped index until the dropper commits. Even if a transaction drops a table, its file is not immediately destroyed and it can still be accessed. The actual destruction is postponed until after commit.
-  2. Before the actual file destruction, **VACUUM** system must be notified. The dropper sends a notification to **VACUUM** system and then waits for the confirmation. **VACUUM** works on very short iterations and it checks for new dropped files frequently, so the dropper doesn't have to wait for a long time.
+1. **VACCUM** 은 삭제된 테이블이나 인덱스에 속하는 파일에 대해 삭제 트랜잭션이 완료할 때 까지는 청소하는 것을 멈추어서는 안된다. 설사 트랜잭션이 하나의 테이블을 삭제하더라도, 그 파일은 바로 삭제되지 않고 여전히 접근될 수 있다. 실제적인 삭제는 그 트랜잭션의 완료 이후로 연기된다. 
 
-After a file is dropped, **VACUUM** will ignore all found log entries that belong to the file. The file identifier, paired with an MVCCID that marks the moment of drop, is stored in a persistent file until **VACUUM** decides it is safe to remove it (the decision is based on the smallest MVCCID not yet vacuumed).
+2. 실제적인 파일 삭제 전에는 **VACCUM** 시스템에 알려져야 한다. 삭제자는 **VACCUM** 시스템에 알림 경보를 보내고 확인될 때 까지 대기해야 한다. VACCUM 시스템은 아주 짧은 반복 작업을 하고 새로 삭제된 파일을 비번하게 체크한다. 그러므로, 삭제자는 길게 대기하지 않는다. 
+
+파일이 삭제된 이후에, **VACCUM** 은 그 파일에 속하는 모든 발견된 로그 엔트리들을 무시할 것이다. 그 파일 식별자는 삭제 순간을 표시하는 MVCCID 와 쌍을 이루어 파일에 저장되어 있게 되고, **VACCUM** 시스템이 그 파일을 제거하는 것이 안전하다고 결정할 때 까지 유지된다. 그 제거 안전성은 아직 청소되지 않은 MVCCID 중 가장 적은 것에 기반하여 결정된다. 
+
 
 .. _lock-protocol:
 
