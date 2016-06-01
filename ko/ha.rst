@@ -3401,9 +3401,6 @@ HA 서비스 운영 중 슬레이브를 새로 추가하려면 기존의 마스�
 복제 불일치 감지 방법
 ---------------------
 
-Replication mismatch between replication nodes, indicating that data of the master node and the slave node is not identical, can be detected to some degree by the following process. You can also use :ref:`cubrid-checksumdb` utility to detect a replication inconsistency. However, please note that there is no more accurate way to detect a replication mismatch than by directly comparing the data of the master node to the data of the slave node. If it is determined that there has been a replication mismatch, you should rebuild the database of the master node to the slave node (see :ref:`rebuilding-replication`.)
-
-
 마스터 노드와 슬레이브 노드의 데이터가 일치하지 않는 복제 노드 간 데이터 불일치 현상은 다음과 같은 과정을 통해 어느 정도 감지할 수 있다. 그러나, 마스터 노드와 슬레이브 노드의 데이터를 서로 직접 비교해보는 방법보다 더 정확한 확인 방법은 없음에 주의해야 한다. 복제 불일치 상태라는 판단이 서면, 마스터 노드의 데이터베이스를 슬레이브 노드에 새로 구축해야 한다(:ref:`rebuilding-replication` 참고).
 
 *   **cubrid statdump** 명령을 수행하여 **Time_ha_replication_delay** 시간을 확인한다. 이 값이 클 수록 복제 지연 정도가 클 수 있다는 것을 의미하며, 지연된 시간만큼 복제 불일치가 존재할 가능성이 커진다.
@@ -3476,58 +3473,59 @@ Replication mismatch between replication nodes, indicating that data of the mast
 checksumdb
 ----------
 
-**checksumdb** provides a simple way to check replication integrity. Basically, it divides each table from a master node into fixed-size chunks and then calculates CRC32 values. The calculation itself, not the calculated value, is then replicated through CUBRID HA. Consequently, by comparing CRC32 values calculated on master and slave nodes, **checksumdb** can report the replication integrity. Note that **checksumdb** might affect master's performance even though it is designed to minimize the performance degradation. ::
+**checksumdb**는 복제 무결성을 확인할 수 있는 간단한 방법을 제공한다. 기본적으로 마스터 노드로부터 각 테이블을 고정된 크기의 chunk로 분할한 후에 CRC32 값으로 계산한다. 이 계산된 값은 CUBRID HA를 통해 복제되며 마스터와 슬레이브 노드에서 CRC32 값을 비교하여 복제 무결성을 알 수 있다. **checksumdb**는 성능 저하를 최소화 하도록 작성되었지만 마스터의 성능에 영향을 끼칠 수 있다.  
 
-        cubrid checksumdb [options] <database-name>@<hostname>
+         cubrid checksumdb [options] <database-name>@<hostname>
 
-.. program:: checksumdb
+ .. program:: checksumdb
 
-*   *<hostname>* : When you initiates checksum calculation, you need to specify the hostname of a master node. When you need to get the result after the calculation is completed, specify the hostname of a node you want to check. 
+ *   *<hostname>* : checksum 계산을 시작하려면 마스터 노드의 호스트명이 필요하다. 또한 확인하려는 특정 노드의 호스트명을 지정해서 계산이 완료된 후의 결과를 확인할 수 있다.
 
-.. option:: -c, --chunk-size=NUMBER
+ .. option:: -c, --chunk-size=NUMBER
 
-    You can specify the number of rows to select for each CRC32 calculation. (default: 500 rows, minimum: 100 rows)
+     각각의 CRC32 계산을 선택하기 위해 특정 개수의 열을 입력할 수 있다. 기본값은 500이며, 최솟값은 100이다.  
 
-.. option:: -s, --sleep=NUMBER
+ .. option:: -s, --sleep=NUMBER
 
-    checksumdb sleeps the specified amount of time after calculating each chunk (default: 100 ms)
-    
-.. option:: -i, --include-class-file=FILE
+     각각의 chunk를 계산한 후에 특정 시간만큼 정지시킬 수 있다. 기본값은 100 ms 이다.
 
-    You can specify tables to check the replication mismatch by specifying the -i FILE option. If it is not specified, entire tables will be checked. Empty string, tab, carriage return and comma are separators among table names in the file.
-    
-.. option:: -e, --exclude-class-file=FILE
+ .. option:: -i, --include-class-file=FILE
 
-    You can specify tables to exclude from checking the replication mismatch by specifying the -e FILE option. Note that either -i or -e can be used, not both.
-    
-.. option:: -t, --timeout=NUMBER
+     -i FILE 옵션을 통해 특정 테이블의 복제 불일치 여부를 확인할 수 있다. 만약 이 옵션이 지정되지 않으면 모든 테이블에 대해서 복제 불일치 여부를 확인한다. 빈 문자열, 탭, 캐리지 리턴과 콤마를 이용해서 파일에서 테이블 이름을 구분할 수 있다.
 
-    You can specify a calculation timeout with this option. (default: 1000 ms) If the timeout is reached, the calculation will be cancelled and will be resumed after a short period of time.
-    
-.. option:: -n, --table-name=STRING
+ .. option:: -e, --exclude-class-file=FILE
 
-    You can specify a table name to save checksum results. (default: db_ha_checksum)
-    
-.. option:: -r, --report-only
+     -e FILE 옵션을 통해 복제 불일치 확인시 특정 테이블을 제외시킬 수 있다. -i 또는 -e 둘 중 하나만 사용할 수 있다.
 
-    After checksum calculation is completed, you can get a report with this option.
-.. option:: --resume
+ .. option:: -t, --timeout=NUMBER
 
-    When checksum calculation is aborted, you can resume the calculation using this option.
+     이 옵션을 이용해서 계산시 timeout을 지정할 수 있으며, 기본값은 1000 ms 이다. 만약 timeout에 도달할 경우 계산은 중단되며, 잠시 후 다시 시작된다.
 
-.. option:: --schema-only
+ .. option:: -n, --table-name=STRING
 
-    When this option is given, checksumdb does not calculate CRC32 but only check schema of each table
-    
-.. option:: --cont-on-error
-    
-    Without this option, checksumdb halts on errors.
+     checksum 결과를 저장할 특정 테이블을 지정할 수 있다. 기본 테이블은 db_ha_checksum 이다.
 
-The following example shows how to start checksumdb ::
+ .. option:: -r, --report-only
 
-    cubrid checksumdb -c 100 -s 10 testdb@master
+     이 옵션을 통해 checksum 계산이 완료된 후에 결과를 얻을 수 있다.
 
-When no replication mismatch found, ::
+ .. option:: --resume
+
+     checksum 계산이 중지되었을 경우, 이 옵션을 이용해서 다시 실행할 수 있다.
+
+ .. option:: --schema-only
+
+     이 옵션을 이용해서 CRC32 계산을 하지 않고 각 테이블의 스키마를 확인할 수 있다.
+
+ .. option:: --cont-on-error
+
+     이 옵션이 없으면 에러가 발생했을 때 checksumdb가 정지한다.
+
+다음은 checksumdb를 실행하는 예제이다. :: 
+
+     cubrid checksumdb -c 100 -s 10 testdb@master
+
+복제 불일치가 발견되지 않았을 경우 ::
 
     $ cubrid checksumdb -r testdb@slave
     ================================================================
@@ -3535,7 +3533,7 @@ When no replication mismatch found, ::
      report time: 2016-01-14 16:33:30
      checksum table name: db_ha_checksum, db_ha_checksum_schema
     ================================================================
-    
+
     ------------------------
      different table schema
     ------------------------
@@ -3552,7 +3550,7 @@ When no replication mismatch found, ::
     t1              7                       0                       88 / 12 / 5 / 14 (ms)
     t2              7                       0                       96 / 13 / 11 / 15 (ms)
 
-When there is a replication mismatch in table *t1*, ::
+테이블 *t1*에서 복제 불일치가 감지되었을 경우 ::
 
     $ cubrid checksumdb -r testdb@slave
     ================================================================
@@ -3560,6 +3558,7 @@ When there is a replication mismatch in table *t1*, ::
      report time: 2016-01-14 16:35:57
      checksum table name: db_ha_checksum, db_ha_checksum_schema
     ================================================================
+
     ------------------------
      different table schema
     ------------------------
@@ -3578,7 +3577,7 @@ When there is a replication mismatch in table *t1*, ::
     t1              7                       3                       86 / 12 / 5 / 14 (ms)
     t2              7                       0                       93 / 13 / 11 / 15 (ms)
 
-When there is a schema mismatch in table *t1*, ::
+테이블 *t1*에서 스키마 불일치가 감지되었을 경우 ::
 
     $ cubrid checksumdb -r testdb@slave
     ================================================================
@@ -3608,7 +3607,6 @@ When there is a schema mismatch in table *t1*, ::
     --------------------------------------------------------------------------------------
     t1              7                       0                       95 / 13 / 11 / 16 (ms)
     t2              7                       0                       94 / 13 / 11 / 15 (ms)
-
 
 .. _ha-error:
 
