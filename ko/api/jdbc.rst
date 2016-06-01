@@ -872,24 +872,22 @@ JDBC에서 **LOB** 데이터를 처리하는 인터페이스는 JDBC 4.0 스펙�
 
     칼럼에서 정의한 크기보다 큰 문자열을 **INSERT** / **UPDATE** 하면 문자열이 잘려서 입력된다.
 
-## gichoi start ## 
 setBoolean
 ----------
 
-prepareStatement.setBoolean(1, true) will set
-    * 1 for numeric types
-    * '1' for string types
+prepareStatement.setBoolean(1, true) 는 다음으로 지정된다.
+    * 1 은 numeric 타입을 의미한다.
+    * '1' 은 string 타입을 의미한다.
 
-prepareStatement.setBooelan(1, false) will set
-    * 0 for numeric types
-    * '0' for string types
+prepareStatement.setBooelan(1, false) 는 다음으로 지정된다.
+    * 0 은 numeric 타입을 의미한다.
+    * '0' 은 string 타입을 의미한다.
 
-.. note:: Behavior of legacy versions
+.. note:: 이전 버전에서 동작 방식 
     
-    prepareStatement.setBoolean(1, true) set
-        * as 2008 R4.1, 9.0, 1 of BIT(1) type
-        * as 2008 R4.3, 2008 R4.4, 9.1, 9.2, 9.3, -128 of SHORT type
-## gichoi end ## 
+    prepareStatement.setBoolean(1, true) 은 다음으로 지정된다.
+        * 2008 R4.1, 9.0 에서는 BIT(1) 타입의 1 을 의미한다.
+        * 2008 R4.3, 2008 R4.4, 9.1, 9.2, 9.3 에서는SHORT 타입의 -128 을 의미한다.
 
 .. _jdbc-error-codes:
 

@@ -2937,8 +2937,8 @@ cci_schema_info
     각 *type* 에 대한 레코드의 구성은 아래 표와 같다.
 
     **타입에 대한 레코드 구성**
-    ## gichoi ## 
-    +------------------------------------------------------------------------- ------------------------------------------+------------------+--------------------+---------------------+
+
+    +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | 타입                                                                                                               | 칼럼 순서        | 칼럼 이름          | 칼럼 타입           |
     +====================================================================================================================+==================+====================+=====================+
     | CCI_SCH_CLASS                                                                                                      | 1                | NAME               | char \*             |
@@ -3005,8 +3005,8 @@ cci_schema_info
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_CLASS_ATTRIBUTE                                                                                            |                  |                    |                     |
     |                                                                                                                    |                  |                    |                     |
-    | When the attribute of the CCI_SCH_CLASS_ATTRIBUTE column is INSTANCE or SHARED,                                    |                  |                    |                     |
-    | the order and the name values are identical to those of the column of CCI_SCH_ATTRIBUTE.                           |                  |                    |                     |
+    | CCI_SCH_CLASS_ATTRIBUTE 컬럼이 INSTANCE 또는 SHARED의 속성일 경우에						 |                  |                    |                     | 
+    | 순서와 이름 값은 CCI_SCH_ATTRIBUTE의 컬럼과 동일하다.								 |                  |                    |                     |
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_CLASS_METHOD                                                                                               | 1                | NAME               | char \*             |
     |                                                                                                                    +------------------+--------------------+---------------------+
@@ -3099,15 +3099,11 @@ cci_schema_info
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_IMPORTED_KEYS                                                                                              | 1                | PKTABLE_NAME       | char \*             |
     |                                                                                                                    |                  |                    |                     |
-    | Used to retrieve primary key columns that are referred by a foreign key column in a given table.                   |                  |                    |                     |
-    | The results are sorted by PKTABLE_NAME and KEY_SEQ.                                                                |                  |                    |                     |
+    | 주어진 테이블의 외래 키 칼럼들이 참조하고 있는 기본 키 칼럼들의 정보를 조회하며					 |                  |                    |                     |
+    | 결과는 PKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다. 									 |                  |                    |                     |
     |                                                                                                                    |                  |                    |                     |
-    | If this type is specified as a parameter, a foreign key table is specified for                                     |                  |                    |                     |
-    | class_name                                                                                                         |                  |                    |                     |
-    | , and                                                                                                              |                  |                    |                     |
-    | NULL                                                                                                               |                  |                    |                     |
-    | is specified for                                                                                                   |                  |                    |                     |
-    | attr_name.                                                                                                         |                  |                    |                     |
+    | 이 타입을 인자로 지정하면, *class_name*\ 에는 외래 키 테이블,							 |                  |                    |                     |
+    | *attr_name*\ 에는 **NULL**\ 을 지정한다.  									 |                  |                    |                     |
     |                                                                                                                    +------------------+--------------------+---------------------+
     |                                                                                                                    | 2                | PKCOLUMN_NAME      | char \*             |
     |                                                                                                                    +------------------+--------------------+---------------------+
@@ -3137,14 +3133,10 @@ cci_schema_info
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_EXPORTED_KEYS                                                                                              | 1                | PKTABLE_NAME       | char \*             |
     |                                                                                                                    |                  |                    |                     |
-    | Used to retrieve primary key columns that are referred by all foreign key columns.                                 |                  |                    |                     |
-    | The results are sorted by FKTABLE_NAME and KEY_SEQ.                                                                |                  |                    |                     |
-    | If this type is specified as a parameter, a primary key table is specified for                                     |                  |                    |                     |
-    | class_name                                                                                                         |                  |                    |                     |
-    | , and                                                                                                              |                  |                    |                     |
-    | NULL                                                                                                               |                  |                    |                     |
-    | is specified for                                                                                                   |                  |                    |                     |
-    | attr_name.                                                                                                         |                  |                    |                     |
+    | 주어진 테이블의 기본 키 칼럼들을 참조하는 모든 외래 키 칼럼들의 정보를 조회하며, 					 |                  |                    |                     |
+    | 결과는 FKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다.                                       				 | 	            |                    |                     |
+    | 이 타입을 인자로 지정하면, *class_name*\ 에는 기본 키 테이블,							 |                  |                    |                     |
+    | *attr_name*\ 에는 **NULL**\ 을 지정한다.   									 |                  |                    |                     |
     |                                                                                                                    +------------------+--------------------+---------------------+
     |                                                                                                                    | 2                | PKCOLUMN_NAME      | char \*             |
     |                                                                                                                    +------------------+--------------------+---------------------+
@@ -3173,14 +3165,12 @@ cci_schema_info
     |                                                                                                                    | 9                | PK_NAME            | char \*             |
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_CROSS_REFERENCE                                                                                            | 1                | PKTABLE_NAME       | char \*             |
+    |															 |                  |                    |                     |
+    | 주어진 테이블의 기본 키와 주어진 테이블의 외래 키가 상호 참조하는 경우,     					 |                  |                    |                     |
+    | 해당 외래 키 칼럼들의 정보를 조회하며, 결과는 FKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다.				 |                  |                    |                     |
+    | 이 타입을 인자로 *class_name*\ 에는 기본 키 테이블,  								 |                  |                    |                     |
+    | *attr_name*  에는 외래 키 테이블을 지정한다.   									 |                  |                    |                     |
     |                                                                                                                    |                  |                    |                     |
-    | Used to retrieve foreign key information when primary keys and foreign keys in a given table are cross referenced. |                  |                    |                     |
-    | The results are sorted by FKTABLE_NAME and KEY_SEQ.                                                                |                  |                    |                     |
-    |                                                                                                                    |                  |                    |                     |
-    | If this type is specified as a parameter, a primary key is specified for                                           |                  |                    |                     |
-    | class_name                                                                                                         |                  |                    |                     |
-    | , and a foreign key table is specified for                                                                         |                  |                    |                     |
-    | attr_name.                                                                                                         |                  |                    |                     |
     |                                                                                                                    +------------------+--------------------+---------------------+
     |                                                                                                                    | 2                | PKCOLUMN_NAME      | char \*             |
     |                                                                                                                    +------------------+--------------------+---------------------+
