@@ -1,0 +1,435 @@
+:tocdepth: 3
+
+***********
+산술 연산자
+***********
+
+.. contents::
+
+산술 연산자는 덧셈, 뺄셈, 곱셈, 나눗셈을 위한 이항(binary) 연산자와 양수, 음수를 나타내기 위한 단항(unary) 연산자가 있다. 양수/음수의 부호를 나타내는 단항 연산자의 연산 우선순위가 이항 연산자보다 높다.
+
+::
+
+    <expression>  <mathematical_operator>  <expression>
+     
+        <expression> ::=
+            bit_string |
+            character_string |
+            numeric_value |
+            date-time_value |
+            collection_value |
+            NULL
+     
+        <mathematical_operator> ::=
+            <set_arithmetic_operator> |
+            <arithmetic_operator>
+     
+                <arithmetic_operator> ::=
+                    + |
+                    - |
+                    * |
+                    { / | DIV } |
+                    { % | MOD }
+         
+                <set_arithmetic_operator> ::=
+                    UNION |
+                    DIFFERENCE |
+                    { INTERSECT | INTERSECTION }
+
+*   <*expression*>: 연산을 수행할 수식을 선언한다.
+*   <*mathematical_operator*>: 수학적 연산을 지정하는 연산자로서, 산술 연산자와 집합 연산자가 있다.
+
+    *   <*set_arithmetic_operator*>: 컬렉션 타입의 피연산자에 대해 합집합, 차집합, 교집합을 수행하는 집합 산술 연산자이다.
+    *   <*arithmetic_operator*>: 사칙 연산을 수행하기 위한 연산자이다.
+
+다음은 CUBRID가 지원하는 산술 연산자의 설명 및 리턴 값을 나타낸 표이다.
+
+**산술 연산자**
+
++-------------+--------------------------------------------------------------------------------------+------------+----------------+
+| 산술 연산자 | **설명**                                                                             | 연산식     | 리턴 값        |
++=============+======================================================================================+============+================+
+| **+**       | 더하기 연산                                                                          | 1+2        | 3              |
++-------------+--------------------------------------------------------------------------------------+------------+----------------+
+| **-**       | 빼기 연산                                                                            | 1-2        | -1             |
++-------------+--------------------------------------------------------------------------------------+------------+----------------+
+| **\***      | 곱하기 연산                                                                          | 1*2        | 2              |
++-------------+--------------------------------------------------------------------------------------+------------+----------------+
+| **/**       | 나누기 연산 후, 몫을 반환한다.                                                       | 1/2.0      | 0.500000000    |
++-------------+--------------------------------------------------------------------------------------+------------+----------------+
+| **DIV**     | 나누기 연산 후, 몫을 반환한다. 피연산자는 정수 타입이어야 하며, 정수를 반환한다.     | 1 DIV 2    | 0              |
++-------------+--------------------------------------------------------------------------------------+------------+----------------+
+| **%**       | 나누기 연산 후, 나머지를 반환한다. 피연산자는 정수 타입이어야 하며, 정수를 반환한다. | 1 % 2      | 1              |
+| ,           | 피연산자가 실수이면 **MOD**                                                          | 1 MOD 2    |                |
+| **MOD**     | 함수를 이용한다.                                                                     |            |                |
++-------------+--------------------------------------------------------------------------------------+------------+----------------+
+
+.. _numeric-data-type-op-and-conversion:
+
+수치형 데이터 타입의 산술 연산과 타입 변환
+==========================================
+
+모든 수치형 데이터 타입을 산술 연산에 사용할 수 있으며, 연산 결과 타입은 피연산자의 데이터 타입과 연산의 종류에 따라 다르다. 아래는 피연산자 타입별 덧셈/뺄셈/곱셈 연산의 결과 데이터 타입을 정리한 표이다.
+
+**피연산자의 타입별 결과 데이터 타입**
+
++--------------+--------------+--------------+--------------+--------------+
+|              | **INT**      | **NUMERIC**  | **FLOAT**    | **DOUBLE**   |
++==============+==============+==============+==============+==============+
+| **INT**      | INT 또는     | NUMERIC      |   FLOAT      | DOUBLE       |
+|              | BIGINT       |              |              |              |
++--------------+--------------+--------------+--------------+--------------+
+| **NUMERIC**  | NUMERIC      | NUMERIC      |   DOUBLE     | DOUBLE       |
+|              |              | (p와 s도     |              |              |
+|              |              | 변환됨)      |              |              |
++--------------+--------------+--------------+--------------+--------------+
+| **FLOAT**    | FLOAT        | DOUBLE       | FLOAT        | DOUBLE       |
++--------------+--------------+--------------+--------------+--------------+
+| **DOUBLE**   | DOUBLE       | DOUBLE       | DOUBLE       | DOUBLE       |
++--------------+--------------+--------------+--------------+--------------+
+
+피연산자가 모두 동일한 데이터 타입이면 연산 결과의 타입이 변환되지 않으나, 나누기 연산의 경우 예외적으로 타입이 변환되므로 주의해야 한다. 분모, 즉 제수(divisor)가 0이면 에러가 발생한다.
+
+아래는 피연산자가 모두 **NUMERIC** 타입인 경우, 연산 결과의 전체 자릿수(*p*)와 소수점 아래 자릿수(*s*)를 정리한 표이다.
+
+**NUMERIC 타입의 연산 결과**
+
++-----------------------+---------------------------------------------------------------------------------------------+---------------------------+
+| 연산                  | 결과의 최대 자릿수                                                                          | 결과의 소수점 이하 자릿수 |
++=======================+=============================================================================================+===========================+
+| N(p1, s1) + N(p2, s2) | max(p1-s1, p2-s2)+max(s1, s2) +1                                                            | max(s1, s2)               |
++-----------------------+---------------------------------------------------------------------------------------------+---------------------------+
+| N(p1, s1) - N(p2, s2) | max(p1-s1, p2-s2)+max(s1, s2)                                                               | max(s1, s2)               |
++-----------------------+---------------------------------------------------------------------------------------------+---------------------------+
+| N(p1, s1) * N(p2, s2) | p1+p2+1                                                                                     | s1+s2                     |
++-----------------------+---------------------------------------------------------------------------------------------+---------------------------+
+| N(p1, s1) / N(p2, s2) | s2 > 0 이면 Pt = p1+max(s1, s2) + s2 - s1, 그 외에는 Pt = p1라 하고, s1 > s2 이면 St = s1,                              |
+|                       | 그 외에는 s2라 하면, 소수점 이하 자릿수는 St < 9 이면 min(9-St, 38-Pt) + St, 그 외에는 St                               |
++-----------------------+---------------------------------------------------------------------------------------------+---------------------------+
+
+**예제**
+
+.. code-block:: sql
+
+    --int * int
+    SELECT 123*123;
+    
+::
+
+          123*123
+    =============
+            15129
+     
+.. code-block:: sql
+
+    -- int * int returns overflow error
+    SELECT (1234567890123*1234567890123);
+
+::
+    
+    ERROR: Data overflow on data type bigint.
+     
+.. code-block:: sql
+
+    -- int * numeric returns numeric type  
+    SELECT (1234567890123*CAST(1234567890123 AS NUMERIC(15,2)));
+    
+::
+
+     (1234567890123* cast(1234567890123 as numeric(15,2)))
+    ======================
+      1524157875322755800955129.00
+     
+.. code-block:: sql
+
+    -- int * float returns float type
+    SELECT (1234567890123*CAST(1234567890123 AS FLOAT));
+    
+::
+
+     (1234567890123* cast(1234567890123 as float))
+    ===============================================
+                                      1.524158e+024
+     
+.. code-block:: sql
+
+    -- int * double returns double type
+    SELECT (1234567890123*CAST(1234567890123 AS DOUBLE));
+    
+::
+
+     (1234567890123* cast(1234567890123 as double))
+    ================================================
+                              1.524157875322756e+024
+     
+.. code-block:: sql
+
+    -- numeric * numeric returns numeric type   
+    SELECT (CAST(1234567890123 AS NUMERIC(15,2))*CAST(1234567890123 AS NUMERIC(15,2)));
+    
+::
+
+     ( cast(1234567890123 as numeric(15,2))* cast(1234567890123 as numeric(15,2)))
+    ======================
+      1524157875322755800955129.0000
+     
+.. code-block:: sql
+
+    -- numeric * float returns double type  
+    SELECT (CAST(1234567890123 AS NUMERIC(15,2))*CAST(1234567890123 AS FLOAT));
+    
+::
+
+     ( cast(1234567890123 as numeric(15,2))* cast(1234567890123 as float))
+    =======================================================================
+                                                     1.524157954716582e+024
+     
+.. code-block:: sql
+
+    -- numeric * double returns double type  
+    SELECT (CAST(1234567890123 AS NUMERIC(15,2))*CAST(1234567890123 AS DOUBLE));
+    
+::
+
+     ( cast(1234567890123 as numeric(15,2))* cast(1234567890123 as double))
+    ========================================================================
+                                                      1.524157875322756e+024
+     
+.. code-block:: sql
+
+    -- float * float returns float type  
+    SELECT (CAST(1234567890123 AS FLOAT)*CAST(1234567890123 AS FLOAT));
+    
+::
+
+     ( cast(1234567890123 as float)* cast(1234567890123 as float))
+    ===============================================================
+                                                      1.524158e+024
+
+.. code-block:: sql
+
+    -- float * double returns float type  
+    SELECT (CAST(1234567890123 AS FLOAT)*CAST(1234567890123 AS DOUBLE));
+    
+::
+
+     ( cast(1234567890123 as float)* cast(1234567890123 as double))
+    ================================================================
+                                              1.524157954716582e+024
+     
+.. code-block:: sql
+
+    -- double * double returns float type  
+    SELECT (CAST(1234567890123 AS DOUBLE)*CAST(1234567890123 AS DOUBLE));
+    
+::
+
+     ( cast(1234567890123 as double)* cast(1234567890123 as double))
+    =================================================================
+                                               1.524157875322756e+024
+     
+.. code-block:: sql
+
+    -- int / int returns int type without type conversion or rounding
+    SELECT 100100/100000;
+    
+::
+
+      100100/100000
+    ===============
+                  1
+     
+.. code-block:: sql
+
+    -- int / int returns int type without type conversion or rounding
+    SELECT 100100/200200;
+    
+::
+
+      100100/200200
+    ===============
+                  0
+     
+.. code-block:: sql
+
+    -- int / zero returns error
+    SELECT 100100/(100100-100100);
+    
+::
+
+    ERROR: Attempt to divide by zero.
+
+.. _arithmetic-op-type-casting:
+
+날짜/시간 데이터 타입의 산술 연산과 타입 변환
+=============================================
+
+피연산자가 모두 날짜/시간 데이터 타입이면 뺄셈 연산이 가능하며, 리턴 값의 타입은 **BIGINT** 이다. 이때 피연산자의 타입에 따라 연산 단위가 다르므로 주의한다. 날짜/시간 데이터 타입과 정수는 덧셈 및 뺄셈 연산이 가능하며, 이때 연산 단위와 리턴 값의 타입은 날짜/시간 데이터 타입을 따른다.
+
+아래는 피연산자의 타입별로 허용하는 연산과 연산 결과의 데이터 타입을 정리한 표이다.
+
+**피연산자의 타입별 허용 연산과 결과 데이터 타입**
+
++---------------+------------------+------------------+---------------------+--------------------+-----------------------+
+|               | TIME             | DATE             | TIMESTAMP           | DATETIME           | INT                   |
+|               | (초 단위)        | (일 단위)        | (초 단위)           | (밀리초 단위)      |                       |
++===============+==================+==================+=====================+====================+=======================+
+| **TIME**      | 뺄셈만 허용.     | X                | X                   | X                  | 덧셈, 뺄셈 허용.      |
+|               | **BIGINT**       |                  |                     |                    | **TIME**              |
++---------------+------------------+------------------+---------------------+--------------------+-----------------------+
+| **DATE**      | X                | 뺄셈만 허용.     | 뺄셈만 허용.        | 뺄셈만 허용.       | 덧셈, 뺄셈 허용.      |
+|               |                  | **BIGINT**       | **BIGINT**          | **BIGINT**         | **DATE**              |
++---------------+------------------+------------------+---------------------+--------------------+-----------------------+
+| **TIMESTAMP** | X                | 뺄셈만 허용.     | 뺄셈만 허용.        | 뺄셈만 허용.       | 덧셈, 뺄셈 허용.      |
+|               |                  | **BIGINT**       | **BIGINT**          | **BIGINT**         | **TIMESTAMP**         |
++---------------+------------------+------------------+---------------------+--------------------+-----------------------+
+| **DATETIME**  | X                | 뺄셈만 허용.     | 뺄셈만 허용.        | 뺄셈만 허용.       | 덧셈, 뺄셈 허용.      |
+|               |                  | **BIGINT**       | **BIGINT**          | **BIGINT**         | **DATETIME**          |
++---------------+------------------+------------------+---------------------+--------------------+-----------------------+
+| **INT**       | 덧셈, 뺄셈 허용  | 덧셈, 뺄셈 허용. | 덧셈, 뺄셈 허용.    | 덧셈, 뺄셈 허용.   | 모든 산술 연산 허용   |
+|               | **TIME**         | **DATE**         | **TIMESTAMP**       | **DATETIME**       |                       |
++---------------+------------------+------------------+---------------------+--------------------+-----------------------+
+
+.. note::
+
+    날짜/시간 산술 연산의 인자 중 하나라도 **NULL** 이 포함되어 있으면 수식의 결과로 **NULL** 이 반환된다.
+
+**예제**
+
+.. code-block:: sql
+
+    -- initial systimestamp value
+    SELECT SYSDATETIME;
+    
+::
+
+      SYSDATETIME
+    ===============================
+      07:09:52.115 PM 01/14/2010
+     
+.. code-block:: sql
+
+    -- time type + 10(seconds) returns time type
+    SELECT (CAST (SYSDATETIME AS TIME) + 10);
+    
+::
+
+     ( cast( SYS_DATETIME  as time)+10)
+    ====================================
+      07:10:02 PM
+     
+.. code-block:: sql
+
+    -- date type + 10 (days) returns date type
+    SELECT (CAST (SYSDATETIME AS DATE) + 10);
+    
+::
+
+     ( cast( SYS_DATETIME  as date)+10)
+    ====================================
+      01/24/2010
+     
+.. code-block:: sql
+
+    -- timestamp type + 10(seconds) returns timestamp type
+    SELECT (CAST (SYSDATETIME AS TIMESTAMP) + 10);
+    
+::
+
+     ( cast( SYS_DATETIME  as timestamp)+10)
+    =========================================
+      07:10:02 PM 01/14/2010
+     
+.. code-block:: sql
+
+    -- systimestamp type + 10(milliseconds) returns systimestamp type
+    SELECT (SYSDATETIME  + 10);
+    
+::
+
+     ( SYS_DATETIME +10)
+    ===============================
+      07:09:52.125 PM 01/14/2010
+     
+.. code-block:: sql
+
+    SELECT DATETIME '09/01/2009 03:30:30.001 pm'- TIMESTAMP '08/31/2009 03:30:30 pm';
+    
+::
+
+     datetime '09/01/2009 03:30:30.001 pm'-timestamp '08/31/2009 03:30:30 pm'
+    =======================================
+      86400001
+     
+.. code-block:: sql
+
+    SELECT TIMESTAMP '09/01/2009 03:30:30 pm'- TIMESTAMP '08/31/2009 03:30:30 pm';
+    
+::
+
+     timestamp '09/01/2009 03:30:30 pm'-timestamp '08/31/2009 03:30:30 pm'
+    =======================================
+      86400
+
+Behavior related to timezone parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+TIMESTAMP and TIMESTAMP WITH LOCAL TIME ZONE data types stores internally UNIX epoch values (number of secons elapsed from 1970). When leap second is used (tz_leap_second_support is set to yes, see :ref:`timezone-parameters`), they may contain virtual date-time values.
+
+.. code-block:: sql
+
+    Virtual date-time       Unix timestamp
+    2008-12-31 23:59:58  -> 79399951
+    2008-12-31 23:59:59  -> 79399952
+    2008-12-31 23:59:60  -> 79399953    -> not real date (introduced by leap second)
+    2009-01-01 00:00:00  -> 79399954
+    2009-01-01 00:00:01  -> 79399955
+
+
+Arithmetic operations with TIMESTAMP and TIMESTAMPLTZ values are performed directly on Unix epoch values. Unix epoch values coresponding to non-exising date/time values are allowed. For this reason, the comparison:
+
+.. code-block:: sql
+
+    SELECT TIMESTAMPLTZ'2008-12-31 23:59:59 UTC'=TIMESTAMPLTZ'2008-12-31 23:59:59 UTC'+1;
+
+::
+
+    timestampltz '2008-12-31 23:59:59 UTC'=timestampltz '2008-12-31 23:59:59 UTC'+1
+    =================================================================================
+                                                                                0   
+
+is equivalent to comparing the Unix timestamps : 79399952 and 79399953. But when same values are used as TIMESTAMPTZ, there is equality:
+
+.. code-block:: sql
+
+    SELECT TIMESTAMPTZ'2008-12-31 23:59:59 UTC'=TIMESTAMPTZ'2008-12-31 23:59:59 UTC'+1;
+
+::
+
+    timestamptz '2008-12-31 23:59:59 UTC'=timestamptz '2008-12-31 23:59:59 UTC'+1
+    ===============================================================================
+                                                                                1
+                                                                                
+
+The inconsistency arise at display :
+
+.. code-block:: sql
+
+    SELECT TIMESTAMPLTZ'2008-12-31 23:59:59 UTC'+1;
+
+::
+
+    timestampltz '2008-12-31 23:59:59 UTC'+1
+    =============================================
+    11:59:59 PM 12/31/2008 Etc/UTC UTC
+
+
+Since '2008-12-31 23:59:60 UTC' corresponding to Unix timestamp value 79399953 is not a real date, the immediately preceding value is used. Internally, it is equivalent to the value ('2008-12-31 23:59:60 UTC').
+
+TIMESTAMP WITH TIME ZONE data type contains both a UNIX timestamp and a timezone identifier. Arithmetic on TIMESTAMPTZ is also performed on UNIX timestamp part value, but is followed by an automatic adjusting operation. The presence of timezone identifier (which includes region, offset and daylight saving), requires the TIMESTAMPTZ object to be a valid date-time. The operation timestamptz'2008-12-31 23:59:59 UTC'+1 implies an automatic validation-conversion: instead of (79399953, UTC) which is not a valid date-time the value is automatically converted to (79399952,UTC) which coresponds to '2008-12-31 23:59:59 UTC'.
+
+After each arithmetic operation implying DATETIMETZ and TIMESTAMPTZ, CUBRID performs an automatic adjustment of result value which involves:
+  - adjusting the timezone identifier : adding a number of seconds to a date with timezone may lead to change of internally stored offset rule, daylight saving rule, hence the timezone identifier must be updated
+  - adjusting the Unix timestamp (only for TIMESTAMPTZ): virtual date-time values (when leap-second is enabled) are always converted to the immediately preceding Unix timestamp value.
+
+                              
