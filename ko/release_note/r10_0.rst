@@ -1,0 +1,96 @@
+
+일반 정보
+=======
+
++----------------+--------------------------------------+
+|  작성 일자       | 설 명                                 |
++================+======================================+
+|  2016년 2월     | CUBRID 10.0 Release (10.0.0.XXXX)    |
++----------------+--------------------------------------+
+
+버그 리포트와 사용자 피드백
+
+릴리스 노트 정보
+============
+
+이 문서는 CUBRID 10.0(빌드번호, 10.0.0.1376)의 정보를 포함한다.
+CUBRID 10.0은 CUBRID 9.3 버전에서 발견된 오류의 수정과 향상된 기능이 적용되었으며,
+CUBRID 9.3에 적용된 이전의 모든 버전에 대한 오류 수수정 및 기능 향상 역시 포함되어있다.
+
+CUBRID 9.3 또는 이전 버전에 대한 상세 정보는 아래의 링크를 참조하면 된다.
+http://www.cubrid.org/manual/93/en/release_note/index.html.
+
+CUBRID 2008 R4.3 이나 이하의 버전에 대해서는, http://release.cubrid.org/en 참조.
+
+개  요
+=====
+
+CUBRID 10.0은 CUBRID 9.3에서의 주요한 업그레이드 버전이다.
+
+CUBRID 10.0
+
+
+* 다중 동시성 제어(MVCC)에 프로토콜에 기반한 스냅샷의 고립을 제공한다.
+* 성능과 확장성이 상당히 개선되었다.
+* 시간대(TIMEZONE) 데이터 타입과 함수를 제공한다.
+* 문자열 타입 BINARY 문자셋을 제공한다.
+* 다수의 SQL 확장과 함수/연산자를 포함한다.
+* 다수의 중요한 버그가 수정되었다.
+
+CUBRID 10.0 의 데이터베이스 볼륨은 9.x 나 이전 버전과 호환되지 않는다.
+따라서 만약 당신이 9.3 또는 그 이전 버전을 사용하고 있다면 반드시 새 버전으로의 데아터베이스 마이그레이션을
+실시하여야 한다. 이것에 관해서는 :doc:`/upgrade` 을 참조한다.
+
+
+드라이버  호환성
+============
+
+위의 이슈들만이 아니라 안정성을 위한 많은 문제들이 수정되었다.
+자세한 사항은 다음을 참조한다.
+이전 버전의 사용자들은 :ref:`changed-behaviors100` 와 :ref:`new-cautions100` 단락을
+반드시 참조하여야 한다.
+
+
+새로운  기능들
+===========
+
+* 새로운 문자셋과 콜에이션이 시스템 카타로그에 추가되었다. (_db_charset and db_charset. db_collation, db_class이 추가되었고
+db_attribute이 수정되었다)
+* 복제의 일관성을 검사하기 위한 체크섬 도구가 추가되었다. (CUBRIDSUS-6214)
+* CRC32 함수가 추가되었다. (CUBRIDSUS-15470)
+* JDBC 컨스트럭터(CUBRIDTimestamptz)와 세터(setTimestamptz)가 주가되었다.
+* KILL 문장이 추가되었다. (CUBRIDSUS-13845)
+* PERCENTILE_DISC와 PERCENTILE_CONT 함수가 추가되었다. 
+  (aggregate 또는 analytic 함수로 사용 가능) CUBRIDSUS-11089)(CUBRIDSUS-11088)
+* 슬레이브 복구 도구(restoreslave)가 추가되었다. (CUBRIDSUS-10843)
+* 'checkdb' 유틸리티에 옵션이 추가되었다. (CUBRIDSUS-11292)
+* 'SHOW CRITICAL SECTION' 문장이 추가되었다. (CUBRIDSUS-14037)
+* 'SHOW JOB QUEUE' 문장이 추가되었다. (CUBRIDSUS-14036)
+* 'SHOW THREADS' 문장이 추가되었다. (CUBRIDSUS-14038)
+* 'SHOW TIMEZONES' 문장이 추가되었다. (CUBRIDSUS-14186)
+* 'SHOW TRANSACTION TABLES' 문장이 추가되었다. (CUBRIDSUS-14039)
+* 'SLEEP' 문장이 추가되었다. (CUBRIDSUS-14217)
+* 'SYS_GUID' 문장이 추가되었다. (CUBRIDSUS-6555)
+* 'vacuumdb' 도구가 추가되었다. ('checkdb' 도구에 전부 손실된 레코드에서 비어있지 않은 레코드의 검색을 위해서, CUBRIDSUS-10842)
+* 다중 버전 동시성 제어(MVCC, Multi-Version Concurrency Control) 프로토콜을 채용하여 스냅샷 분리를 제공)용
+* 'SET SYSTEM PARAMETER' 문장에서 'DEFAULT' 키워드가 해당 시스템 변수를 기본값으로 설정한다. (CUBRIDSUS-15529)
+* 'ha_make_slavedb' 스크립트가 사용이 편리하게 향상됨 (CUBRIDSUS-10842)
+* 문자열을 위한 문자셋(CHAR, VARCHAR, ENUM)에 'BINARY' 추가.
+* Table, column, view, index, JSP, trigger, serial, user와 같은 스키마 오브젝트에 'COMMENT' 지원. 시스템 카타로그가
+  주석을 보여주기 위해서 수정되었다. (CUBRIDSUS-12367)
+* 'NATURAL JOIN'을 지원한다. (CUBRIDSUS-12401)
+* 동적 추적과 성능 분석을 위한 시스템 텝을 지원. (CUBRIDSUS-11626)
+* TIMEZONE 데이터 타입과 함수를 제공한다. (CUBRIDSUS-5765)
+* 'CREATE OR REPLACE PROCEDURE/FUNCTION'을 제공한다. (CUBRIDSUS-6542)
+* 'DROP TABLE' 문장에서 'CASCADE CONSTRAINTS' 를 지원한다. (CUBRIDSUS-9830)
+* 'CREATE TABLE IF NOT EXISTS' 문장을 지원한다. (CUBRIDSUS-12366)
+
+
+동작 변경
+=======
+
+* 'ORDER BY FOR' 절에 부 쿼리가 허용되지 않는다. (CUBRIDSUS-13210)
+* 기본 빌드 타겟이 64bit로 변경되었다. (CUBRIDSUS-16770)
+* 'make_locale.sh'의 기본 빌드 타겟이 64bit로 변경되었다. (CUBRIDSUS-17755)
+* 'make_tz.sh'의 기본 빌드 타겟이 64bit로 변경되었다. (CUBRIDSUS-15812)
+* 'ALTER INDEX'와 'DROP INDEX' 문장이 해당 인댁스가 속한 테이블 이름을 요구하는 형태로 변경되었다. (CUBRIDSUS
