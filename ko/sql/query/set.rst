@@ -13,7 +13,7 @@ SQL 문을 이용하여 CSQL 인터프리터나 CUBRID 매니저의 질의 편�
 
     SET SYSTEM PARAMETERS 'parameter_name=value [{; name=value}...]'
 
-**DEFAULT** for *value* will reset the parameter to its default value with an exception of **call_stack_dump_activation_list** parameter.
+*value*에  **DEFAULT** 를 사용하면 **call_stack_dump_activation_list** 변수의 예외를 포함하여 해당 변수의 값을 그 변수의 기본값으로 재 설정한다.
 
 .. code-block:: sql
 
