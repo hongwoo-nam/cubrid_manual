@@ -876,12 +876,12 @@ setBoolean
 ----------
 
 prepareStatement.setBoolean(1, true) 는 다음으로 지정된다.
-    * 1 은 numeric 타입을 의미한다.
-    * '1' 은 string 타입을 의미한다.
+    * numeric 타입에서의 1.
+    * string 타입에서의 '1'.
 
 prepareStatement.setBooelan(1, false) 는 다음으로 지정된다.
-    * 0 은 numeric 타입을 의미한다.
-    * '0' 은 string 타입을 의미한다.
+    * numeric 타입에서 0.
+    * string 타입에서 '0'.
 
 .. note:: 이전 버전에서 동작 방식 
     
