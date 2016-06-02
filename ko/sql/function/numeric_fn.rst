@@ -216,9 +216,9 @@ CRC32
 
 .. function:: CRC32 ( string )
 
-    The **CRC32** function returns a cyclic redundancy check value as 32-bit integer. When NULL is given as input, it returns NULL. 
+    **CRC32** 함수는 순환 중복 검사 값을 32-bit integer 로 반환한다. NULL 값을 입력하면, NULL 값이 리턴된다.
 
-    :param string: An expression that returns a string value
+    :param string: string 값을 리턴하는 표현
     :rtype: INTEGER
 
 .. code-block:: sql

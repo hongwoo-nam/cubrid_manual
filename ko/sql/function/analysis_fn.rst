@@ -1383,8 +1383,7 @@ PERCENTILE_CONT
     PERCENTILE_DISC는 집계된 값의 집합으로부터 값을 반환한다. 
     
     아래 예에서 백분위 값이 0.5이면 PERCENTILE_CONT 함수는 짝수 원소를 가진 그룹에 대해 두 개의 중간값의 평균을 반환하는 반면, PERCENTILEP_DISC 함수는 두 개의 중간 값 중 첫번째 값을 반환한다. 홀수 개수의 원소를 가진 집계 그룹에 대해서는, 두 함수 모두 중간 원소의 값을 반환한다.
-
-In fact, the MEDIAN function is a particular case of PERCENTILE_CONT with the default of percentile value(0.5). Please also see :func:`MEDIAN` for more details.
+    사실, MEDIAN 함수는 PERCENTILE_CONT 함수가 백분위 값을 0.5로 가지는 특별한 경우이다. 더 자세한 내용에 대해서는 :func:`MEDIAN` 를 참조해라.
 
 다음은 이 함수의 예에서 사용될 스키마 및 데이터이다.
 

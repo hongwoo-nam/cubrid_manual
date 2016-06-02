@@ -209,8 +209,8 @@ DOUBLE, DOUBLE PRECISION
 
 날짜/시간 데이터 타입은 날짜, 시간 혹은 이 두 가지를 모두 표현할 때 사용하는 데이터 타입으로 다음과 같은 데이터 타입을 지원한다.
 
-+------------------+-----------+---------------------------------+-------------------------------------+--------------------------------------------------------------+
-| 타입             | bytes     | 최소값                          | 최대값                              | 비고                                                         |
++------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
+| 타입             | bytes     | 최소값                          | 최대값                              | 비고                                                                  |
 +==================+===========+=================================+=====================================+=======================================================================+
 | **DATE**         | 4         | 0001년 1월 1일                  | 9999년 12월 31일                    | 예외적으로 DATE '0000-00-00'을 입력할 수 있다.                        |
 +------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
@@ -234,8 +234,6 @@ DOUBLE, DOUBLE PRECISION
 |                  |           | 0001-01-01 00:00:0.000 UTC      | 9999-12-31 23:59:59.999             | As an exception, DATETIMETZ '0000-00-00 00:00:00' format is allowed.  |
 +------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
 
-
-
 **범위와 해상도(Range and Resolution)**
 
 *   시간 값의 표현은 기본적으로 24시간 시스템에 의하여 그 범위가 결정된다. 날짜는 그레고리력(Gregorian calendar)을 따른다. 이 두 제약 사항을 벗어나는 값이 날짜나 시간으로 입력되면 오류가 발생한다.
@@ -246,13 +244,11 @@ DOUBLE, DOUBLE PRECISION
 
 *   **TIMESTAMP** 의 범위는 GMT로 1970년 1월 1일 0시 0분 1초부터 2038년 1월 19일 03시 14분 07초까지이다. KST (GMT+9)로는 1970년 1월 1일 9시 0분 1초부터 2038년 1월 19일 12시 14분 07초까지 저장할 수 있다. GMT로 timestamp'1970-01-01 00:00:00'은 timestamp'0000-00-00 00:00:00'와 같다. 
 
-*   The range of **TIMESTAMPLTZ**, **TIMESTAMPTZ** varies with timezone, but the value converted to UTC should be between 1970-01-01 00:00:01 and 2038-01-19 03 03:14:07.
+*   **TIMESTAMPLTZ** 와 **TIMESTAMPTZ** 의 범위는 timezone 에 의해 바뀐다. 그러나 UTC로 변환되면, 그 값은 반드시 1970-01-01 00:00:01 과 2038-01-19 03 03:14:07 사이에 있어야 한다.
 
-*   The range of **DATETIMELTZ**, **DATETIMETZ** varies with timezone, but the value converted to UTC should be between 0001-01-01 00:00:0.000 and 9999-12-31 23:59:59.999. A value stor
-ed in database may no longer be valid if session timezone changes.
+*   **DATETIMELTZ** 와 **DATETIMETZ** 의 범위는 timezone 에 의해 바뀐다. 그러나 UTC로 변환되면, 그 값은 반드시 0001-01-01 00:00:0.000 과 9999-12-31 23:59:59.999 사이에 있어야 한다. 데이터베이스에 저장된 값은 세션의 timezone 이 변경되면, 더이상 유효하지 않다.
 
 *   날짜, 시간, 타임스탬프와 관련된 연산은 시스템의 반올림 시스템에 따라 결과가 달라질 수 있다. 이러한 경우, 시간과 타임스탬프는 가장 근접한 초를 최소 해상도로, 날짜는 가장 근접한 날짜를 최소 해상도로 하여 결정된다.
-
 
 **변환(Coercion)**
 
@@ -277,8 +273,7 @@ ed in database may no longer be valid if session timezone changes.
 *   **DATE**, **DATETIME**, **TIMESTAMP** 타입이 인자인 일부 함수는 인자의 날짜와 시간 값이 모두 0이면 시스템 파라미터 **return_null_on_function_errors** 의 값에 따라 다른 값을 반환한다. **return_null_on_function_errors** 가 yes이면 **NULL** 을 반환하고 no이면 에러를 반환하며, 기본값은 **no** 이다.
 *   **DATE**, **DATETIME**, **TIMESTAMP** 타입을 반환하는 함수들은 날짜와 시간 값이 모두 0인 값을 반환할 수 있지만 JAVA 응용 프로그램에서는 이러한 값을 Date 객체에 저장할 수 없다. 따라서 연결 URL 문자열의 zeroDateTimeBehavior 속성(Property) 설정에 따라서 예외로 처리하거나 **NULL**\ 을 반환하거나 또는 최소값을 반환한다(이에 관한 자세한 내용은 :ref:`jdbc-connection-conf` 참고).
 *   시스템 파라미터 **intl_date_lang**\ 을 설정하면 :func:`TO_DATE`, :func:`TO_TIIME`, :func:`TO_DATETIME`, :func:`TO_TIMESTAMP`, :func:`DATE_FORMAT`, :func:`TIME_FORMAT`, :func:`TO_CHAR`, :func:`STR_TO_DATE` 함수의 입력 문자열 형식이 해당 로캘의 날짜 형식을 따른다. 자세한 내용은 :ref:`stmt-type-parameters`\ 과 각 함수의 설명을 참고한다.
-
-*   Types with timezone follow the same conversion rules as their parent type.
+*   타임존 타입들은 부모 타입과 같은 변환 정책을 따른다.
 
 .. note:: 날짜/시간 타입 및 타임존이 있는 날짜/시간 타입의 리터럴에 대해서는 :ref:`date-time-literal`\을 참고한다.
 
@@ -757,7 +752,7 @@ DATETIME
     10:30:00 AM 02/24/2015     12:30:00 PM 02/24/2015 +09:00                10:30:00 AM 02/24/2015 +07:00
 
 
-**Conversion from string to timestamp types**
+**string 타입을 timestamp 타입으로 변환**
 
 Conversion from string to timestamp/timestampltz/timestamptz are performed in context for creating timestamp objects from literals.
 
@@ -777,7 +772,7 @@ Conversion from string to timestamp/timestampltz/timestamptz are performed in co
 |                            |                             |                            | timezone.                    |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
 
-**Conversion from string to datetime types**
+**string 타입을 datetime 타입으로 변환**
 
 Conversion from string to datetime/datetimeltz/datetimetz are performed in context for creating datetime objects from literals.
 
@@ -797,7 +792,7 @@ Conversion from string to datetime/datetimeltz/datetimetz are performed in conte
 |                            |                             |                            | string's timezone.           |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
 
-**Conversion of datetime and timestamp types to string (printing of values)**
+**datetime, timestamp 타입을 string (값의 출력) 타입으로 변환**
 
 +----------------------------+-----------------------------+----------------------------+------------------------------+
 | From/to                    | String (timezone printing   | String (timezone force     | String (no requirement for   |

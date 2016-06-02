@@ -108,9 +108,9 @@ CUBRID에서 콜레이션은 문자셋을 포함한다. 예를 들어, "utf8_en_
     *   ci: 대소문자 구분 안 함. LDML 파일에서 다음을 설정하면 적용된다: strength="secondary" caseLevel="off" caseFirst="off"
 
     *   cs: 대소문자 구분. 기본적으로 모든 콜레이션은 대소문자를 구분한다. LDML 파일에서 다음을 설정하면 적용된다: strength="tertiary"
-        
+ 
     *   bin: 정렬 순서가 코드포인트의 순서와 똑같음. 메모리의 바이트 순서를 비교하면 거의 같은 결과가 나오는데, 공백 문자와 EUC의 더블 바이트 패딩 문자는 "bin" 콜레이션에서 항상 0으로 정렬된다. LDML 파일에는 bin 콜레이션을 설정하는 방법이 없는데(bin 콜레이션은 이미 내장되어 있음), LDML 파일에서 다음을 설정하면 비슷하게 적용된다: strength="quaternary" 또는 strength="identical"
-
+       
     *   ai: 악센트 구분 안 함. 예를 들어,  'Á'는 'A'와 같은 순서이다. 이는 또한 대소문자를 구분하지 않는다. LDML 파일에서 (strength="primary")를 설정하면 적용된다.
         
     *   uca:  UCA(Unicode Collation Algorithm) 기반 콜레이션을 의미함. 내장된 변형 콜레이션과 구별하기 위해서만 사용된다. 즉, 모든 LDML 콜레이션은 UCA를 기반으로 하지만 짧은 이름을 유지하기 위해 "_uca"가 생략되며, 예외적으로 'utf8_ko_cs_uca', 'utf8_tr_cs_uca' 이 두 개의 콜레이션만 내장된 'utf8_ko_cs', 'utf8_tr_cs' 콜레이션과 구별하기 위해 사용된다.
@@ -193,7 +193,7 @@ CUBRID 콜레이션
 +-------------------+-----------------------------------------------------------------------+-------------------------------------------+
 | utf8_vi_cs        | vi_VN - 베트남어, 일반적인 유니코드 대소문자 규칙과 동일              | 0000-FFFF 범위의 모든 유니코드 코드포인트 |
 +-------------------+-----------------------------------------------------------------------+-------------------------------------------+
-| binary            | none (invariant to casing operations)                                 | any byte value (zero is nul-terminator)   |
+| binary            | none (invariant to casing operations)                                 | any byte value (null-terminator는 0)      |
 +-------------------+-----------------------------------------------------------------------+-------------------------------------------+
 
 
@@ -779,32 +779,29 @@ DROP된 외래 키를 다시 생성한다. ::
 
 한 문자에서 다른 문자로 변환되는 규칙은 다음과 같다.
 
-Rules for conversion of values from one charset to another:
-
 +------------------------+-----------------------------------+-----------------------------------+-------------------------------+-------------------------------+
 | Source \\ Destination  | Binary                            | ISO-8859-1                        | UTF-8                         | EUC-KR                        |
 +========================+===================================+===================================+===============================+===============================+
-| **Binary**             | No change                         | No change                         | No change.                    | No change.                    |
-|                        |                                   | The byte size unchanged.          | Validation per character.     | Validation per character.     |
-|                        |                                   | Character length unchanged.       | Invalid char replace with '?' | Invalid char replace with '?' |
+| **Binary**             | 변환 없음                         | 변환 없음                         | 변환 없음.                    | 변환 없음.                    |
+|                        |                                   |                                   | 문자당 유효성 검증.           | 문자당 유효성 검증.           |
+|                        |                                   |                                   | 유효하지 않은 문자 '?'로 대체 | 유효하지 않은 문자 '?'로 대체 |
 +------------------------+-----------------------------------+-----------------------------------+-------------------------------+-------------------------------+
-| **ISO-8859-1**         | No change                         | No change                         | Byte conversion.              | Byte conversion.              |
-|                        |                                   |                                   | The byte size increases.      | Byte size increase.           |
-|                        |                                   |                                   | No loss of useful characters. | No loss of useful characters. |
+| **ISO-8859-1**         | 변환 없음                         | 변환 없음                         | 바이트 변환.                  | 바이트 변환.                  |
+|                        |                                   |                                   | 바이트 크기가 증가됨.         | 바이트 크기가 증가됨.         |
+|                        |                                   |                                   | 사용 가능한 문자 손실은 없음. | 사용 가능한 문자 손실은 없음. |
 +------------------------+-----------------------------------+-----------------------------------+-------------------------------+-------------------------------+
-| **UTF-8**              | No change.                        | Byte conversion.                  | No change                     | Byte conversion.              |
-|                        | The byte size unchanged.          | Byte size may decrease.           |                               | Byte size may decrease.       |
-|                        | Character length increases.       | Expect loss of characters.        |                               | Expect loss of characters.    |
+| **UTF-8**              | 변환 없음.                        | 바이트 재해석.                    | 변환 없음                     | 바이트 변환.                  |
+|                        | 바이트 크기는 변화 없음.          | 바이트 크기가 감소될 수 있음.     |                               | 바이트 크기가 감소될 수 있음. |
+|                        | 문자 길이는 증가함.               | 문자 손실이 예상됨.               |                               | 문자 손실이 예상됨.           |
 +------------------------+-----------------------------------+-----------------------------------+-------------------------------+-------------------------------+
-| **EUC-KR**             | No change.                        | Byte conversion.                  | Byte conversion.              | No change                     |
-|                        | The byte size unchanged.          | Byte size may decrease.           | Byte size may increase.       |                               |
-|                        | Character length increases        | Expect loss of characters         | No loss of useful characters. |                               |
+| **EUC-KR**             | 변환 없음.                        | 바이트 변환.                      | 바이트 변환.                  | 변환 없음                     |
+|                        | 바이트 크기는 변화 없음.          | 바이트 크기가 감소될 수 있음.     | 바이트 크기가 증가될 수 있음. |                               |
+|                        | 문자 길이는 증가함.               | 문자 손실이 예상됨.               | 사용 가능한 문자 손실은 없음. |                               |
 +------------------------+-----------------------------------+-----------------------------------+-------------------------------+-------------------------------+
 
 .. note::
 
-    Previous versions of CUBRID 9.x didn't supported binary charset. The ISO-8859-1 charset had the role of existing binary charset. Conversions from UTF-8 and EUC-KR charsets to ISO-8859-1 were performed by reinterpreting the byte content of source, not by character translation.
-
+    CUBRID 9 버전 이전에는 binary 문자셋을 지원하지 않았다. ISO-8859-1 문자셋이 binary 문자셋 역할을 했다. UTF-8과 EUC-KR 문자셋을 ISO-8859-1로의 변환은 문자의 변환이 아닌 원소스의 바이트 내용을 다시 해석함으로써 수행되었다.
 
 .. _collation-setting:
 
@@ -839,7 +836,7 @@ Rules for conversion of values from one charset to another:
 *   EUC-KR: euckr_bin
 *   Binary: binary
 
-Binary is the name of both the collation and its associated charset.
+Binary는 콜레이션과 또 이와 관련된 문자셋 모두의 명명이다.
 
 서로 다른 콜레이션(과 문자셋)을 가진 표현식 인자(피연산자)를 가질 때 어떤 콜레이션을 사용할지 결정하는 방법에 대해서는 :ref:`determine-collation-columns` 을 참고한다.
 
@@ -920,48 +917,9 @@ CHARSET과 COLLATE 수정자
 #.   높은 변환도를 가진 인자는 더 낮은 변환도를 가진 인자의 콜레이션으로 변환된다.
 #.   인자들의 콜레이션이 서로 다르고 변환도가 같은 경우에는 표현식의 콜레이션을 결정할 수 없고 에러가 리턴된다. 단, 콜레이션 변환도 11(호스트 변수, 사용자 정의 변수)이고 동일한 문자셋인 두 피연산자를 비교하는 경우 둘 중 하나가 바이너리 콜레이션(utf8_bin, iso88591_bin, euckr_bin)이면 바이너리가 아닌(non-binary) 콜레이션으로 변환된다. :ref:`세션 변수와(또는) 호스트 변수의 비교 <comparison-between-session-and-or-host-variables>`\를 참고한다.
 
-#.   When arguments have different collation but same coercibility, the expression's collation cannot be resolved and an error is returned. However, when comparing two operands of which collation coercibility level is 11(session variable, host variable) and charset is the same, one of their collation is changed as non-bin collation if one of them is bin collation(utf8_bin, iso88591_bin, euckr_bin). See :ref:`Converting Collation of Session Variable and/or Host Variable <comparison-between-session-and-or-host-variables>`.
-
 표현식 인자들의 변환도는 다음의 표와 같다.
 
 .. _collation-coercibility:
-
-+------------------------+------------------------------------------------------------------------------------------------------+
-| Collation Coercibility | Arguments of the Expression(Operands)                                                                |
-+========================+======================================================================================================+
-| -1                     | As an expression which has arguments with only host variables, this coercibility cannot be           |
-|                        | determined before the execution step.                                                                |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 0                      | Operand having **COLLATE** modifier                                                                  |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 1                      | **Columns** with non-binary and non-bin collation                                                    |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 2                      | **Columns** with binary collation and binary charset                                                 |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 3                      | **Columns** with bin collation (iso88591_bin, utf8_bin, euckr_bin)                                   |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 4                      | **SELECT values**, **Expression** With non-binary and non-bin collation                              |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 5                      | **SELECT values**, **Expression** With binary collation and binary charset                           |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 6                      | **SELECT values**, **Expression** With bin collation (iso88591_bin, utf8_bin, euckr_bin)             |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 7                      | **Special functions** (:func:`SYSTEM_USER`, :func:`DATABASE`, :func:`SCHEMA`, :func:`VERSION`)       |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 8                      | **Constants(string literals)**  With non-binary and non-bin collation                                |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 9                      | **Constants(string literals)**  With binary collation and binary charset                             |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 10                     | **Constants(string literals)**  With bin collation (iso88591_bin, utf8_bin, euckr_bin)               |
-+------------------------+------------------------------------------------------------------------------------------------------+
-| 11                     | host variables, session variables                                                                    |
-+------------------------+------------------------------------------------------------------------------------------------------+
-
-
-.. note::
-
-    In 9.x versions, the binary collation was not available. The iso85891_bin collation had the role of existing binary collation. Since version 10.0, the coercibility of columns with iso88591_bin was demoted from 2 to 3, that of expressions with iso88591_bin from 5 to 6, and of constants with iso88591_bin from 9 to 10.
-
 
 +------------------------+------------------------------------------------------------------------------------------------------+
 | 콜레이션 변환도        |  표현식의 인자(피연산자)                                                                             |
@@ -992,6 +950,11 @@ CHARSET과 COLLATE 수정자
 +------------------------+------------------------------------------------------------------------------------------------------+
 | 11                     | 호스트 변수, 사용자 정의 변수                                                                        |
 +------------------------+------------------------------------------------------------------------------------------------------+
+
+
+.. note::
+
+    9.x 버전에서는 바이너리 콜레이션을 이용할 수 없다. iso85891_bin 콜레이션이 바이너리 콜레이션 역할을 한다. 10.0 버전부터 iso85891_bin 콜레이션을 갖는 컬럼들의 변환도는 2에서 3으로 변경되었다. 또한, iso85891_bin 콜레이션 갖는 표현식과 상수의 변환도가 각각 5에서 6으로 9에서 10으로 변환되었다.
 
 호스트 변수만을 인자로 가지는 표현식(예: 아래의 UPPER(?))에 대해서는 실행 단계에서 콜레이션 변환도를 결정할 수 있다. 즉, 파싱 단계에서는 이러한 표현식의 콜레이션 변환도를 결정할 수 없으므로 COERCIBILITY 함수는 -1을 반환한다.
 
@@ -1691,27 +1654,26 @@ LIKE 조건 최적화
 
 콜레이션 정보를 보려면 :func:`CHARSET`, :func:`COLLATION` 및 :func:`COERCIBILITY` 정보 함수를 사용한다.
 
-데이터베이스 콜레이션 정보는 **db_collation** 시스템 뷰 또는 :ref:`show-collation-statement`\ 을 통해 확인할 수 있다. 
+데이터베이스 콜레이션 정보는 **db_collation** 시스템 뷰 또는 :ref:`show-collation-statement`\ 을 통해 확인할 수 있다.
 
-
-Using i18n characters with JDBC
+JDBC에서 i18n 문자 사용
 ===============================
 
-CUBRID JDBC stores string type values received from server using String and CUBRIDBinaryString objects. String objects uses UTF-16 internally to store each character. It should be used to store any string DB value except those having binary charset. CUBRIDBinaryString uses byte array and should be used to store database string values of binary charset.
-The data buffer of each string value received from server is accompanied by the charset of the value from server. The charset is either the charset of column or expression's result or system charset for any other string without correspondent in database.
+CUBRID JDBC는 서버에서 전달된 문자열(string) 타입 값을 String, CUBRIDBinaryString 객체를 이용해서 저장한다. String 객체는 각 문자를 저장하기 위해서 UTF-16을 사용한다. 따라서, 바이너리 문자셋을 제외하고는 어떤 문자열 DB 값도 저장하는데 사용될 수 있다. CUBRIDBinaryString 객체는 바이트 배열을 사용한다. 따라서 바이너리 문자셋의 문자열 값들을 저장하는데 사용될 수 있다.
+서버에서 받은 각 문자열 값의 데이터 버퍼는 서버에서 값의 문자셋이 무엇인지를 알 수 있게 한다. 문자셋은 컬럼 또는 표현식 결과의 문자셋이거나 또는 데이터베이스에 대응되는 문자셋이 없는 문자열들은 시스템의 문자셋이다.
 
 .. note::
 
-    In previous versions, the connection charset was used to instantiate JDBC String objects from database values. 
+    이전 버전에서는, 연결 문자셋이 데이터베이스 값을 갖는 JDBC String 객체에 사용되었다.
 
 
-Create table with one column having UTF-8 charset and the other of binary charset:
+한 컬럼은 UTF-8 문자셋을 가지고 다른 컬럼들은 바이너리 문자셋을 갖는 테이블 생성:
 
 .. code-block:: sql
 
     CREATE TABLE t1(col1 VARCHAR(10) CHARSET utf8, col2 VARCHAR(10) CHARSET binary);
         
-Insert one row (the second column has random value bytes):
+한 레코드 입력 (두번째 컬럼은 랜덤 값):
 
 .. code-block:: java    
 
@@ -1724,7 +1686,7 @@ Insert one row (the second column has random value bytes):
         st.setObject(2, cbs);
         st.executeUpdate();
 
-Query the table and show contents (for binary string - we display a hex dump, for other charsets - the String value):
+테이블 조회 및 결과 보기 (바이너리 문자열 - hex 덤프, 다른 문자셋 - 문자열):
 
 .. code-block:: java
 
@@ -1752,6 +1714,7 @@ Query the table and show contents (for binary string - we display a hex dump, fo
                         }
                 }
         }
+
 
 
 타임존 설정
