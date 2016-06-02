@@ -533,7 +533,7 @@
     
     INSERT INTO t VALUES(1), (2), (3), (4), (5), (6);
     
-테이블 *t*\의 스키마와 데이터는 다음과 같다. 
+테이블 *t*\의 스키마와 데이터는 다음과 같다.
 
 .. code-block:: sql
 
@@ -564,7 +564,7 @@
 
     ALTER TABLE t PROMOTE PARTITION p0, p2;
 
-승격(promotion) 이후, 테이블 *t*\는 *p1*\이라는 하나의 분할만 포함하며 다음 데이터를 유지한다. 
+승격(promotion) 이후, 테이블 *t*\는 *p1*\이라는 하나의 분할만 포함하며 다음 데이터를 유지한다.
 
 .. code-block:: sql
 

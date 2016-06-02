@@ -27,11 +27,12 @@ SYS_GUID
      
     .. code-block:: sql 
      
-        SELECT SYS_GUID(); 
+        SELECT SYS_GUID();
 
     :: 
      
         sys_guid() 
         ================================== 
-        '938210043A7B4455927A8697FB2571FF' 
+        '938210043A7B4455927A8697FB2571FF'
+
 

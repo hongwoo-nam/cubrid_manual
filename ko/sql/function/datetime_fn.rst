@@ -292,9 +292,9 @@ CURDATE, CURRENT_DATE
 .. c:macro:: CURRENT_DATE
 
     **CURDATE** (), **CURRENT_DATE** (), **CURRENT_DATE**, **SYS_DATE**, **SYSDATE** 는 모두 동일하며, 현재 날짜를 **DATE** 타입(*MM*/*DD*/*YYYY*)으로 반환한다. 
-   
-    When the time zone of the current session is same as that of server, these functions are same as :c:macro:`SYS_DATE`, :c:macro:`SYSDATE`. Please refer :c:macro:`SYS_DATE`, :c:macro:`SYSDATE` and the following examples to find a difference and :func:`DBTIMEZONE`, :func:`SESSIONTIMEZONE` for details of the functions.   
- 
+
+    세션의 타임존이 서버와 같을 때, 이 함수들은 :c:macro:`SYS_DATE`, :c:macro:`SYSDATE`. Please refer :c:macro:`SYS_DATE`, :c:macro:`SYSDATE` 과 같다. 그리고 다음의 예제들을 통해 차이점을 알고, :func:`DBTIMEZONE`, :func:`SESSIONTIMEZONE` 함수에 대한 세부사항을 알 수 있을 것이다.
+    
     산술 연산의 단위는 일(day)이다. 입력 인자의 연, 월, 일이 모두 0이면 시스템 파라미터 **return_null_on_function_errors**\ 의 값에 따라 다른 값을 반환한다. **return_null_on_function_errors**\ 가 yes이면 **NULL** 을 반환하고 no이면 에러를 반환하며, 기본값은 **no** 이다.
 
     :rtype: DATE
@@ -361,7 +361,7 @@ CURRENT_DATETIME, NOW, SYS_DATETIME, SYSDATETIME
 .. function:: NOW ()
 
     **CURRENT_DATETIME**, **CURRENT_DATETIME** (), **NOW** (), **SYS_DATETIME**, **SYSDATETIME** 는 동일하며, 현재 날짜를 **DATETIME** 타입으로 반환한다. 산술 연산의 단위는 밀리초(milli-sec)다.
-    When the time zone of the current session is same as that of server, these functions are same as :c:macro:`SYS_DATETIME`, :c:macro:`SYSDATETIME`. Please also refer :c:macro:`SYS_DATETIME`, :c:macro:`SYSDATETIME` to find a difference and :func:`DBTIMEZONE`, :func:`SESSIONTIMEZONE` for details of the functions.
+    세션의 타임존이 서버와 같을 때, 이 함수들은 :c:macro:`SYS_DATETIME`, :c:macro:`SYSDATETIME`와 같다. 또한, 차이점을 알기 위해서 :c:macro:`SYS_DATETIME`, :c:macro:`SYSDATETIME` 를 참고하고, 다음 함수들의 자세한 설명은 :func:`DBTIMEZONE`, :func:`SESSIONTIMEZONE`를 참고해라.
 
     :rtype: DATETIME
     
@@ -381,20 +381,17 @@ CURRENT_DATETIME, NOW, SYS_DATETIME, SYSDATETIME
     ==============================================================
       04:05:09.292 PM 02/05/2016     04:05:09.292 PM 02/05/2016 
     
-    
-
-     
+ 
 .. code-block:: sql
 
     --it returns the timestamp value 1 hour added to the current sys_datetime value
 
-    SELECT TO_CHAR(SYSDATETIME+3600*1000, 'YYYY-MM-DD HH:MI');
     SELECT TO_CHAR(SYSDATETIME+3600*1000, 'YYYY-MM-DD HH24:MI');
 
        to_char( SYS_DATETIME +3600*1000, 'YYYY-MM-DD HH24:MI')
     ======================
-      '2016-02-05 17:05'  
-    
+      '2016-02-05 17:05' 
+
 ::
 
 .. code-block:: sql
@@ -434,7 +431,6 @@ CURTIME, CURRENT_TIME
     
 .. code-block:: sql
 
-    
 
       04:37:34 PM  04:37:34 PM  04:37:34 PM  04:37:34 PM  04:37:34 PM
      
@@ -458,7 +454,8 @@ CURRENT_TIMESTAMP, SYS_TIMESTAMP, SYSTIMESTAMP, LOCALTIME, LOCALTIMESTAMP
 .. function:: LOCALTIMESTAMP ()
 
     **CURRENT_TIMESTAMP**, **CURRENT_TIMESTAMP** (), **SYS_TIMESTAMP**, **SYSTIMESTAMP**, **LOCALTIME**, **LOCALTIME** (), **LOCALTIMESTAMP**, **LOCALTIMESTAMP** ()는 동일하며, 현재 날짜와 시간을 **TIMESTAMP** 타입으로 반환한다. 산술 연산의 단위는 초(sec)다.
-    When the time zone of the current session is same as that of server, these functions are same as :c:macro:`SYS_TIME`, :c:macro:`SYSTIME`. Please also refer :c:macro:`SYS_TIME`, :c:macro:`SYSTIME` to find a difference and :func:`DBTIMEZONE`, :func:`SESSIONTIMEZONE` for details of the functions.
+    세션의 타임존이 서버와 같을 때, 이 함수들은 :c:macro:`SYS_TIME`, :c:macro:`SYSTIME` 과 같다. 차이점을 알기 위해서는 :c:macro:`SYS_TIME`, :c:macro:`SYSTIME` 를 참고하길 바란다. 그리고 함수들의 세부사항은 :func:`DBTIMEZONE`, :func:`SESSIONTIMEZONE` 를 참고해라.
+
     :rtype: TIMESTAMP
     
 .. code-block:: sql
