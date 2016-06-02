@@ -290,16 +290,21 @@ MVCC 는 또한 특정 시점의 데이터베이스의 일관성 있는 관점�
 
 다중 버젼, 가시성, 스냅샷
 —————————————————————————
-MVCC는 각 데이터베이스 레코드에 대해 다중 버전을 유지한다. 레코드의 각 버전은 그 레코드의 삽입자 또는 삭제자에 의해 MVCCID 로 표시된다. 
-MVCCID 는 각 변경 트랜잭션을 유일하게 구분하는 ID 이다. 이런 식별자는 각 변경자를 식별하는 데 아주 유용하고 변경에 대한 시점을 지정하는 데 유용하다. 
+MVCC는 각 데이터베이스 레코드에 대해 다중 버전을 유지한다. 레코드의 각 버전은 그 레코드의 삽입자 또는 삭제자에 의해 MVCCID 로 표시된다. MVCCID 는 각 변경 트랜잭션을 유일하게 구분하는 ID 이다. 이런 식별자는 각 변경자를 식별하는 데 아주 유용하고 변경에 대한 시점을 지정하는 데 유용하다. 
 
 트랜잭션 T1이 새 레코드를 삽입할 때, 그 트랜잭션은 그 레코드의 첫 버전을 생성하고 그것에 대한 유일한 식별자 MVCCID1 를 삽입ID 로 설정한다. 이  MVCCID는 레코드 헤더의 메타 데이터로 저장된다. 
+
+.. image:: /images/transaction_inserted_record.png
 
 트랜잭션 T1 이 완료(commit)할 때까지는 다른 트랜잭션은 이 레코드의 새 값을 보지 못한다. MVCCID가 그 레코드의 변경자를 식별하는 데 도움을 주며, 변경 시점을 지정하게 해준다. 이렇게 함으로써 다른 트랜잭션이 그 변경에 대해서 타당한 지 아닌 지 알수 있도록 해준다. 이러한 경우에, 이 레코드를 체크하는 임의의 트랜잭션은 MVCCID1 을 발견하게 되고, 그 변경자가 여전히 활성 상태인 것을 알게 됨으로써, 그 변경은 여전히 자신이 참조할 수 있는 상태가 아니라는 것을 알게된다. 
 
 트랜잭션 T1 이 완료한 이후에는, 새 트랜잭션 T2가 T1이 변경했던 레코드를 참조할 수 있고, 삭제하기로 결정한다. T2는 실제로 그 레코드를 삭제하지는 않음으로써 다른 트랜잭션이 참조하도록 허용한다. 대신에, 그 레코드에 대한 독점 잠금을 획득하여 다른 트랜잭션이 변경하지 못하도록 하고, 삭제되었음을 그 레코드에 표시한다. 이 트랜잭션은 삭제 시 또 다른 MVCCID를 부여함으로써 다른 트랜잭션들이 그 레코드의 삭제자를 식별할 수 있도록 한다. 
 
+.. image:: /images/transaction_deleted_record.png
+
 만일 트랜재션 T2가 한 레코드 값을 변경하고자 하면, 기존 버전과 유사한 새 버전을 생성해야 한다. 두 버전은 트랜잭션 T2의 MVCCID로 표시되며, 기존 버전은 삭제용, 새 버전은 삽입용으로 표시된다. 기존 버전은 또한 새 버전에 대한 링크를 저장한다. 이러한 레코드의 관계는 다음 그림과 같이 표현된다. 
+
+.. image:: /images/transaction_updated_record.png
 
 현재, T2만이 레코드의 새 버전을 볼 수 있으며, 반면에 다른 모든 트랜잭션들은 기존의 첫 버전만을 참조하게 될 것이다. 실행 중인 트랜잭션에 의해서 해당 버전을 볼 수 있느냐 없는냐 하는 특성은 가시성(visibility)이라 한다. 이 가시성은 각 트랜잭션에 상대적이며, 일부 트랜잭션은 그 버전을 볼 수 있고 다른 트랜잭션들은 볼 수 없게 된다. 
 
@@ -307,25 +312,9 @@ MVCCID 는 각 변경 트랜잭션을 유일하게 구분하는 ID 이다. 이�
 
 사실상, 데이터베이스의 모든 버전의 가시성은 트랜잭션이 시작한 이후에 발생한 변경에 의존적이지는 않다. 더구나, 추가된 새 버젼은 그 트랜잭션에게는 무시된다. 결과적으로, 데이터베이스에서 모든 가시적인 버전의 집합은 변하지 않고 남아있게 되며 그 트랜잭션에 대한 스냅샷을 형성한다.  그러므로, 이 MVCC에 의해서 스냅샷 격리(snapshot isolation)가 제공되며 각 트랜잭션에서 수행되는 모든 read 질의문이 데이터베이스 일관성있는 뷰를 보는 것이 보장된다. 
 
-CUBRID 10.0 에서, 스냅샷은 모든 타당하지 못한 MVCCID에 대한 필터(filter)이다. 스냅샷이 지정되기 전에 완료되지 않은 트랜잭션의 MVCCID는 모두 타당하지 못하다. 새 트랜잭션이 시작할 때마다 스냅샷 필터를 변경하는 것을 피하기 위해서, 스냅샷은 두 개의 경계 MVCCID로 결정된다: 활성 트랜잭션중 가장 적은 MVCCID와 완료된 트랜잭션중 가장 큰 MVCCID. 경계 사이에 존재하는 활성 MVCCID 의 목록만이 저장된다. 완료 트랜잭션 중 가장 큰 MVCCID 보다 큰 MVCCID를 갖도록 스냅샷이 보장된 이후에 시작한 트랜잭션은 자동적으로 타당하지 못한 것으로 고려된다. 가장 작은 활성 MVCCID보다 적은 임의의 MVCCID는 자동적으로 타당한 것으로 고려된다. 
+CUBRID 10.0 에서, 스냅샷은 모든 타당하지 못한 MVCCID에 대한 필터(filter)이다. 스냅샷이 지정되기 전에 완료되지 않은 트랜잭션의 MVCCID는 모두 타당하지 못하다. 새 트랜잭션이 시작할 때마다 스냅샷 필터를 변경하는 것을 피하기 위해서, 스냅샷은 두 개의 경계 MVCCID로 결정된다: 즉, 활성 트랜잭션중 가장 적은 MVCCID와 완료된 트랜잭션중 가장 큰 MVCCID로 결정된다. 경계 사이에 존재하는 활성 MVCCID 의 목록만이 저장된다. 완료 트랜잭션 중 가장 큰 MVCCID 보다 큰 MVCCID를 갖도록 스냅샷이 보장된 이후에 시작한 트랜잭션은 자동적으로 타당하지 못한 것으로 결정된다. 가장 작은 활성 MVCCID보다 적은 임의의 MVCCID는 자동적으로 타당한 것으로 결정된다. 
 
-버전 가시성을 결정하는 스냅샷 필터 알고리즘은 삽입과 삭제에 사용되는 MVCCID 표시자를 질의한다. 
-
-
-
-.. image:: /images/transaction_inserted_record.png
-
-Until *T1* commits, other transactions should not see this row. The MVCCID helps identifying the authors of database changes and place them on a time line, so others can know if the change is valid or not. In this case, anyone checking this row find the *MVCCID1*, find out that the owner is still active, hence the row must be (still) invisible.
-
-After *T1* commits, a new transaction *T2* finds the row and decides to remove it. *T2* does not remove this version, allowing others to access it, instead it gets an exclusive lock, to prevent others from changing it, and marks the version as deleted. It adds another MVCCID so others can identify the deleter:
-
-.. image:: /images/transaction_deleted_record.png
-
-If *T2* decides instead to update one of the record values, it must create a new version. Both versions are marked with transaction MVCCID, old version for delete and new version for insert. Old version also stores a link to the location of new version, and the row representations looks like this:
-
-.. image:: /images/transaction_updated_record.png
-
-The snapshot filter algorithm that decides a version visibility queries the MVCCID markers used for insert and delete:
+버전 가시성을 결정하는 스냅샷 필터 알고리즘은 삽입과 삭제에 사용된 MVCCID 표시자를 질의하여 처리한다. 
 
 +--------------------------------------+-----------------------------------------------------+
 |                                      | Delete MVCCID                                       |
@@ -339,10 +328,10 @@ The snapshot filter algorithm that decides a version visibility queries the MVCC
 
 Table explained:
 
-. valid..., valid... : 스냅샷 이전에 버전 삽입/삭제 (그리고 완료됨), 그러므로 참조 가능
-. valid..., invalid...: 버전 삽입 및 완료, 그러나 삭제 안됨 또는 최근 삭제됨, 그러므로 가시적
-. invalid..., invalid...: 스냅샷 이전에 삽입자 완료 안한 상태, 레코드 삭제 안됨 또는 완료 안됨, 그러므로 가시적이지 않음
-. invalid..., valid...: 삽입자는 완료 안함, 삭제자는 완료함 - 불가능 경우. 만일 삭제자가 삽입자와 같지 않다면, 버전 보지 못함. 만일 같다면, 삽입/삭제 MVCCID 는 타당 또는 타당하지 않음
+. Valid Insert MVCCID, valid delete MVCCID : 스냅샷 이전에 버전 삽입/삭제 (그리고 완료됨), 그러므로 참조 가능
+. Valid Insert MVCCID, invalid delete MVCCID: 버전 삽입 및 완료, 그러나 삭제 안됨 또는 최근 삭제됨, 그러므로 가시적
+. Invalid Insert MVCCID, invalid delete MVCCID...: 스냅샷 이전에 삽입자 완료 안한 상태, 레코드 삭제 안됨 또는 완료 안됨, 그러므로 가시적이지 않음
+. invalid Insert MVCCID, valid delete MVCCID: 삽입자는 완료 안함, 삭제자는 완료함 - 불가능 경우. 만일 삭제자가 삽입자와 같지 않다면, 버전 보지 못함. 만일 같다면, 삽입/삭제 MVCCID 는 타당 또는 타당하지 않음
 
 이제 스냅샷이 어떻게 동작하는 지 확인해 보자 (**REPEATABLE READ** 격리 수준을 사용하여 전체 트랜잭션 동안의 동일 스냅샷 유지)
 
@@ -594,6 +583,7 @@ Table explained:
 |                                                                   |                                        |                                        |
 +-------------------------------------------------------------------+----------------------------------------+----------------------------------------+
 
+
 VACUUM
 ------
 
@@ -615,7 +605,6 @@ VACUUM
 * **VACCUM**은 정확하고 완변해야 한다. 일부 트랜잭션에 보이는 데이터를 절대 제거하면 안되며, 오래된 불필요한 데이터의 제거를 놓치면 안된다. 
 * **VACCUM**은 이산적(discrete) 이어야 한다. 클린업 프로세스는 데이터베이스의 상태를 변경하는 것이기 때문에, 활성 트랜잭션의 실행을 일정 부분 간섭이 발생할 수 있다. 그러나, 이 간섭이 가능한 한 최소화되어야 한다. 
 * **VACCUM**은 빠르고 효율적이어야 한다. 너무 느리거나 지지부진하면, 데이터베이스의 상태가 악화될 수 있고, 이로 인해 전체적인 성능이 영향받을 수 있다. 
-
 
 이러한 세 가지 원칙을 염두에 두고서, **VACCUM** 은 기존 복구 로깅을 사용하여 구현된다. 이유는 다음과 같다. 
 
@@ -660,9 +649,7 @@ VACCUM 작업 실행 단계는 다음과 같다.
 3. 수집된 OID를 기반으로 heap 클린업을 수행한다. 
 4. 작업을 완료한다. 해당 작업을 완료한 것으로 VACCUM 데이터에 표시한다.
 
-
-
-Several measures were taken to ease log page reading and to optimize vacuum execution.
+로그 페이지 판독을 용이하게 하고 클린업 작업 식행을 최적화하기 위해서 여러 조치가 취해졌다. 
 
 삭제된 파일 추적
 ++++++++++++++++
