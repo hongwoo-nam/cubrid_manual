@@ -223,6 +223,7 @@ Comment                             VARCHAR         Comment to describe the inde
     SHOW INDEX IN athlete;
     
 ::
+
           Table                  Non_unique  Key_name              Seq_in_index  Column_name           Collation             Cardinality     Sub_part  Packed                Null        
                           Index_type            Func                  Comment
         =================================================================================================================================================================================
