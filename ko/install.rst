@@ -73,7 +73,7 @@ CUBRID 엔진, 사용 도구 및 드라이버에 대한 자세한 정보는 http
 
     예를 들어, Linux용 64Bit 버전 DB 서버는 Windows용 64Bit 버전 브로커 서버와 상호 운용이 가능하지만, 32Bit 버전 브로커 서버와는 상호 운용이 불가능하다.
 
-    DB 서버와 브로커 서버 사이의 관계에 대한 설명은 :doc:`intro`\를 참고한다. CUBRID SHARD에 대한 설명은 :doc:`shard`\를 참고한다.
+    DB 서버와 브로커 서버 사이의 관계에 대한 설명은 :doc:`intro`\를 참고한다. 
     
 .. _Installing-and-Running-on-Linux:
     
