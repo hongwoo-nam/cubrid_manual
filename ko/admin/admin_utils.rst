@@ -1484,9 +1484,9 @@ lockdb
     Object lock Table:
         Current number of ojbects which are locked = 2001
 
-**cubrid lockdb**\는 잠금을 획득한 각각의 객체에 대한 객체의 OID와 Object type, 테이블 이름을 출력한다. 추가적으로 객체에 대해서 잠금을 보유하고 있는 트랜잭션의 개수(Num holders), 잠금을 보유하고 있지만 상위 잠금으로 변환(예를 들어 **SCH_S_LOCK**에서 **SCH_M_LOCK**으로 잠금 변환)하지 못해 차단된 트랜잭션의 개수(Num blocked-holders), 객체의 잠금을 기다리는 다른 트랜잭션의 개수(*Num waiters*)가 출력된다. 그리고 잠금을 보유하고 있는 클라이언트 트랜잭션, 차단된 클라이언트 트랜잭션, 기다리는 클라이언트 트랜잭션의 리스트가 출력된다. Class에 대해서는 아니지만 Row에 관해서 MVCC정보 역시 출력된다. 
+**cubrid lockdb** 는 잠금을 획득한 각각의 객체에 대한 객체의 OID와 Object type, 테이블 이름을 출력한다. 추가적으로 객체에 대해서 잠금을 보유하고 있는 트랜잭션의 개수(Num holders), 잠금을 보유하고 있지만 상위 잠금으로 변환(예를 들어 **SCH_S_LOCK** 에서 **SCH_M_LOCK** 으로 잠금 변환)하지 못해 차단된 트랜잭션의 개수(Num blocked-holders), 객체의 잠금을 기다리는 다른 트랜잭션의 개수(*Num waiters*)가 출력된다. 그리고 잠금을 보유하고 있는 클라이언트 트랜잭션, 차단된 클라이언트 트랜잭션, 기다리는 클라이언트 트랜잭션의 리스트가 출력된다. Class에 대해서는 아니지만 Row에 관해서 MVCC정보 역시 출력된다. 
 
-다음 예는 Object type이 instance of class, 즉 레코드인 경우, OID( O| 62| 5)인 객체에 대해서 트랜잭션 2가 **IX_LOCK**을 가지고 있고, 트랜잭션 1이 **SCH_S_LOCK**을 획득하고 있지만 트랜잭션 2가 **SCH_M_LOCK**을 획득하고 있기 때문에 **SCH_M_LOCK**으로 변환하지 못해 차단되었음을 보여준다. 그리고 트랜잭션 3은 **SCH_S_LOCK**을 대기하고 있지만 트랜잭션 2가 **SCH_M_LOCK**을 대기하고 있기 때문에 차단되었음을 보여준다.
+다음 예는 Object type이 instance of class, 즉 레코드인 경우, OID( O| 62| 5)인 객체에 대해서 트랜잭션 2가 **IX_LOCK** 을 가지고 있고, 트랜잭션 1이 **SCH_S_LOCK** 을 획득하고 있지만 트랜잭션 2가 **SCH_M_LOCK** 을 획득하고 있기 때문에 **SCH_M_LOCK** 으로 변환하지 못해 차단되었음을 보여준다. 그리고 트랜잭션 3은 **SCH_S_LOCK** 을 대기하고 있지만 트랜잭션 2가 **SCH_M_LOCK** 을 대기하고 있기 때문에 차단되었음을 보여준다.
 
 ::
 

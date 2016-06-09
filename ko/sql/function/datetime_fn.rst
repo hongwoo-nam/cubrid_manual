@@ -291,9 +291,7 @@ CURDATE, CURRENT_DATE
 .. function:: CURRENT_DATE ()
 .. c:macro:: CURRENT_DATE
 
-    **CURDATE** (), **CURRENT_DATE** (), **CURRENT_DATE**, **SYS_DATE**, **SYSDATE** 는 모두 동일하며, 현재 날짜를 **DATE** 타입(*MM*/*DD*/*YYYY*)으로 반환한다. 
-
-    세션의 타임존이 서버와 같을 때, 이 함수들은 :c:macro:`SYS_DATE`, :c:macro:`SYSDATE`. Please refer :c:macro:`SYS_DATE`, :c:macro:`SYSDATE` 과 같다. 그리고 다음의 예제들을 통해 차이점을 알고, :func:`DBTIMEZONE`, :func:`SESSIONTIMEZONE` 함수에 대한 세부사항을 알 수 있을 것이다.
+    **CURDATE** (), **CURRENT_DATE** (), **CURRENT_DATE**, **SYS_DATE**, **SYSDATE** 는 모두 동일하며, 현재 날짜를 **DATE** 타입(*MM*/*DD*/*YYYY*)으로 반환한다.  세션의 타임존이 서버와 같을 때, 이 함수들은 :c:macro:`SYS_DATE`, :c:macro:`SYSDATE`. Please refer :c:macro:`SYS_DATE`, :c:macro:`SYSDATE` 과 같다. 그리고 다음의 예제들을 통해 차이점을 알고, :func:`DBTIMEZONE`, :func:`SESSIONTIMEZONE` 함수에 대한 세부사항을 알 수 있을 것이다.
     
     산술 연산의 단위는 일(day)이다. 입력 인자의 연, 월, 일이 모두 0이면 시스템 파라미터 **return_null_on_function_errors**\ 의 값에 따라 다른 값을 반환한다. **return_null_on_function_errors**\ 가 yes이면 **NULL** 을 반환하고 no이면 에러를 반환하며, 기본값은 **no** 이다.
 
@@ -325,13 +323,12 @@ CURDATE, CURRENT_DATE
     --it returns the date 60 days added to the current date
     SELECT CURDATE()+60;
      
-::
 
 .. code-block:: sql
 
     -- change session time from 'Asia/Seoul' to 'America/Los_Angeles'
     
-    SET TIME ZONE 'America/Los_Angeles';
+    set time zone 'America/Los_Angeles';
 
     SELECT DBTIMEZONE(), SESSIONTIMEZONE();
 
@@ -339,13 +336,13 @@ CURDATE, CURRENT_DATE
     ============================================
       'Asia/Seoul'          'America/Los_Angeles'
 
-    -- Note that CURDATE() and SYS_DATE returns different results
+    -- Note that NOW() and SYS_DATETIME return different results
     
-    SELECT CURDATE(), CURRENT_DATE(), CURRENT_DATE, SYS_DATE, SYSDATE;
+    SELECT NOW(), SYS_DATETIME;
 
-       CURRENT_DATE    CURRENT_DATE    CURRENT_DATE    SYS_DATE    SYS_DATE 
-    ========================================================================
-      02/04/2016      02/04/2016      02/04/2016      02/05/2016  02/05/2016
+       CURRENT_DATETIME               SYS_DATETIME                
+    ==============================================================
+      11:08:57.041 PM 02/04/2016     04:08:57.041 PM 02/05/2016   
 
 .. warning::
     
@@ -392,7 +389,6 @@ CURRENT_DATETIME, NOW, SYS_DATETIME, SYSDATETIME
     ======================
       '2016-02-05 17:05' 
 
-::
 
 .. code-block:: sql
 

@@ -177,6 +177,7 @@ Extra                               VARCHAR         주어진 칼럼에 대해 �
     SHOW FULL COLUMNS FROM athlete WHERE field LIKE '%c%';
     
 ::
+
           Field                 Type                  Collation             Null                  Key                   Default               Extra                 Comment             
         ================================================================================================================================================================================
           'code'                'INTEGER'             NULL                  'NO'                  'PRI'                 NULL                  'auto_increment'      NULL
@@ -244,6 +245,7 @@ Comment                             VARCHAR         Comment to describe the inde
     SHOW INDEXES FROM tbl1;
     
 ::
+
           Table                  Non_unique  Key_name              Seq_in_index  Column_name           Collation             Cardinality     Sub_part  Packed                Null        
                           Index_type            Func                  Comment
         =================================================================================================================================================================================
@@ -264,7 +266,6 @@ Comment                             VARCHAR         Comment to describe the inde
                           'BTREE'               NULL                  NULL
           'tbl1'                          0  'u_tbl1_s3'                      1  's3'                  'A'                             0         NULL  NULL                  'YES'
                           'BTREE'               NULL                  NULL
-
 
 .. _show-collation-statement:
  

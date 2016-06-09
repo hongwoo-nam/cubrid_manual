@@ -5,7 +5,7 @@
 .. toctree::
     :maxdepth: 2
     
-    r100.rst
+    r10_0.rst
 
 공통 정보
 =========
