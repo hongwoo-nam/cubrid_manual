@@ -12,8 +12,7 @@
 이 문서는 CUBRID 10.0(빌드번호, 10.0.0.1376)의 정보를 포함한다.
 CUBRID 10.0은 CUBRID 9.3 버전에서 발견된 오류의 수정과 향상된 기능이 적용되었으며, CUBRID 9.3에 적용된 이전의 모든 버전에 대한 오류 수정 및 기능 향상 역시 포함되어있다.
 
-CUBRID 9.3 또는 이전 버전에 대한 상세 정보는 아래의 링크를 참조하면 된다.
-http://www.cubrid.org/manual/93/en/release_note/index.html.
+CUBRID 9.3 또는 이전 버전에 대한 상세 정보는 http://www.cubrid.org/manual/93/en/release_note/index.html 를 참조.
 
 CUBRID 2008 R4.3 이나 이하의 버전에 대해서는, http://release.cubrid.org/ko 참조.
 
@@ -40,42 +39,44 @@ CUBRID 10.0 의 데이터베이스 볼륨은 9.x 나 이전 버전과 호환되�
 드라이버 호환성
 ===============
 
-위의 이슈들만이 아니라 안정성을 위한 많은 문제들이 수정되었다.
-자세한 사항은 다음을 참조한다.
-이전 버전의 사용자들은 :ref:`changed-behaviors100` 와 :ref:`new-cautions100` 단락을
-반드시 참조하여야 한다.
+* CUBRID 10.0의 JDBC와 CCI 드라이버는 CUBRID 9.1, 9.2, 2008 R4.1, R4.3, R4.4와 호환된다.
+* 드라이버들을 업그레이드 하는 것이 강력히 권고된다.
+
+우리는 당신의 드라이버들 역시 CUBRID 10.0을 사용하도록 업그레이드 할 것을 강력히 권고한다. 몇몇의 새로운 기능들, 특히 TIMEZONE 데이터 타입은 오직 10.0 드라이버들에서만 지원된다.
+
+자세한 사항은 다음을 참조한다. 이전 버전의 사용자들은 :ref:`changed-behaviors100` 와 :ref:`new-cautions100` 단락을 반드시 참조하여야 한다.
 
 
 새로운  기능들
 ==============
 
-* 새로운 문자셋과 콜에이션이 시스템 카타로그에 추가됨 (_db_charset and db_charset. db_collation, db_class이 추가되었고 db_attribute이 수정되었다) (CUBRIDSUS-10948)
-* 복제의 일관성을 검사하기 위한 체크섬 도구가 추가됨 (CUBRIDSUS-6214)
+* 새로운 문자셋과 콜레이션이 시스템 카타로그에 추가됨 (_db_charset and db_charset. db_collation, db_class이 추가되었고 db_attribute이 수정되었음) (CUBRIDSUS-10948)
+* 복제 일관성을 검사하기 위한 체크섬 도구, checksumdb가 추가됨 (CUBRIDSUS-6214)
 * CRC32 함수가 추가됨 (CUBRIDSUS-15470)
 * JDBC 컨스트럭터(CUBRIDTimestamptz)와 세터(setTimestamptz)가 추가됨 (CUBRIDSUS-15407)
 * KILL 문장이 추가됨 (CUBRIDSUS-13845)
 * 집계나 분석 함수로 사용이 가능한 PERCENTILE_DISC와 PERCENTILE_CONT 함수가 추가됨 (CUBRIDSUS-11089)(CUBRIDSUS-11088) 
-* restoreslave가 추가됨 (CUBRIDSUS-10843)
-* checkdb 유틸리티에 다수 옵션이 추가됨 (CUBRIDSUS-11292)
-* SHOW CRITICAL SECTION 문장이 추가됨 (CUBRIDSUS-14037)
-* SHOW JOB QUEUE 문장이 추가됨 (CUBRIDSUS-14036)
-* SHOW THREADS 문장이 추가됨 (CUBRIDSUS-14038)
-* SHOW TIMEZONES 문장이 추가됨 (CUBRIDSUS-14186)
-* SHOW TRANSACTION TABLES 문장이 추가됨 (CUBRIDSUS-14039)
+* restoreslave 도구가 추가됨 (CUBRIDSUS-10843)
+* checkdb 도구에 다수 옵션이 추가됨 (CUBRIDSUS-11292)
+* SHOW CRITICAL SECTION 문이 추가됨 (CUBRIDSUS-14037)
+* SHOW JOB QUEUE 문이 추가됨 (CUBRIDSUS-14036)
+* SHOW THREADS 문이 추가됨 (CUBRIDSUS-14038)
+* SHOW TIMEZONES 문이 추가됨 (CUBRIDSUS-14186)
+* SHOW TRANSACTION TABLES 문이 추가됨 (CUBRIDSUS-14039)
 * SLEEP 문이 추가됨 (CUBRIDSUS-14217)
 * SYS_GUID 문이 추가됨 (CUBRIDSUS-6555)
-* vacuumdb 도구가 추가되어 checkdb 도구에 전부 손실된 레코드 중 비어있지 않은 레코드의 검사 기능 제공 CUBRIDSUS-10842)
-* 다중 버전 동시성 제어(MVCC) 프로토콜을 채용하여 스냅샷 격리를 제공 (CUBRIDSUS-14097)
-* SET SYSTEM PARAMETER 문장에서 DEFAULT 키워드가 해당 시스템 변수를 기본값으로 설정한다. (CUBRIDSUS-15529)
+* vacuumdb 도구가 추가되어 checkdb 도구에 전부 손실된 레코드 중 비어있지 않은 레코드의 검사 기능이 제공됨 CUBRIDSUS-10842)
+* 다중 버전 동시성 제어(MVCC) 프로토콜을 채용하여 스냅샷 격리를 제공함 (CUBRIDSUS-14097)
+* SET SYSTEM PARAMETER 문장에서 DEFAULT 키워드가 해당 시스템 변수를 기본값으로 설정함 (CUBRIDSUS-15529)
 * ha_make_slavedb 스크립트가 사용이 편리하게 향상됨 (CUBRIDSUS-10842)
-* 문자열을 위한 데이터 타입(CHAR, VARCHAR, ENUM) 문자셋에 BINARY 추가됨 (CUBRIDSUS-16066)
+* 문자열을 위한 데이터 타입(CHAR, VARCHAR, ENUM)의 문자셋에 BINARY 추가됨 (CUBRIDSUS-16066)
 * table, column, view, index, JSP, trigger, serial, user와 같은 스키마 오브젝트에 COMMENT 지원. 시스템 카타로그가 주석을 보여주기 위해서 수정됨 (CUBRIDSUS-12367)
 * NATURAL JOIN을 지원함 (CUBRIDSUS-12401)
 * 동적 추적과 성능 분석을 위한 systemtap을 텝을 지원함 (CUBRIDSUS-11626)
-* TIMEZONE 데이터 타입과 함수를 제공한다. (CUBRIDSUS-5765)
+* TIMEZONE 데이터 타입과 함수를 제공함 (CUBRIDSUS-5765)
 * CREATE OR REPLACE PROCEDURE/FUNCTION을 제공함 (CUBRIDSUS-6542)
-* DROP TABLE 문장에서 CASCADE CONSTRAINTS 를 지원함 (CUBRIDSUS-9830)
-* CREATE TABLE IF NOT EXISTS 문장을 지원함 (CUBRIDSUS-12366)
+* DROP TABLE 문에서 CASCADE CONSTRAINTS 를 지원함 (CUBRIDSUS-9830)
+* CREATE TABLE IF NOT EXISTS 문을 지원함 (CUBRIDSUS-12366)
 
 .. _changed-behaviors100:
 
@@ -87,19 +88,19 @@ CUBRID 10.0 의 데이터베이스 볼륨은 9.x 나 이전 버전과 호환되�
 * make_locale.sh의 기본 빌드 타겟이 64bit로 변경됨 (CUBRIDSUS-17755)
 * make_tz.sh의 기본 빌드 타겟이 64bit로 변경됨 (CUBRIDSUS-15812)
 * ALTER INDEX와 DROP INDEX 문이 해당 인덱스가 속한 테이블 이름을 요구하는 형태로 변경됨 (CUBRIDSUS-11308)
-* 분할하는 키가 주키(parimary)의 일부분인 동시에 모든 고유한 인덱스 정의의 일부분이어야 함 (CUBRIDSUS-13412)
+* 분할하는 키가 주키(parimary)의 일부분인 동시에 모든 고유한 인덱스 정의의 일부분이어야 하는 형태로 변경됨 (CUBRIDSUS-13412)
 * preparedStatement.setBoolean 메소드의 동작이 변경됨 (CUBRIDSUS-14857)
 * 클라이언트들이 현재 디렉터리의 cubrid.conf 파일을 읽지 않는 형태로 변경됨 (CUBRIDSUS-10929)
-* 보통의 컬럼이 공유되는 형태로 변경되거나 반대의 경우 모두 허용되지 않음 (CUBRIDSUS-11135)
+* 보통의 컬럼이 공유되는 형태로 변경되거나 반대의 경우 모두 허용되지 않도록 변경됨 (CUBRIDSUS-11135)
 * REPLACE와 GROUP_CONCAT 함수가 빈 변수를 널이 아닌 빈 문자열로 간주하도록 한다. 이 기능은 oracle_style_empty_string 시스템 변수가 on 상태라도 유효함 (CUBRIDSUS-9864)
-* java_stored_procedure = on 이고 $CUBRID/java/jspserver.jar이 없는 경우에 서버가 시작하지 않도록 수정됨 (CUBRIDSUS-9846)
+* java_stored_procedure = on 이고 $CUBRID/java/jspserver.jar이 없는 경우에 서버가 시작하지 않도록 변경됨 (CUBRIDSUS-9846)
 * SHOW INDEX의 결과 셋이 (key_name, seq_in_index)를 기준으로 정렬되도록 변경됨 (CUBRIDSUS-12021)
 * cci_schema_info 함수의 CCI_SCH_ATTRIBUTE를 위한 DEFAULT 컬럼이 문자열 타입으로 변경됨 (CUBRIDSUS-13898)
 * 이후부터 CURDATE(), CURRENT_DATE, CURRENT_DATE(), CURRENT_DATETIME, CURRENT_DATETIME(), NOW(), CURTIME(), CURRENT_TIME, CURRENT_TIME(), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP(), LOCALTIME, LOCALTIME(), LOCALTIMESTAMP, LOCALTIMESTAMP() 이 세션의 날짜와 시간을 참조함 (CUBRIDSUS-17377)(CUBRIDSUS-17343)(CUBRIDSUS-17337)(CUBRIDSUS-16222)
 * 10.0의 데이터베이스 볼륨은 9.x나 이전 버전과 호환되지 않음 (CUBRIDSUS-11317)
-* 값이 널이고 타입이 CCI_A_TYPE_STR, CCI_A_TYPE_SET, CCI_A_TYPE_BLOB, CCI_A_TYPE_CLOB 일때 cci_get_data 함수의 리턴값이 널로 설정됨 (CUBRIDSUS-8104)
+* 값이 널이고 타입이 CCI_A_TYPE_STR, CCI_A_TYPE_SET, CCI_A_TYPE_BLOB, CCI_A_TYPE_CLOB 일때 cci_get_data 함수의 리턴값이 널로 설정되도록 수정됨 (CUBRIDSUS-8104)
 * 인수가 컬럼이 아닐때 CCI_GET_RESULT_INFO_IS_NON_NULL이 0을 리턴하도록 수정됨 (CUBRIDSUS-8106)
-* Connection.connect와 cci_connect_with_url가 사용자 이름과 패스워드가 생략된 것과 빈문자열(\u2018\u2019)을 구분함 (CUBRIDSUS-11383)
+* Connection.connect와 cci_connect_with_url가 사용자 이름과 패스워드가 생략된 것과 빈문자열(\u2018\u2019)을 구분하도록 수정됨 (CUBRIDSUS-11383)
 * ha_copy_log_timeout 시스템 변수가 SYNC 로그 복사 모드에서만 동작하도록 수정됨 (CUBRIDSUS-16990)
 * 자동 증가를 위한 시리얼의 캐싱이 허가되지 않도록 수정됨 (CUBRIDSUS-16264).
 * 능동적인 사용자가 있는 경우에 해당 사용자 계정 삭제가 허용되지 않도록 수정됨 (CUBRIDSUS-16937)
@@ -112,7 +113,7 @@ CUBRID 10.0 의 데이터베이스 볼륨은 9.x 나 이전 버전과 호환되�
 * "REPEATABLE READ SCHEMA, READ UNCOMMITTED INSTANCES", "READ COMMITTED SCHEMA, READ UNCOMMITTED INSTANCES", "READ COMMITTED SCHEMA, READ UNCOMMITTED INSTANCES" 와 같은 3 개의 격리 단계가 제거됨 (CUBRIDSUS-14377)
 * 파티션 표현식의 길이가 1K로 제한됨 (CUBRIDSUS-17772)
 * max_clients 변수의 최대치가 2,000으로 제한됨 (CUBRIDSUS-14894)
-* 이후부터 UPDATE STATISTICS이 표본 기반으로 동작함. WITH FULLSCAN 절은 전체 레코드를 가지고 통계를 계산함 (CUBRIDSUS-11962)
+* 이후부터 UPDATE STATISTICS이 표본 기반으로 동작함. WITH FULLSCAN 절은 전체 레코드를 이용하여 통계를 계산함 (CUBRIDSUS-11962)
 * UPDATE 문에서 속성 참조를 사용하는 것을 지원함. 이 동작은 update_use_attribute_references 변수에 의해서 변경될 수 있음 (UBRIDSUS-8202)
 
 개선 및 버그 수정
@@ -121,20 +122,20 @@ CUBRID 10.0 의 데이터베이스 볼륨은 9.x 나 이전 버전과 호환되�
 * 페일 오버 시간이 줄어듬 (CUBRIDSUS-16045)
 * 복제 성능이 향상됨 (CUBRIDSUS-6162)
 * 고장 수리를 위해서 csql log에 연결 상태에 관한 부가적인 경고들이 추가됨 (CUBRIDSUS-12212)
-* 부질의의  WHERE 절이 false이면 semantic 오류를 반환하는 버그 수정 (CUBRIDSUS-12326)
-* 데이터베이스의 이진 값이 JDBC에서 16 진수로 표시되는 현상 수정 (CUBRIDSUS-18057) 
-* CREATE TABLE 문 뒤의 cci_schema_info 함수로 인해서 스키마 정보를 탐색하는 데 실패하는 현상 수정됨 (CUBRIDSUS-13617) 
+* 부질의의  WHERE 절이 false이면 semantic 오류를 반환하는 버그 수정됨 (CUBRIDSUS-12326)
+* 데이터베이스의 이진 값이 JDBC에서 16 진수로 표시되는 현상 수정됨 (CUBRIDSUS-18057) 
+* CREATE TABLE 문 뒤의 cci_schema_info 함수로 인해서 스키마 정보를 탐색하는 데 실패할 수 있었던 현상 수정됨 (CUBRIDSUS-13617) 
 * 데드락의 희생자를 선택하는 정책이 작은 양의 작업이 실행된 트랜잭션을 선택하도록 변경됨 (CUBRIDSUS-14790) 
 * 윈도우의 LOB 경로의 구분자가 \u2018\\u2019 로 수정됨 (CUBRIDSUS-11391) 
-* 포트 값의 범위가 unsigned short 제한되도록 수정됨 (CUBRIDSUS-8539)
+* 포트 값의 범위가 unsigned short로 제한되도록 수정됨 (CUBRIDSUS-8539)
 * 이후부터 큐브리브 핫빗 도구가 원격지 컴퓨터에 copylogdb, applylogdb, status 명령의 실행을 허용함 (CUBRIDSUS-14318)
 * 카타로그 db_attribute의 정보 조회 시에 default_value 필드의 값(DEFAULT로 지정된 값) \u2018\u2019 이 NULL로 보여지는 현상 해결 (CUBRIDSUS-12406) 
 * statistics 과 statdump가 시간을 추적할 수 있도록 확장됨 (CUBRIDSUS-17445)
 * cgywin의 gcc 환경에서 dbi.h 의 빌드 이슈가 해결됨 (CUBRIDSUS-12329)
 * 윈도우에서 cci_get_cas_info 함수를 참조하는 빌드 이슈가 해결됨 (CUBRIDSUS-14000)
 * cubrid_broker.conf의 ACCESS_LOG_MAX_SIZE 변수가 윈도우에서 동작하도록 수정됨 (CUBRIDSUS-14232)
-* INSERT ODKU 문 실행시 클라이언트 중단 현상 해결 (CUBRIDSUS-16648)
-* 질의 파싱중에 인터럽트와 같은 예측하지 못한 오류에 의한 클라이언트 중단 현상 해결 (CUBRIDSUS-14509)
+* INSERT ODKU 문 실행시 클라이언트 중단 현상 해결됨 (CUBRIDSUS-16648)
+* 질의 파싱중에 인터럽트와 같은 예측하지 못한 오류에 의한 클라이언트 중단 현상 해결됨 (CUBRIDSUS-14509)
 * CREATE/ALTER INDEX 문에 유효하지 않은 인덱스가 주어졌을 때 클라이언트가 중단되는 현상 해결 (CUBRIDSUS-13899)
 * 삭제된 기본 테이블을 참조하는 뷰에 대해서 SHOW CREATE VIEW 문을 실행할 때 클라이언트 중단 현상 해결 (CUBRIDSUS-11618)
 * 메소드나 JSP가 포함된 질의 실행중에 클라이언트가 중단되는 현상 해결 (CUBRIDSUS-15037)
@@ -207,9 +208,9 @@ CUBRID 10.0 의 데이터베이스 볼륨은 9.x 나 이전 버전과 호환되�
 * 몇몇의 교착상태 가능성 관련 수정 (CUBRIDSUS-10332)(CUBRIDSUS-5084)(CUBRIDSUS-5011)(CUBRIDSUS-5008)(CUBRIDSUS-5004)(CUBRIDSUS-9469)
 * 동시에 실행되는 UPDATE STATISTICS 명령들에 의한 경합 조건 및 장애 해결 (CUBRIDSUS-16773) 
 * 페이지 할돵과 반환에 관한 볼륨 헤더와 시스템 헤더의 복구에 관련된 이슈 해결 (CUBRIDSUS-17835)
-* temp_volume_path 사스템 변수가 동작하도록 수정됨. (CUBRIDSUS-9484)
-* DBA가 테이블을 분할하였더라도 원래 테이블의 소유자가 분할을 소유하도록 수정함 (CUBRIDSUS-11407)
-* 64bit 빌드가 32bit Windows에서 설치 중단되도록 수정함 (CUBRIDSUS-13822)
+* temp_volume_path 사스템 변수가 동작하도록 수정됨 (CUBRIDSUS-9484)
+* DBA가 테이블을 분할하였더라도 원래 테이블의 소유자가 분할을 소유하도록 수정됨 (CUBRIDSUS-11407)
+* 64bit 빌드가 32bit Windows에서 설치 중단되도록 수정됨 (CUBRIDSUS-13822)
 * 연결 특성에 대한 부가적인 검사를 추가함 (CUBRIDSUS-7581)
 * GROUP BY 절에 인용된 예약어가 허용되도록 수정됨 (CUBRIDSUS-13468)
 * BIGINT 타입에 문자열을 과학적 표시로 변환을 허용하도록 수정됨 (CUBRIDSUS-14254)
@@ -257,9 +258,8 @@ CUBRID 10.0 의 데이터베이스 볼륨은 9.x 나 이전 버전과 호환되�
 신규 주의 사항
 --------------
 
-The database volume of CUBRID 10.0 is not compatible with that of CUBRID 9.x and earlier versions. 
 CUBRID 10.0 볼륨은 CUBRID 9.x나 하위 버전의 볼륨과 호환성이 없다.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 기존 주의 사항
 --------------
