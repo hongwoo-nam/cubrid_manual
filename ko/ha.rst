@@ -2174,7 +2174,7 @@ CUBRID HA에서 **LOB** 칼럼 메타 데이터(Locator)는 복제되고, **LOB*
 restoreslave
 ------------
 
-**cubrid restoreslave** is the same as **cubrid restoredb** which restores a database from a backup but it includes several convenient features when rebuilding a slave or a replica. With **cubrid restoreslave**, user does not need to manually collect replication-related information from a backup output to create a replication catalog which is stored in **db_ha_apply_info**. It automatically reads any necessary information from a backup image and an active log and then it adds the relevant replication catalog into **db_ha_apply_info**. All you need to do is to provide two mandatory options: the state of the node where the backup image was created, and the hostname of the current master node. Please also refer :ref:`restoredb` for more details. ::
+**cubrid restoreslave** 는 **cubrid restoredb** 처럼 백업으로부터 데이터베이스를 복구하는점은 같지만 슬레이브와 리플리카를 재구성하는 몇 가지 편리한 기능들을 포함한다. 사용자는 **db_ha_apply_info**  에 저장할 복제 카닫로그 정보를 만들기 위해 직접 복제 관련 정보를 백업으로부터 수집할 필요가 없으며, 백업 이미지와 액티브 로그로부터 필요한 정보를 자동으로 읽어서 **db_ha_apply_info** 로 관련된 복제 카달로그 정보들을 추가한다. 백업 이미지가 생성된 노드의 상태와 현재 마스터 노드의 호스트네임은 필수적으로 지정해야 한다.  자세한 정보는 :ref:`restoredb` 를 참고한다.
 
     cubrid restoreslave [OPTION] database-name
 
@@ -2182,34 +2182,32 @@ restoreslave
 
 .. option:: -s, --source-state=STATE
 
-    You need to specify the state of the node where the backup image was created. STATE may be 'master', 'slave', or 'replica'
-    
+    마스터, 슬레이브, 리플리카 중 백업 이미지가 생성된 노드의 상태를 입력한다.
+
 .. option:: -m, --master-host-name=NAME
 
-    You need to specify the hostname of the current master node.
+    현재 마스터 노드의 호스트명을 입력한다.
     
 .. option:: --list
 
-    This option displays information on backup files of a database; restoration procedure is not performed. For further information, see --list of :ref:`restoredb`
+    이 옵션은 데이터베이스의 백업 파일 정보를 표시한다; 복구 절차는 수행하지 않는다. 더 많은 정보는 --list of :ref:`restoredb` 를 참고한다.
     
 .. option:: -B, --backup-file-path=PATH
 
-    You can specify the directory where backup files are to be located by using the -B option. For further information, see -B of :ref:`restoredb`
+    이 옵션을 이용해서 백업 파일들이 위치할 디렉토리를 지정할 수 있다. 더 많은 정보는 :ref:`restoredb` 의 -B 옵션을 참고한다.
     
 .. option:: -o, --output-file=FILE
 
-    You can specify a filename to store output messages. For further information, see -o of :ref:`restoredb`
-    
+    출력된 메세지들을 저장할 파일명을 지정할 수 있다. 더 많은 정보는 :ref:`restoredb` 의 -o 옵션을 참고한다.
+ 
 .. option:: -u, --use-database-location-path
 
-    This option restores a database to the path specified in the database location file(databases.txt). For further information, see -u of :ref:`restoredb`
+    이 옵션은 databases.txt에 지정된 데이터베이스 경로로 복구를 수행할 경우 지정한다. 더 많은 정보는 :ref:`restoredb` 의 -u 옵션을 참고한다.
 
-Example Scenarios of Building Replication
------------------------------------------
+복제 구축 시나리오 예제
+-----------------------
 
-In this section, we will see various scenarios regarding adding a new node or removing a node during HA service.
-
-
+이 글에서는 HA 구성을 운영하는 도중 새로운 노드를 추가하거나 삭제하는 다양한 시나리오를 알아본다.
 
 .. note::
 
