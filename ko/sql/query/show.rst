@@ -1562,4 +1562,266 @@ Total_waiting_msecs                 NUMERIC(10,3)   전체 대기 시간(밀리�
         23  'QPROC_FILTER_PRED_CACHE'  'none'                                  0                    0                NULL              NULL                     1                     0                           NULL  0.000                 0.000               
         24  'PARTITION_CACHE'     'none'                                  0                    0                NULL              NULL                     1                     0                           NULL  0.000                 0.000               
         25  'EVENT_LOG_FILE'      'none'                                  0                    0                NULL              NULL                     0                     0                           NULL  0.000                 0.000               
-        26  'ACCESS_STATUS'       'none'                                  0                    0                NULL              NULL                     1                     0                           NULL  0.000                 0.000               
+        26  'ACCESS_STATUS'       'none'                                  0                    0                NULL              NULL                     1                     0                           NULL  0.000                 0.000              
+
+SHOW TRANSACTION TABLES
+-----------------------
+
+It shows internal information of transaction descriptors which is internal data structure
+
+.. code-block:: sql
+
+    SHOW { TRAN | TRANSACTION } TABLES [ WHERE EXPR ];
+
+This query has the following columns:
+
+======================== =============== ================================================
+Column name              Type            Description
+======================== =============== ================================================
+Tran_index               INT             Index on the transaction table or NULL for unass
+Tran_id                  INT             Transaction Identifier
+Is_loose_end             INT             0 for Ordinary transactions, 1 for loose-end tra
+State                    VARCHAR(64)     State of the transaction. Either one of the foll
+                                         'TRAN_RECOVERY', 'TRAN_ACTIVE', 'TRAN_UNACTIVE_C
+                                         'TRAN_UNACTIVE_ABORTED', 'TRAN_UNACTIVE_UNILATER
+                                         'TRAN_UNACTIVE_2PC_ABORT_DECISION', 'TRAN_UNACTI
+                                         'TRAN_UNACTIVE_ABORTED_INFORMING_PARTICIPANTS','
+Isolation                VARCHAR(64)     Isolation level of the transaction. Either one o
+Wait_msecs               INT             Wait until this number of milliseconds for locks
+Head_lsa                 VARCHAR(64)     First log address of transaction.
+Tail_lsa                 VARCHAR(64)     Last log record address of transaction.
+Undo_next_lsa            VARCHAR(64)     Next log record address of transaction for UNDO
+Postpone_next_lsa        VARCHAR(64)     Next address of a postpone record to be executed
+Savepoint_lsa            VARCHAR(64)     Address of last save-point.
+Topop_lsa                VARCHAR(64)     Address of last top operation.
+Tail_top_result_lsa      VARCHAR(64)     Address of last partial abort/commit.
+Client_id                INT             Unique identifier of client application bind to
+Client_type              VARCHAR(40)     Type of the client. Either one of the followings
+                                         'ADMIN_UTILITY', 'ADMIN_CSQL', 'LOG_COPIER', 'LO
+                                         'ADMIN_CSQL_WOS', 'UNKNOWN'
+Client_info              VARCHAR(256)    General information of client application.
+Client_db_user           VARCHAR(40)     Current login database account from client appli
+Client_program           VARCHAR(256)    Program name of client application.
+Client_login_user        VARCHAR(16)     Current login user of OS which running the clien
+Client_host              VARCHAR(64)     Host name of client application.
+Client_pid               INT             Process id of client application.
+Topop_depth              INT             Depth of nested top operation.
+Num_unique_btrees        INT             Number of unique btrees contained in unique_stat
+Max_unique_btrees        INT             Size of unique_stat_info_array.
+Interrupt                INT             The flag of whether or not interrupt current tra
+Num_transient_classnames INT             Number of transient classnames by this transacti
+Repl_max_records         INT             Capacity of replication record array.
+Repl_records             VARCHAR(20)     Replication record buffer array, display address
+Repl_current_index       INT             Current position of replication record in the ar
+Repl_append_index        INT             Current position of appended record in the array
+Repl_flush_marked_index  INT             Index of flush marked replication record at firs
+Repl_insert_lsa          VARCHAR(64)     Insert Replication target LSA.
+Repl_update_lsa          VARCHAR(64)     Update Replication target LSA.
+First_save_entry         VARCHAR(20)     First save entry for the transaction, display ad
+Tran_unique_stats        VARCHAR(20)     Local statistical info for multiple row. display
+Modified_class_list      VARCHAR(20)     List of dirty classes, display address pointer a
+Num_new_files            INT             Number of new files created.
+Num_new_temp_files       INT             Number of new temp files created.
+Waiting_for_res          VARCHAR(20)     Waiting resource. Just display address pointer a
+Has_deadlock_priority    INT             Whether or not have deadlock priority. 0 for No,
+Suppress_replication     INT             Suppress writing replication logs when flag is s
+Query_timeout            DATETIME        A query should be executed before query_timeout
+Query_start_time         DATETIME        Current query start time or NULL for query compl
+Tran_start_time          DATETIME        Current transaction start time or NULL for trans
+Xasl_id                  VARCHAR(64)     vpid:(volid|pageid),vfid:(volid|pageid) or NULL
+Disable_modifications    INT             Disable modification if greater than zero.
+Abort_reason             VARCHAR(40)     Reason of transaction aborted. Either one of the
+======================== =============== ================================================
+
+The following shows the examples of the statement.
+
+.. code-block:: sql
+
+    SHOW TRAN TABLES WHERE CLIENT_TYPE = 'CSQL';
+
+::
+
+        === <Result of SELECT Command in Line 1> ===
+
+        <00001> Tran_index              : 1
+                Tran_id                 : 58
+                Is_loose_end            : 0
+                State                   : 'ACTIVE'
+                Isolation               : 'COMMITTED READ'
+                Wait_msecs              : -1
+                Head_lsa                : '(-1|-1)'
+                Tail_lsa                : '(-1|-1)'
+                Undo_next_lsa           : '(-1|-1)'
+                Postpone_next_lsa       : '(-1|-1)'
+                Savepoint_lsa           : '(-1|-1)'
+                Topop_lsa               : '(-1|-1)'
+                Tail_top_result_lsa     : '(-1|-1)'
+                Client_id               : 108
+                Client_type             : 'CSQL'
+                Client_info             : ''
+                Client_db_user          : 'PUBLIC'
+                Client_program          : 'csql'
+                Client_login_user       : 'cubrid'
+                Client_host             : 'cubrid001'
+                Client_pid              : 13190
+                Topop_depth             : 0
+                Num_unique_btrees       : 0
+                Max_unique_btrees       : 0
+                Interrupt               : 0
+                Num_transient_classnames: 0
+                Repl_max_records        : 0
+                Repl_records            : NULL
+                Repl_current_index      : 0
+                Repl_append_index       : -1
+                Repl_flush_marked_index : -1
+                Repl_insert_lsa         : '(-1|-1)'
+                Repl_update_lsa         : '(-1|-1)'
+                First_save_entry        : NULL
+                Tran_unique_stats       : NULL
+                Modified_class_list     : NULL
+                Num_new_files           : 1
+                Num_new_temp_files      : 0
+                Waiting_for_res         : NULL
+                Has_deadlock_priority   : 0
+                Suppress_replication    : 0
+                Query_timeout           : NULL
+                Query_start_time        : 03:10:11.425 PM 02/04/2016
+                Tran_start_time         : 03:10:11.425 PM 02/04/2016
+                Xasl_id                 : 'vpid: (32766|50), vfid: (32766|43)'
+                Disable_modifications   : 0
+                Abort_reason            : 'NORMAL'
+
+SHOW THREADS
+------------
+
+It shows internal information of each thread. The results are sorted by "Index" column wi
+The statement under SA MODE shows an empty result.
+
+.. code-block:: sql
+
+    SHOW THREADS [ WHERE EXPR ];
+
+This query has the following columns:
+
+=========================== =============== =============================================
+Column name                 Type            Description
+=========================== =============== =============================================
+Index                       INT             Thread entry index.
+Jobq_index                  INT             Job queue index only for worker threads. NULL
+Thread_id                   BIGINT          Thread id.
+Tran_index                  INT             Transaction index to which this thread belong
+Type                        VARCHAR(8)      Thread type. Either one of the followings: 'M
+Status                      VARCHAR(8)      Thread status. Either one of the followings:
+Resume_status               VARCHAR(32)     Resume status. Either one of the followings:
+                                            'JOB_QUEUE_SUSPENDED', 'JOB_QUEUE_RESUMED', '
+                                            'CSECT_PROMOTER_SUSPENDED', 'CSECT_PROMOTER_R
+                                            'QMGR_MEMBUF_PAGE_SUSPENDED', 'QMGR_MEMBUF_PA
+                                            'LOGWR_SUSPENDED', 'LOGWR_RESUMED'
+Net_request                 VARCHAR(64)     The net request name in net_requests array, s
+Conn_client_id              INT             Client id whom this thread is responding, if
+Conn_request_id             INT             Request id which this thread is processing, i
+Conn_index                  INT             Connection index, if not connection index, sh
+Last_error_code             INT             Last error code
+Last_error_msg              VARCHAR(256)    Last error message, if message length is more
+Private_heap_id             VARCHAR(20)     The address of id of thread private memory al
+Query_entry                 VARCHAR(20)     The address of the QMGR_QUERY_ENTRY*, such as
+Interrupted                 INT             0 or 1, is this request/transaction interrupt
+Shutdown                    INT             0 or 1, is server going down?
+Check_interrupt             INT             0 or 1
+Check_page_validation       INT             0 or 1
+Wait_for_latch_promote      INT             0 or 1, whether this thread is waiting for la
+Lockwait_blocked_mode       VARCHAR(24)     Lockwait blocked mode. Either one of the foll
+Lockwait_start_time         DATETIME        Start blocked time, if not in blocked state,
+Lockwait_msecs              INT             Time in milliseconds, if not in blocked state
+Lockwait_state              VARCHAR(24)     The lock wait state such as: 'SUSPENDED', 'RE
+                                            'RESUMED_INTERRUPT'. If not in blocked state,
+Next_wait_thread_index      INT             The next wait thread index, if not exist, sho
+Next_tran_wait_thread_index INT             The next wait thread index in lock manager, i
+Next_worker_thread_index    INT             The next worker thread index in css_Job_queue
+=========================== =============== =============================================
+
+The following shows the examples of the statement.
+
+.. code-block:: sql
+
+    SHOW THREADS WHERE RESUME_STATUS != 'RESUME_NONE' AND STATUS != 'FREE';
+
+::
+
+    === <Result of SELECT Command in Line 1> ===
+    <00001> Index                      : 183
+            Jobq_index                 : 3
+            Thread_id                  : 140077788813056
+            Tran_index                 : 3
+            Type                       : 'WORKER'
+            Status                     : 'RUN'
+            Resume_status              : 'JOB_QUEUE_RESUMED'
+            Net_request                : 'QM_QUERY_EXECUTE'
+            Conn_client_id             : 108
+            Conn_request_id            : 196635
+            Conn_index                 : 3
+            Last_error_code            : 0
+            Last_error_msg             : NULL
+            Private_heap_id            : '0x02b3de80'
+            Query_entry                : '0x7f6638004cb0'
+            Interrupted                : 0
+            Shutdown                   : 0
+            Check_interrupt            : 1
+            Check_page_validation      : 1
+            Wait_for_latch_promote     : 0
+            Lockwait_blocked_mode      : NULL
+            Lockwait_start_time        : NULL
+            Lockwait_msecs             : NULL
+            Lockwait_state             : NULL
+            Next_wait_thread_index     : NULL
+            Next_tran_wait_thread_index: NULL
+            Next_worker_thread_index   : NULL
+    <00002> Index                      : 192
+            Jobq_index                 : 2
+            Thread_id                  : 140077779339008
+            Tran_index                 : 2
+            Type                       : 'WORKER'
+            Status                     : 'WAIT'
+            Resume_status              : 'LOCK_SUSPENDED'
+            Net_request                : 'LC_FIND_LOCKHINT_CLASSOIDS'
+            Conn_client_id             : 107
+            Conn_request_id            : 131097
+            Conn_index                 : 2
+            Last_error_code            : 0
+            Last_error_msg             : NULL
+            Private_heap_id            : '0x02bcdf10'
+            Query_entry                : NULL
+            Interrupted                : 0
+            Shutdown                   : 0
+            Check_interrupt            : 1
+            Check_page_validation      : 1
+            Wait_for_latch_promote     : 0
+            Lockwait_blocked_mode      : 'SCH_S_LOCK'
+            Lockwait_start_time        : 10:47:45.000 AM 02/03/2016
+            Lockwait_msecs             : -1
+            Lockwait_state             : 'SUSPENDED'
+            Next_wait_thread_index     : NULL
+            Next_tran_wait_thread_index: NULL
+            Next_worker_thread_index   : NULL
+
+SHOW JOB QUEUES
+---------------
+
+It shows the status of job queue. The statement under SA MODE shows an empty result.
+
+.. code-block:: sql
+
+    SHOW JOB QUEUES;
+
+This query has the following columns:
+
+=========================== =============== =============================================
+Column name                 Type            Description
+=========================== =============== =============================================
+Jobq_index                  INT             The index of job queue
+Num_total_workers           INT             Total number of work threads of the queue
+Num_busy_workers            INT             The number of busy worker threads of the queu
+Num_connection_workers      INT             The number of connection worker threads of th
+=========================== =============== =============================================
+
+ 
