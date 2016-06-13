@@ -1567,13 +1567,13 @@ Total_waiting_msecs                 NUMERIC(10,3)   전체 대기 시간(밀리�
 SHOW TRANSACTION TABLES
 -----------------------
 
-It shows internal information of transaction descriptors which is internal data structure to manage each transaction. It only shows valid transactions and the result may not be a consistent snapshot of a transaction descriptor.
+이 명령은 트랜잭션 기술자들의 내부 정보를 보여주는데 이것은 각 트랜잭션을 관리하기 위한 내부 데이터 구조이다. 이것은 유효한 트랜잭션들 만을 보여주고 따라서 결과는 어떤 트랜잭션 기술자의 일관된 스냅샷이 아닐 수도 있다.
 
 .. code-block:: sql
 
     SHOW { TRAN | TRANSACTION } TABLES [ WHERE EXPR ];
 
-This query has the following columns:
+이 질의는 다음의 컬럼들을 출력한다:
 
 ======================== =============== ==============================================================================================================================================================
 Column name              Type            Description
@@ -1633,7 +1633,7 @@ Disable_modifications    INT             Disable modification if greater than ze
 Abort_reason             VARCHAR(40)     Reason of transaction aborted. Either one of the followings: 'NORMAL', 'ABORT_DUE_TO_DEADLOCK', 'ABORT_DUE_ROLLBACK_ON_ESCALATION'
 ======================== =============== ==============================================================================================================================================================
 
-The following shows the examples of the statement.
+다음은 이 구문을 수행한 예이다.
 
 .. code-block:: sql
 
@@ -1694,14 +1694,14 @@ The following shows the examples of the statement.
 SHOW THREADS
 ------------
 
-It shows internal information of each thread. The results are sorted by "Index" column with ascending order and may not be a consistent snapshot of thread entries.
-The statement under SA MODE shows an empty result. 
+각 스래드의 내부 정보를 보여준다. 결과는 "Index" 컬럼에 대해서 오름차순으로 정렬되며 스래드 개체들의 일관된 스냅샷이 아닐 수도 있다.
+SA MODE일 때에 이 문은 아무 결과도 보여주지 않는다.
 
 .. code-block:: sql
 
     SHOW THREADS [ WHERE EXPR ];
 
-This query has the following columns:
+이 질의는 다음의 컬럼들을 출력한다:
 
 =========================== =============== ==============================================================================================================================================================
 Column name                 Type            Description
@@ -1740,7 +1740,7 @@ Next_tran_wait_thread_index INT             The next wait thread index in lock m
 Next_worker_thread_index    INT             The next worker thread index in css_Job_queue.worker_thrd_list, if not exist, shows NULL
 =========================== =============== ==============================================================================================================================================================
 
-The following shows the examples of the statement.
+다음은 이 구문을 수행한 예이다.
 
 .. code-block:: sql
 
@@ -1807,13 +1807,13 @@ The following shows the examples of the statement.
 SHOW JOB QUEUES
 ---------------
 
-It shows the status of job queue. The statement under SA MODE shows an empty result. 
+작업 큐의 상태를 보여준다. SA MODE일 때에 이 문은 아무 결과도 보여주지 않는다.
 
 .. code-block:: sql
 
     SHOW JOB QUEUES;
 
-This query has the following columns:
+이 질의는 다음의 컬럼들을 출력한다:
 
 =========================== =============== =======================================================
 Column name                 Type            Description
