@@ -329,10 +329,10 @@ CUBRID 10.0 에서, 스냅샷은 모든 타당하지 못한 MVCCID에 대한 필
 
 Table 설명:
 
-. Valid Insert MVCCID, valid delete MVCCID : 스냅샷 이전에 버전 삽입/삭제 (그리고 완료됨), 그러므로 참조 가능
-. Valid Insert MVCCID, invalid delete MVCCID: 버전 삽입 및 완료, 그러나 삭제 안됨 또는 최근 삭제됨, 그러므로 가시적
-. Invalid Insert MVCCID, invalid delete MVCCID...: 스냅샷 이전에 삽입자 완료 안한 상태, 레코드 삭제 안됨 또는 완료 안됨, 그러므로 가시적이지 않음
-. invalid Insert MVCCID, valid delete MVCCID: 삽입자는 완료 안함, 삭제자는 완료함 - 불가능 경우. 만일 삭제자가 삽입자와 같지 않다면, 버전 보지 못함. 만일 같다면, 삽입/삭제 MVCCID 는 타당 또는 타당하지 않음
+* **Valid Insert MVCCID, valid delete MVCCID:** 스냅샷 이전에 버전 삽입/삭제 (그리고 완료됨), 그러므로 참조 가능.
+* **Valid Insert MVCCID, invalid delete MVCCID:** 버전 삽입 및 완료, 그러나 삭제 안됨 또는 최근 삭제됨, 그러므로 가시적.
+* **Invalid Insert MVCCID, invalid delete MVCCID:** 스냅샷 이전에 삽입자 완료 안한 상태, 레코드 삭제 안됨 또는 완료 안됨, 그러므로 가시적이지 않음.
+* **invalid Insert MVCCID, valid delete MVCCID:** 삽입자는 완료 안함, 삭제자는 완료함 - 불가능 경우. 만일 삭제자가 삽입자와 같지 않다면, 버전 보지 못함. 만일 같다면, 삽입/삭제 MVCCID 는 타당 또는 타당하지 않음.
 
 이제 스냅샷이 어떻게 동작하는 지 확인해 보자 (**REPEATABLE READ** 격리 수준을 사용하여 전체 트랜잭션 동안의 동일 스냅샷 유지)
 

@@ -6,8 +6,6 @@ SHOW
 
 .. contents::
 
-일반 정보
-=========
 
 DESC, DESCRIBE
 --------------
@@ -640,8 +638,6 @@ SHOW EXEC STATISTICS
     'adaptive_flush_log_pages'              0
     'adaptive_flush_max_pages'              0
 
-시스템 정보
-===========
 
 SHOW VOLUME HEADER
 ------------------
