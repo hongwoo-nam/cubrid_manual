@@ -640,9 +640,9 @@ I/O 읽기를 많이 발생시킨 질의를 기록한다. cubrid.conf의 **sql_t
     02/02/16 20:56:18.650 - LOCK_TIMEOUT
     waiter:
       client: public@testhost|csql(21529)
-      lock:   X_LOCK (oid=-0|650|3, table=t)
-      sql: update update [t] [t] set [t].[a]= ?:0  where [t].[a]= ?:1
-      bind: 2 
+      lock:    X_LOCK (oid=0|650|3, table=t)
+      sql: update [t] [t] set [t].[a]= ?:0  where [t].[a]= ?:1
+      bind: 2
       bind: 1
  
     blocker:
@@ -671,25 +671,22 @@ I/O 읽기를 많이 발생시킨 질의를 기록한다. cubrid.conf의 **sql_t
 교착 상태(deadlock)가 발생했을 때, cycle에 속해있는 트랜잭션의 잠금(lock) 정보들을 기록한다. 다음은 출력 예이다.
  
 ::
- 
-    06/13/13 20:56:17.638 - DEADLOCK
+    02/02/16 20:56:17.638 - DEADLOCK
     client: public@testhost|csql(21541)
     hold:
-      lock:   NX_LOCK (oid=-532|540|16385, table=y, index=pk_y_a)
-      sql: update [y] [y] set [a]=100 where ([y].[a]= ?:0 ) using index [y].[pk_y_a](+)
+      lock:    X_LOCK (oid=0|650|5, table=t)
+      sql: update [t] [t] set [t].[a]= ?:0  where [t].[a]= ?:1 
+      bind: 3
       bind: 1
- 
-      lock:   NX_LOCK (oid=-532|540|16386, table=y, index=pk_y_a)
-      sql: update [y] [y] set [a]=100 where ([y].[a]= ?:0 ) using index [y].[pk_y_a](+)
-      bind: 1
- 
-      lock:    X_LOCK (oid=0|540|1, table=y)
-      sql: update [y] [y] set [a]=100 where ([y].[a]= ?:0 ) using index [y].[pk_y_a](+)
+
+      lock:    X_LOCK (oid=0|650|3, table=t)
+      sql: update [t] [t] set [t].[a]= ?:0  where [t].[a]= ?:1 
+      bind: 3
       bind: 1
  
     wait:
       lock:    X_LOCK (oid=0|650|4, table=t)
-      sql: update [t] [t] set [t].[a]= ?:0  where [t].[a]= ?:1
+      sql: update [t] [t] set [t].[a]= ?:0  where [t].[a]= ?:1 
       bind: 5
       bind: 2
  
@@ -887,11 +884,11 @@ CCI 드라이버를 사용하여 C로 프로그램을 작성할 때는 에러 �
 
     cubrid broker status [options] [expr]
 
-*   *expr*: 브로커 이름의 일부 또는 "SERVICE=ON|OFF"
+*   *expr* : 브로커 이름의 일부 또는 "SERVICE=ON|OFF"
     
-*expr*\이 명시되면 이름이 *expr*을 포함하는 브로커에 대한 상태 모니터링을 수행하고, 생략되면 CUBRID 브로커 환경 설정 파일( **cubrid_broker.conf** )에 등록된 전체 브로커에 대해 상태 모니터링을 수행한다. 
+*expr* 이 명시되면 이름이 *expr* 을 포함하는 브로커에 대한 상태 모니터링을 수행하고, 생략되면 CUBRID 브로커 환경 설정 파일( **cubrid_broker.conf** )에 등록된 전체 브로커에 대해 상태 모니터링을 수행한다. 
 
-*expr*\에 "SERVICE=ON"이 명시되면 구동 중인 브로커의 상태만 출력하며, "SERVICE=OFF"가 명시되면 멈춰있는 브로커의 이름만 출력한다.
+*expr* 에 "SERVICE=ON"이 명시되면 구동 중인 브로커의 상태만 출력하며, "SERVICE=OFF"가 명시되면 멈춰있는 브로커의 이름만 출력한다.
 
 **cubrid broker status**\에서 사용하는 [options]는 다음과 같다. 이들 중 -b, -q, -c, -m, -S, -P, -f는 출력할 정보를 정의하는 모니터링 옵션이고, -s, -l, -t는 출력을 제어하는 옵션이다. 이 모든 옵션들은 서로 조합하여 사용하는 것이 가능하다.
 
@@ -910,8 +907,6 @@ CCI 드라이버를 사용하여 C로 프로그램을 작성할 때는 에러 �
     브로커가 접속한 DB 및 호스트 정보를 출력한다.
     
     **-b** 옵션과 함께 쓰이는 경우, CAS 정보를 추가로 출력한다. 하지만 -b 옵션에서 나타나는 SELECT, INSERT, UPDATE, DELETE, OTHERS 항목은 제외된다.
-
-    **-m** 옵션과 함께 쓰이는 경우, 보다 상세한 SHARD 통계 정보가 출력된다.
 
     **-c** 옵션과 함께 쓰이는 경우, 각 shard proxy 별로 CLIENT-ID, CLIENT-IP, CONN-TIME, LAST-REQ-TIME, LAST-RES-TIME, LAST-REQ-CODE 항목을 추가로 출력한다.
     

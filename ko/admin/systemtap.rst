@@ -204,13 +204,12 @@ SystemTap의 가장 유용한 기능은 마커를 사용자 소스 코드(CUBRID
     :param connection_id: 연결 ID
     :param user: 연결에서 사용된 사용자 이름
     
-.. function:: conn_end(connection_id, user, status)
+.. function:: conn_end(connection_id, user)
 
     어떤 이유와 관계 없이 연결이 종료될 때 이 마커가 발동된다.
     
     :param connection_id: 연결 ID
     :param user: 연결에서 사용된 사용자 이름
-    :param status: 연결 종료 시각 때의 연결 상태(Error, timeout, successfully ended 등)
 
 질의 마커
 ---------
