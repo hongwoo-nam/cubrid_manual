@@ -981,26 +981,36 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
         $ cubrid statdump -i 5 -c testdb
          
 
-                Fri November 21 15:58:06 KST 2014
+        Thu January 07 16:46:05 GTB Standard Time 2016 
 
          *** SERVER EXECUTION STATISTICS ***
         Num_file_creates              =          0
         Num_file_removes              =          0
         Num_file_ioreads              =          0
-        Num_file_iowrites             =       1386
-        Num_file_iosynches            =       1384
+        Num_file_iowrites             =          2
+        Num_file_iosynches            =          2
         Num_file_page_allocs          =          0
         Num_file_page_deallocs        =          0
-        Num_data_page_fetches         =        119
-        Num_data_page_dirties         =         70
+        Num_data_page_fetches         =       1742 
+        Num_data_page_dirties         =         60
         Num_data_page_ioreads         =          0
-        Num_data_page_iowrites        =          5
+        Num_data_page_iowrites        =          0
         Num_data_page_victims         =          0
         Num_data_page_iowrites_for_replacement =          0
-        Num_log_page_fetches          =         13
+        Num_data_page_hash_anchor_waits =          0
+        Time_data_page_hash_anchor_wait =          0
+        Num_data_page_fixed           =          0
+        Num_data_page_dirty           =         15
+        Num_data_page_lru1            =          0
+        Num_data_page_lru2            =          0
+        Num_data_page_ain             =        128
+        Num_data_page_avoid_dealloc   =          0
+        Num_data_page_avoid_victim    =          0
+        Num_data_page_victim_cand     =          0
+        Num_log_page_fetches          =          0
         Num_log_page_fetch_ioreads    =          0
-        Num_log_page_ioreads          =          0
-        Num_log_page_iowrites         =       1374
+        Num_log_page_ioreads          =          2
+        Num_log_page_iowrites         =         45
         Num_log_append_records        =       2798
         Num_log_archives              =          0
         Num_log_start_checkpoints     =          3
@@ -1008,131 +1018,257 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
         Num_log_wals                  =          3
         Num_log_page_iowrites_for_replacement =          0
         Num_page_locks_acquired       =          0
-        Num_object_locks_acquired     =          6
+        Num_object_locks_acquired     =         65
         Num_page_locks_converted      =          0
-        Num_object_locks_converted    =          1
+        Num_object_locks_converted    =         10 
         Num_page_locks_re-requested   =          0
-        Num_object_locks_re-requested =         40
+        Num_object_locks_re-requested =         46
         Num_page_locks_waits          =          0
         Num_object_locks_waits        =          0
-        Num_tran_commits              =          0
-        Num_tran_rollbacks            =          0
-        Num_tran_savepoints           =          0
-        Num_tran_start_topops         =         21
-        Num_tran_end_topops           =         21
-        Num_tran_interrupts           =          1
-        Num_btree_inserts             =          7
-        Num_btree_deletes             =          2
-        Num_btree_updates             =          3
+        Num_object_locks_time_waited_usec =          0
+        Num_tran_commits              =          3
+        Num_tran_rollbacks            =          1
+        Num_tran_savepoints           =          2
+        Num_tran_start_topops         =          6
+        Num_tran_end_topops           =          6
+        Num_tran_interrupts           =          0
+        Num_btree_inserts             =          3
+        Num_btree_deletes             =          0
+        Num_btree_updates             =          0
         Num_btree_covered             =          0
-        Num_btree_noncovered          =          3
+        Num_btree_noncovered          =          0
         Num_btree_resumes             =          0
         Num_btree_multirange_optimization =          0
         Num_btree_splits              =          0
         Num_btree_merges              =          0
         Num_btree_get_stats           =          0
         Num_heap_stats_sync_bestspace =          0
-        Num_query_selects             =          6
-        Num_query_inserts             =          3
+        Num_query_selects             =          2
+        Num_query_inserts             =          0
         Num_query_deletes             =          0
-        Num_query_updates             =          4
-        Num_query_sscans              =          0
-        Num_query_iscans              =         12
-        Num_query_lscans              =          6
+        Num_query_updates             =          2
+        Num_query_sscans              =          2
+        Num_query_iscans              =          0
+        Num_query_lscans              =          1
         Num_query_setscans            =          0
         Num_query_methscans           =          0
-        Num_query_nljoins             =          0
+        Num_query_nljoins             =          1
         Num_query_mjoins              =          0
         Num_query_objfetches          =          0
         Num_query_holdable_cursors    =          0
         Num_sort_io_pages             =          0
         Num_sort_data_pages           =          0
-        Num_network_requests          =       1447
-        Num_adaptive_flush_pages      =          5
-        Num_adaptive_flush_log_pages  =       1381
-        Num_adaptive_flush_max_pages  =     245250
-        Num_prior_lsa_list_size       =          3
+        Num_network_requests          =         79 
+        Num_adaptive_flush_pages      =          0
+        Num_adaptive_flush_log_pages  =          2
+        Num_adaptive_flush_max_pages  =     116610 
+        Num_prior_lsa_list_size       =          5
         Num_prior_lsa_list_maxed      =          0
-        Num_prior_lsa_list_removed    =       1375
-        Num_heap_stats_bestspace_entries =          0
+        Num_prior_lsa_list_removed    =          2 
+        Num_heap_stats_bestspace_entries =       5
         Num_heap_stats_bestspace_maxed =          0
         Time_ha_replication_delay     =          0
-        Num_plan_cache_add            =          0
-        Num_plan_cache_lookup         =         12
-        Num_plan_cache_hit            =         12
-        Num_plan_cache_miss           =          0
+        Num_plan_cache_add            =          1
+        Num_plan_cache_lookup         =          2
+        Num_plan_cache_hit            =          0
+        Num_plan_cache_miss           =          2
         Num_plan_cache_full           =          0
         Num_plan_cache_delete         =          0
         Num_plan_cache_invalid_xasl_id =          0
-        Num_plan_cache_query_string_hash_entries =          0
-        Num_plan_cache_xasl_id_hash_entries =          0
-        Num_plan_cache_class_oid_hash_entries =          0
+        Num_plan_cache_query_string_hash_entries =          5
+        Num_plan_cache_xasl_id_hash_entries =          5
+        Num_plan_cache_class_oid_hash_entries =          10
         Num_vacuum_log_pages_vacuumed =          0
         Num_vacuum_log_pages_to_vacuum =          0
+        Num_vacuum_prefetch_requests_log_pages =          0
+        Num_vacuum_prefetch_hits_log_pages =          0
+        Num_heap_home_inserts         =          0
+        Num_heap_big_inserts          =          0
+        Num_heap_assign_inserts       =          4
+        Num_heap_home_deletes         =          0
+        Num_heap_home_mvcc_deletes    =          0
+        Num_heap_home_to_rel_deletes  =          0
+        Num_heap_home_to_big_deletes  =          0
+        Num_heap_rel_deletes          =          0
+        Num_heap_rel_mvcc_deletes     =          0
+        Num_heap_rel_to_home_deletes  =          0
+        Num_heap_rel_to_big_deletes   =          0
+        Num_heap_rel_to_rel_deletes   =          0
+        Num_heap_big_deletes          =          0
+        Num_heap_big_mvcc_deletes     =          0
+        Num_heap_new_ver_inserts      =          0
+        Num_heap_home_updates         =          6
+        Num_heap_home_to_rel_updates  =          0
+        Num_heap_home_to_big_updates  =          0
+        Num_heap_rel_updates          =          0
+        Num_heap_rel_to_home_updates  =          0
+        Num_heap_rel_to_rel_updates   =          0
+        Num_heap_rel_to_big_updates   =          0
+        Num_heap_big_updates          =          0
+        Num_heap_home_vacuums         =          0
+        Num_heap_big_vacuums          =          0
+        Num_heap_rel_vacuums          =          0
+        Num_heap_insid_vacuums        =          0
+        Num_heap_remove_vacuums       =          0
+        Num_heap_next_ver_vacuums     =          0
+        Time_heap_insert_prepare      =       1962
+        Time_heap_insert_execute      =      10007
+        Time_heap_insert_log          =         44
+        Time_heap_delete_prepare      =          0
+        Time_heap_delete_execute      =          0
+        Time_heap_delete_log          =          0
+        Time_heap_update_prepare      =        497
+        Time_heap_update_execute      =        972
+        Time_heap_update_log          =        267
+        Time_heap_vacuum_prepare      =          0
+        Time_heap_vacuum_execute      =          0
+        Time_heap_vacuum_log          =          0
+        Num_bt_find_unique            =          2
+        Num_btrange_search            =          0
+        Num_bt_insert_obj             =          3
+        Num_bt_delete_obj             =          0
+        Num_bt_mvcc_delete            =          0
+        Num_bt_mark_delete            =          0
+        Num_bt_update_sk_cnt          =          0
+        Num_bt_undo_insert            =          0
+        Num_bt_undo_delete            =          0
+        Num_bt_undo_mvcc_delete       =          0
+        Num_bt_undo_update_sk         =          0
+        Num_bt_vacuum                 =          0
+        Num_bt_vacuum_insid           =          0
+        Num_bt_vacuum_update_sk       =          0
+        Num_bt_fix_ovf_oids_cnt       =          0
+        Num_bt_unique_rlocks_cnt      =          0
+        Num_bt_unique_wlocks_cnt      =          0
+        Time_bt_find_unique           =         17
+        Time_bt_range_search          =          0
+        Time_bt_insert                =       1845
+        Time_bt_delete                =          0
+        Time_bt_mvcc_delete           =          0
+        Time_bt_mark_delete           =          0
+        Time_bt_update_sk             =          0
+        Time_bt_undo_insert           =          0
+        Time_bt_undo_delete           =          0
+        Time_bt_undo_mvcc_delete      =          0
+        Time_bt_undo_update_sk        =          0
+        Time_bt_vacuum                =          0
+        Time_bt_vacuum_insid          =          0
+        Time_bt_vacuum_update_sk      =          0
+        Time_bt_traverse              =       1616
+        Time_bt_find_unique_traverse  =        716
+        Time_bt_range_search_traverse =          0
+        Time_bt_insert_traverse       =        900
+        Time_bt_delete_traverse       =          0
+        Time_bt_mvcc_delete_traverse  =          0
+        Time_bt_mark_delete_traverse  =          0
+        Time_bt_update_sk_traverse    =          0
+        Time_bt_undo_insert_traverse  =          0
+        Time_bt_undo_delete_traverse  =          0
+        Time_bt_undo_mvcc_delete_traverse =          0
+        Time_bt_undo_update_sk_traverse =          0
+        Time_bt_vacuum_traverse       =          0
+        Time_bt_vacuum_insid_traverse =          0
+        Time_bt_vacuum_update_sk_traverse =          0
+        Time_bt_fix_ovf_oids          =          0
+        Time_bt_unique_rlocks         =          0
+        Time_bt_unique_wlocks         =          0
+        Time_vacuum_master            =     152858
+        Time_vacuum_worker_process_log =          0
+        Time_vacuum_worker_execute    =          0
 
          *** OTHER STATISTICS ***
         Data_page_buffer_hit_ratio    =     100.00
-        Log_page_buffer_hit_ratio     =     100.00
+        Log_page_buffer_hit_ratio     =       0.00
         Vacuum_data_page_buffer_hit_ratio =       0.00
         Vacuum_page_efficiency_ratio  =       0.00
         Vacuum_page_fetch_ratio       =       0.00
         Data_page_fix_lock_acquire_time_msec =       0.00
-        Data_page_fix_hold_acquire_time_msec =       0.08
-        Data_page_fix_acquire_time_msec =       0.42
-        Data_page_allocate_time_ratio =      80.95
+        Data_page_fix_hold_acquire_time_msec =       0.00
+        Data_page_fix_acquire_time_msec =      11.80
+        Data_page_allocate_time_ratio =     100.00
+        Data_page_total_promote_success =       3.00
+        Data_page_total_promote_fail  =       0.00
+        Data_page_total_promote_time_msec =       0.00
         Num_data_page_fix_ext:
-        SYSTEM,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,WRITE,UNCOND_WAIT =          3
-        WORKER,PAGE_FTAB     ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =          8
-        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =         24
-        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE,COND        =          6
-        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE,UNCOND_WAIT =         16
-        WORKER,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =          7
-        WORKER,PAGE_VOLBITMAP,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =          7
-        WORKER,PAGE_XASL     ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =         12
-        WORKER,PAGE_CATALOG  ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =          6
-        WORKER,PAGE_BTREE    ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =         14
-        WORKER,PAGE_BTREE    ,OLD_PAGE_IN_PB    ,WRITE,UNCOND_WAIT =         16
+        WORKER,PAGE_FTAB     ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =         17
+        WORKER,PAGE_FTAB     ,OLD_PAGE_IN_PB    ,WRITE,UNCOND      =          2
+        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,READ ,COND        =        194
+        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =          9
+        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE,COND        =         18
+        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE,UNCOND      =          2
+        WORKER,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,READ ,COND        =          8
+        WORKER,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,READ ,UNCOND      =        914
+        WORKER,PAGE_VOLBITMAP,OLD_PAGE_IN_PB    ,READ ,COND        =          4
+        WORKER,PAGE_VOLBITMAP,OLD_PAGE_IN_PB    ,READ ,UNCOND      =        457
+        WORKER,PAGE_XASL     ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =          2
+        WORKER,PAGE_XASL     ,OLD_PAGE_IN_PB    ,WRITE,UNCOND      =          1
+        WORKER,PAGE_CATALOG  ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =         75
+        WORKER,PAGE_CATALOG  ,OLD_PAGE_IN_PB    ,WRITE,UNCOND      =         10
+        WORKER,PAGE_BTREE_R  ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =         29
+        Num_data_page_promote_ext:
+        WORKER,PAGE_BTREE_R  ,SHARED_READER,READ ,SUCCESS =          3
+        Num_data_page_promote_time_ext:
+        WORKER,PAGE_BTREE_R  ,SHARED_READER,READ ,SUCCESS =          3
         Num_data_page_unfix_ext:
-        SYSTEM,PAGE_VOLHEADER,BUF_NON_DIRTY,HOLDER_DIRTY    ,WRITE =          3
-        WORKER,PAGE_FTAB     ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =          8
-        WORKER,PAGE_HEAP     ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =         15
-        WORKER,PAGE_HEAP     ,BUF_NON_DIRTY,HOLDER_DIRTY    ,WRITE =          2
-        WORKER,PAGE_HEAP     ,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =          9
-        WORKER,PAGE_HEAP     ,BUF_DIRTY    ,HOLDER_DIRTY    ,WRITE =         20
-        WORKER,PAGE_VOLHEADER,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =          7
-        WORKER,PAGE_VOLBITMAP,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =          7
-        WORKER,PAGE_XASL     ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =         12
-        WORKER,PAGE_CATALOG  ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =          6
-        WORKER,PAGE_BTREE    ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,WRITE =          2
-        WORKER,PAGE_BTREE    ,BUF_NON_DIRTY,HOLDER_DIRTY    ,WRITE =          1
-        WORKER,PAGE_BTREE    ,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =         14
-        WORKER,PAGE_BTREE    ,BUF_DIRTY    ,HOLDER_NON_DIRTY,WRITE =          3
-        WORKER,PAGE_BTREE    ,BUF_DIRTY    ,HOLDER_DIRTY    ,WRITE =         10
+        WORKER,PAGE_FTAB     ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =         16
+        WORKER,PAGE_FTAB     ,BUF_NON_DIRTY,HOLDER_DIRTY    ,WRITE =          2
+        WORKER,PAGE_FTAB     ,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =          1
+        WORKER,PAGE_HEAP     ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =        185
+        WORKER,PAGE_HEAP     ,BUF_NON_DIRTY,HOLDER_DIRTY    ,WRITE =          9
+        WORKER,PAGE_HEAP     ,BUF_NON_DIRTY,HOLDER_DIRTY    ,MIXED =          2
+        WORKER,PAGE_HEAP     ,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =         14
+        WORKER,PAGE_HEAP     ,BUF_DIRTY    ,HOLDER_NON_DIRTY,WRITE =          4
+        WORKER,PAGE_HEAP     ,BUF_DIRTY    ,HOLDER_DIRTY    ,WRITE =          3
+        WORKER,PAGE_HEAP     ,BUF_DIRTY    ,HOLDER_DIRTY    ,MIXED =          6
+        WORKER,PAGE_VOLHEADER,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =         14
+        WORKER,PAGE_VOLHEADER,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =        908
+        WORKER,PAGE_VOLBITMAP,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =        461
+        WORKER,PAGE_XASL     ,BUF_NON_DIRTY,HOLDER_DIRTY    ,WRITE =          1
+        WORKER,PAGE_XASL     ,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =          2
+        WORKER,PAGE_CATALOG  ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =         47
+        WORKER,PAGE_CATALOG  ,BUF_NON_DIRTY,HOLDER_DIRTY    ,WRITE =          1
+        WORKER,PAGE_CATALOG  ,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =         28
+        WORKER,PAGE_CATALOG  ,BUF_DIRTY    ,HOLDER_NON_DIRTY,WRITE =          1
+        WORKER,PAGE_CATALOG  ,BUF_DIRTY    ,HOLDER_DIRTY    ,WRITE =          8
+        WORKER,PAGE_BTREE_R  ,BUF_NON_DIRTY,HOLDER_NON_DIRTY,READ  =         18
+        WORKER,PAGE_BTREE_R  ,BUF_NON_DIRTY,HOLDER_DIRTY    ,MIXED =          3
+        WORKER,PAGE_BTREE_R  ,BUF_DIRTY    ,HOLDER_NON_DIRTY,READ  =          8
         Time_data_page_lock_acquire_time:
         Time_data_page_hold_acquire_time:
-        SYSTEM,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,WRITE =                4
-        WORKER,PAGE_FTAB     ,OLD_PAGE_IN_PB    ,READ  =                4
-        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,READ  =               18
-        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE =               14
-        WORKER,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,READ  =                6
-        WORKER,PAGE_VOLBITMAP,OLD_PAGE_IN_PB    ,READ  =                3
-        WORKER,PAGE_XASL     ,OLD_PAGE_IN_PB    ,READ  =               12
-        WORKER,PAGE_CATALOG  ,OLD_PAGE_IN_PB    ,READ  =                9
-        WORKER,PAGE_BTREE    ,OLD_PAGE_IN_PB    ,READ  =                8
-        WORKER,PAGE_BTREE    ,OLD_PAGE_IN_PB    ,WRITE =                9
-        Time_data_page_fix_acquire_time:
-        SYSTEM,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,WRITE,UNCOND_WAIT =               26
-        WORKER,PAGE_FTAB     ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =               25
-        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =               72
-        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE,COND        =               13
-        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE,UNCOND_WAIT =               44
-        WORKER,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =               22
-        WORKER,PAGE_VOLBITMAP,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =               16
-        WORKER,PAGE_XASL     ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =               85
-        WORKER,PAGE_CATALOG  ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =               48
-        WORKER,PAGE_BTREE    ,OLD_PAGE_IN_PB    ,READ ,UNCOND_WAIT =               40
-        WORKER,PAGE_BTREE    ,OLD_PAGE_IN_PB    ,WRITE,UNCOND_WAIT =               37
-
+	Time_data_page_fix_acquire_time:
+        WORKER,PAGE_FTAB     ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =               65
+        WORKER,PAGE_FTAB     ,OLD_PAGE_IN_PB    ,WRITE,UNCOND      =               12
+        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,READ ,COND        =              617
+        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =               42
+        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE,COND        =               81
+        WORKER,PAGE_HEAP     ,OLD_PAGE_IN_PB    ,WRITE,UNCOND      =                9
+        WORKER,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,READ ,COND        =               36
+        WORKER,PAGE_VOLHEADER,OLD_PAGE_IN_PB    ,READ ,UNCOND      =             3277
+        WORKER,PAGE_VOLBITMAP,OLD_PAGE_IN_PB    ,READ ,COND        =               18
+        WORKER,PAGE_VOLBITMAP,OLD_PAGE_IN_PB    ,READ ,UNCOND      =             1533
+        WORKER,PAGE_XASL     ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =                5
+        WORKER,PAGE_XASL     ,OLD_PAGE_IN_PB    ,WRITE,UNCOND      =             5644
+        WORKER,PAGE_CATALOG  ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =              260
+        WORKER,PAGE_CATALOG  ,OLD_PAGE_IN_PB    ,WRITE,UNCOND      =               43
+        WORKER,PAGE_BTREE_R  ,OLD_PAGE_IN_PB    ,READ ,UNCOND      =              164
+        Num_mvcc_snapshot_ext:
+        DELETE  ,INS_VACUUMED      ,VISIBLE   =                7
+        DIRTY   ,INS_VACUUMED      ,VISIBLE   =                3
+        DIRTY   ,INS_CURR          ,VISIBLE   =                2
+        SNAPSHOT,INS_VACUUMED      ,VISIBLE   =               87
+        SNAPSHOT,DELETED_COMMITED  ,INVISIBLE =                1
+        Time_obj_lock_acquire_time:
+        Time_get_snapshot_acquire_time:
+        WORKER =               14
+        Count_get_snapshot_retry:
+        WORKER =               11
+        Time_tran_complete_time:
+        WORKER =               19
+        Time_get_oldest_mvcc_acquire_time:
+        SYSTEM =           112110
+        Count_get_oldest_mvcc_retry:
+        WORKER =                1
+       
     다음은 위의 데이터베이스 서버 실행 통계 정보에 대한 설명이다.
 
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
@@ -1161,6 +1297,27 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  |                                          | (내려 쓰기되는 페이지의 또는 희생자(victim)의 개수가 아님)                             |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_data_page_iowrites_for_replacement   | 후보로 선정되어 디스크로 쓰여진 데이터 페이지 수                                       |
+    |                  | Num_data_page_hash_anchor_waits          | The number of instances any hash anchor had to wait for mutex acquisition              |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_data_page_hash_anchor_wait          | The total time in microseconds any hash anchor had to wait for mutex acquisition       |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_fixed                      | The number of fixed pages in data buffer (snapshot counter)                            |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_dirty                      | The number of dirty pages in data buffer (snapshot counter)                            |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_lru1                       | The number of pages in LRU1 zone in data buffer (snapshot counter)                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_lru2                       | The number of pages in LRU2 zone in data buffer (snapshot counter)                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_ain                        | The number of pages in AIN zone in data buffer (snapshot counter)                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_avoid_dealloc              | The number of pages in data buffer having 'avoid_dealloc_cnt > 0' (snapshot counter)   |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_avoid_victim               | The number of pages in data buffer having 'avoid_victim' flag set (snapshot counter)   |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_victim_cand                | The number of pages in data buffer which are victim candidates (snapshot counter)      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_data_page_victim_cand                | The number of pages in data buffer which are victim candidates (snapshot counter)      |    
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_adaptive_flush_pages                 | 데이터 버퍼로부터 디스크로 내려 쓰기(flush)한 데이터 페이지 수                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
@@ -1216,6 +1373,8 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  | Num_page_locks_waits                     | 잠금을 대기하는 페이지 개수                                                            |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_object_locks_waits                   | 잠금을 대기하는 오브젝트 개수                                                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_object_locks_time_waited_usec        | The time in microseconds spent on waiting for all object locks                         |    
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
     | 트랜잭션         | Num_tran_commits                         | 커밋한 횟수                                                                            |
     | 관련             +------------------------------------------+----------------------------------------------------------------------------------------+
@@ -1247,8 +1406,191 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  | Num_btree_splits                         | B-tree 노드 분할 연산 회수                                                             |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_btree_merges                         | B-tree 노드 합병 연산 회수                                                             |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_find_unique                       | The number of B-tree 'find-unique' operations                                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_btrange_search                       | The number of B-tree 'range-search' operations                                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_insert_obj                        | The number of B-tree 'insert object' operations                                        |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_delete_obj                        | The number of B-tree 'physical delete object' operations                               |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_mvcc_delete                       | The number of B-tree 'mvcc delete' operations                                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_mark_delete                       | The number of B-tree mark delete operations                                            |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_update_sk_cnt                     | The number of B-tree 'update same key' operations                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_undo_insert                       | The number of B-tree 'undo insert' operations                                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_undo_delete                       | The number of B-tree 'undo physical delete' operations                                 |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_undo_mvcc_delete                  | The number of B-tree 'undo mvcc delete' operations                                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_undo_update_sk                    | The number of B-tree 'undo update same key' operations                                 |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_vacuum                            | The number of B-tree vacuum deleted object operations                                  |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_vacuum_insid                      | The number of vacuum operations on B-tree 'insert id'                                  |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_vacuum_update_sk                  | The number of vacuum operations on B-tree 'update same key'                            |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_fix_ovf_oids_cnt                  | The number of B-tree overflow page fixes                                               |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_unique_rlocks_cnt                 | The number of blocked read locks on unique indexes                                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_bt_unique_wlocks_cnt                 | The number of blocked write locks on unique indexes                                    |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_find_unique                      | Time consumed on B-tree 'find-unique' operations                                       |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_range_search                     | Time consumed on B-tree 'range search' operations                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_insert                           | Time consumed on B-tree insert object operations                                       |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_delete                           | Time consumed on B-tree physical delete operations                                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_mvcc_delete                      | Time consumed on B-tree mvcc delete operations                                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_mark_delete                      | Time consumed on B-tree mark delete operations                                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_update_sk                        | Time consumed on B-tree 'update same key' operations                                   |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_insert                      | Time consumed on B-tree 'undo insert' operations                                       |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_delete                      | Time consumed on B-tree 'undo physical delete' operations                              |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_mvcc_delete                 | Time consumed on B-tree 'undo mvcc delete' operations                                  |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_update_sk                   | Time consumed on B-tree 'undo update same key' operations                              |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_vacuum                           | Time consumed on B-tree vacuum deleted object operations                               |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_vacuum_insid                     | Time consumed on B-tree vacuum operations of 'insert id'                               |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_vacuum_update_sk                 | Time consumed on B-tree vacuum operations of 'update same key'                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_traverse                         | Time consumed on B-tree traverse operations                                            |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_find_unique_traverse             | Time consumed on B-tree traverse operations for 'find unique'                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_range_search_traverse            | Time consumed on B-tree traverse operations for 'range search'                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_insert_traverse                  | Time consumed on B-tree traverse operations for 'insert'                               |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_delete_traverse                  | Time consumed on B-tree traverse operations for 'physical delete'                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_mvcc_delete_traverse             | Time consumed on B-tree traverse operations for 'mvcc delete'                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_mark_delete_traverse             | Time consumed on B-tree traverse operations for 'mark delete'                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_update_sk_traverse               | Time consumed on B-tree traverse operations for 'update same key'                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_insert_traverse             | Time consumed on B-tree traverse operations for 'undo physical insert'                 |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_delete_traverse             | Time consumed on B-tree traverse operations for 'undo physical delete'                 |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_mvcc_delete_traverse        | Time consumed on B-tree traverse operations for 'undo delete'                          |
+    |                  | Time_bt_mark_delete_traverse             | Time consumed on B-tree traverse operations for 'mark delete'                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_update_sk_traverse               | Time consumed on B-tree traverse operations for 'update same key'                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_insert_traverse             | Time consumed on B-tree traverse operations for 'undo physical insert'                 |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_delete_traverse             | Time consumed on B-tree traverse operations for 'undo physical delete'                 |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_mvcc_delete_traverse        | Time consumed on B-tree traverse operations for 'undo delete'                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_undo_update_sk_traverse          | Time consumed on B-tree traverse operations for 'undo update same key'                 |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_vacuum_traverse                  | Time consumed on B-tree traverse operations for vacuum deleted object                  |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_vacuum_insid_traverse            | Time consumed on B-tree traverse operations for vacuum 'insert id'                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_vacuum_update_sk_traverse        | Time consumed on B-tree traverse operations for vacuum 'update same key'               |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_fix_ovf_oids                     | Time consumed on B-tree overflow pages fix                                             |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_unique_rlocks                    | Time consumed on read locks on unique indexes                                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_bt_unique_wlocks                    | Time consumed on write locks on unique indexes                                         |
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
     | 쿼리 관련        | Num_query_selects                        | SELECT 쿼리의 수행 횟수                                                                |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_inserts                    | The number of inserts in heap HOME type records                                        |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_big_inserts                     | The number of inserts in heap BIG type records                                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_assign_inserts                  | The number of inserts in heap ASSIGN type records                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_deletes                    | The number of deletes from heap HOME type records in non-MVCC mode                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_mvcc_deletes               | The number of deletes from heap HOME type records in MVCC mode                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_to_rel_deletes             | The number of deletes from heap HOME to RELOCATION type records in MVCC mode           |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_to_big_deletes             | The number of deletes from heap HOME to BIG type records in MVCC mode                  |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_deletes                     | The number of deletes from heap RELOCATION type records in non-MVCC mode               |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_mvcc_deletes                | The number of deletes from heap RELOCATION type records in MVCC mode                   |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_to_home_deletes             | The number of deletes from heap RELOCATION to HOME type records in MVCC mode           |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_to_big_deletes              | The number of deletes from heap RELOCATION to BIG type records in MVCC mode            |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_to_rel_deletes              | The number of deletes from heap RELOCATION to RELOCATION type records in MVCC mode     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_big_deletes                     | The number of deletes from heap BIG type records in non-MVCC mode                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_big_mvcc_deletes                | The number of deletes from heap BIG type records in MVCC mode                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_new_ver_inserts                 | The number of inserts of new versions of the same object in MVCC mode                  |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_updates                    | The number of updates in place of heap HOME type records in non-MVCC mode(*)           |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_to_rel_updates             | The number of updates of heap HOME to RELOCATION type records in non-MVCC mode(*)      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_to_big_updates             | The number of updates of heap HOME to BIG type records in non-MVCC mode(*)             |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_updates                     | The number of updates of heap RELOCATION type records in non-MVCC mode(*)              |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_to_home_updates             | The number of updates of heap RELOCATION to HOME type records in non-MVCC mode(*)      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_to_rel_updates              | The number of updates of heap RELOCATION to RELOCATION type records in non-MVCC mode(*)|
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_to_big_updates              | The number of updates of heap RELOCATION to BIG type records in non-MVCC mode(*)       |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_big_updates                     | The number of updates of heap BIG type records in non-MVCC mode(*)                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_home_vacuums                    | The number of vacuumed heap HOME type records                                          |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_big_vacuums                     | The number of vacuumed heap BIG type records                                           |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_rel_vacuums                     | The number of vacuumed heap RELOCATION type records                                    |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_insid_vacuums                   | The number of vacuumed heap newly inserted records                                     |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_remove_vacuums                  | The number of vacuum operations that remove version and don’t keep next version        |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_heap_next_ver_vacuums                | The number of vacuum operations that remove version and keep their next version        |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_insert_prepare                 | The time spend on preparing heap insert operation                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_insert_execute                 | The time spend on executing heap insert operation                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_insert_log                     | The time spend on logging heap insert operation                                        |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_delete_prepare                 | The time spend on preparing heap delete operation                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_delete_execute                 | The time spend on executing heap delete operation                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_delete_log                     | The time spend on logging heap delete operation                                        |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_update_prepare                 | The time spend on preparing heap update operation                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_update_execute                 | The time spend on executing heap update operation                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_heap_update_log                     | The time spend on logging heap update operation                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_query_inserts                        | INSERT 쿼리의 수행 횟수                                                                |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
@@ -1323,6 +1665,16 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     | 관련             |                                          | 실시간으로 업데이트되지 않음.                                                          |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_vacuum_log_pages_to_vacuum           | vacuum 작업자에 의해 정리될(to be vacuumed) 로그 페이지의 개수                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_vacuum_prefetch_requests_log_pages   | The number of requests to prefetch buffer for log pages from vacuum                    |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_vacuum_prefetch_hits_log_pages       | The number of hits to prefetch buffer for log pages from vacuum                        |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_vacuum_master                       | Time consumed by vacuum master thread                                                  |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_vacuum_worker_process_log           | Time consumed by vacuum worker thread for logging                                      |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_vacuum_worker_execute               | Time consumed by vacuum worker thread for execution                                    |    
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
     | 기타             | Data_page_buffer_hit_ratio               | 데이터 페이지 버퍼의 히트율                                                            |
     |                  |                                          | (Num_data_page_fetches - Num_data_page_ioreads)*100 / Num_data_page_fetches            |
@@ -1351,6 +1703,12 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  |                                          | 이 값이 클수록 I/O가 주요 병목의 원인이며, 작을수록 동시성 처리가 주요 병목의 원인임   |
     |                  |                                          |                                                                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Data_page_total_promote_success          | Cumulated number of successfully latch promote                                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Data_page_total_promote_fail             | Cumulated number of failed latch promote                                               |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Data_page_total_promote_time_msec        | Cumulated time to promote latch                                                        |        
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_data_page_fix_ext:                   | 모듈, 페이지 타입, 그리고 페이지 버퍼에서 발견된 페이지 타입의 신구 여부에 따른        |
     |                  |                                          | 페이지 픽스 개수.                                                                      |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
@@ -1363,7 +1721,29 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Time_data_page_fix_acquire_time:         | 모듈, 페이지 타입, 페이지 모드, 래치 모드, 그리고 컨디션 모드에 따른 페이지 픽스(fix)  |
     |                  |                                          | 획득 시간.                                                                             |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Num_mvcc_snapshot_ext:                   | The number of snapshot validation functions are called (partitioned by snapshot type,  |
+    |                  |                                          | record type, visibility result upon validation).                                       |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_obj_lock_acquire_time:              | Time required to acquire object lock (partitioned by module, lock type)                |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_get_snapshot_acquire_time:          | Time required by snapshot validation functions (partitioned by snapshot type,          |
+    |                  |                                          | record type, visibility result upon validation).                                       |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Count_get_snapshot_retry:                | The number of retries to acquire MVCC snapshot (partitioned by module)                 |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_tran_complete_time:                 | Time spent to invalidate snapshot and MVCCID on transaction commit/rollback            |
+    |                  |                                          | (partitioned by module)                                                                |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Time_get_oldest_mvcc_acquire_time:       | Time spend to acquire "oldest MVCC ID" (partitioned by module)                         |
+    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
+    |                  | Count_get_oldest_mvcc_retry:             | The number of retries to acquire "oldest MVCC ID"  (partitioned by module)             |    
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
+
+.. Note::  
+
+    (*) : These statistics measure the non-MVCC operations or MVCC operations which are performed in-place (decided internally)
+
 
 .. option:: -o, --output-file=FILE
 
@@ -1466,8 +1846,8 @@ lockdb
 ::
 
     Transaction (index 1, csql, dba@cubriddb|12854)
-    Isolation READ COMMITTED CLASSES AND READ UNCOMMITTED INSTANCES
-    Timeout_period -1
+    Isolation COMMITTED READ
+    Timeout_period : Infinite wait
 
 위에서 트랜잭션 인덱스는 1이고, 프로그램 이름은 csql, 사용자 이름은 dba, 호스트 이름은 cubriddb, 클라이언트 프로세스 식별자는 12854, 격리 수준은 READ COMMITTED CLASSES AND READ UNCOMMITTED INSTANCES, 그리고 잠금 타임아웃은 무제한이다.
 
