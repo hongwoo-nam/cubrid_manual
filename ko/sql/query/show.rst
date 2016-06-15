@@ -8,7 +8,7 @@ SHOW
 
 
 DESC, DESCRIBE
---------------
+==============
 
 테이블의 칼럼 정보를 출력하며 **SHOW COLUMNS** 문과 같다. 보다 자세한 사항은 :ref:`show-columns-statement`\ 를 참고한다.
 
@@ -18,7 +18,7 @@ DESC, DESCRIBE
     DESCRIBE tbl_name;
     
 EXPLAIN
--------
+=======
 
 테이블의 칼럼 정보를 출력하며 **SHOW COLUMNS** 문과 같다. 보다 자세한 사항은 :ref:`show-columns-statement`\ 를 참고한다.
 
@@ -29,7 +29,7 @@ EXPLAIN
 .. _show-tables-statement:
 
 SHOW TABLES
------------
+===========
 
 데이터베이스의 전체 테이블 이름 목록을 출력한다. 결과 칼럼의 이름은 *tables_in_<데이터베이스 이름>* 이 되며 하나의 칼럼을 지닌다. **LIKE** 절을 사용하면 이와 매칭되는 테이블 이름을 검색할 수 있으며, **WHERE** 절을 사용하면 좀더 일반적인 조건으로 테이블 이름을 검색할 수 있다. **SHOW FULL TABLES** 는 *table_type* 이라는 이름의 두 번째 칼럼을 함께 출력하며, 테이블은 **BASE TABLE**, 뷰는 **VIEW** 라는 값을 가진다. ::
 
@@ -102,7 +102,7 @@ SHOW TABLES
 .. _show-columns-statement:
 
 SHOW COLUMNS
-------------
+============
 
 테이블의 칼럼 정보를 출력한다. **LIKE** 절을 사용하면 이와 매칭되는 칼럼 이름을 검색할 수 있다. **WHERE** 절을 사용하면 "모든 **SHOW** 문에 대한 일반적인 고려 사항"과 같이 좀 더 일반적인 조건으로 칼럼 이름을 검색할 수 있다. 
 
@@ -176,15 +176,16 @@ Extra                               VARCHAR         주어진 칼럼에 대해 �
     
 ::
 
-          Field                 Type                  Collation             Null                  Key                   Default               Extra                 Comment             
-        ================================================================================================================================================================================
-          'code'                'INTEGER'             NULL                  'NO'                  'PRI'                 NULL                  'auto_increment'      NULL
-          'nation_code'         'CHAR(3)'             'iso88591_bin'        'YES'                 ''                    NULL                  ''                    NULL
+      Field                 Type                  Collation             Null                  Key                   Default               Extra                 Comment             
+     ================================================================================================================================================================================
+     'code'                'INTEGER'             NULL                  'NO'                  'PRI'                 NULL                  'auto_increment'      NULL                
+     'nation_code'         'CHAR(3)'             'iso88591_bin'        'YES'                 ''                    NULL                  ''                    NULL                
+
 
 .. _show-index-statement:
 
 SHOW INDEX
-----------
+==========
 
 인덱스 정보를 출력한다. 
 
@@ -268,7 +269,7 @@ Comment                             VARCHAR         Comment to describe the inde
 .. _show-collation-statement:
  
 SHOW COLLATION
---------------
+==============
 
 데이터베이스에서 지원하는 콜레이션 리스트를 출력한다. LIKE 절은 콜레이션 이름이 매칭되는 정보를 출력한다. 
 
@@ -335,17 +336,19 @@ Strength                            CHAR(1)         문자 간 비교를 위한 
       'utf8_ko_cs_uca'      'utf8'                        133  'No'                  'No'                  'Quaternary'
 
 SHOW TIMEZONES
---------------
+==============
 
 현재 CUBRID에 설정된 타임 존 정보를 출력한다.
 
 ::
 
-    SHOW [FULL] TIMEZONES;
+    SHOW [FULL] TIMEZONES [ LIKE 'pattern' ];
 
 FULL이 명시되지 않으면 타임 존의 영역 이름을 가진 하나의 칼럼을 출력한다. 칼럼의 이름은 timezone_region이다.
 
 FULL이 명시되면 4개의 칼럼을 가진 타임 존 정보를 출력한다.
+
+If LIKE clause is present, it indicates which timezone_region names to match.
 
 =================== =============== ===================================================
 칼럼 이름           타입            설명
@@ -356,7 +359,7 @@ dst_offset          VARCHAR(32)     타임 존 영역에 적용되는 일광 절
 dst_abbreviation    VARCHAR(32)     일광 절약 시간 규칙이 적용된 지역의 약어
 =================== =============== ===================================================
 
-두 번째, 세 번째, 네 번째 칼럼에서 출력되는 정보는 날짜에 관한 것이다.
+두 번째, 세 번째, 네 번째 칼럼에서 출력되는 정보는 현재 날짜와 시간에 관한 것이다.
 
 타임 존 영역이 일광 절약 시간(daylight saving time) 규칙을 적용하지 않는다면, dst_offset과 dst_abbreviation 값은 NULL 값이 된다.
  
@@ -391,7 +394,7 @@ WHERE 조건 없는 LIKE 조건은 첫 번째 칼럼에 적용된다. WHERE 조�
 
 .. code-block:: sql
 
-    SHOW FULL TIMEZONES;
+    SHOW [FULL] TIMEZONES [ LIKE 'pattern' ];
 
 ::
 
@@ -414,10 +417,23 @@ WHERE 조건 없는 LIKE 조건은 첫 번째 칼럼에 적용된다. WHERE 조�
     'WET'                 '+00:00'              '+00:00'              'WET'
     'Zulu'                '+00:00'              '+00:00'              'UTC'
 
+
+.. code-block:: sql
+
+    SHOW FULL TIMEZONES LIKE '%Paris%';
+
+::
+    
+   timezone_region       region_offset         dst_offset            dst_abbreviation
+   ========================================================================================
+   'Europe/Paris'        '+01:00'              '+00:00'              'CET'
+
+       
+
 .. _show-grants-statement:
 
 SHOW GRANTS
------------
+===========
 
 데이터베이스의 사용자 계정에 부여된 권한을 출력한다. ::
 
@@ -442,7 +458,7 @@ SHOW GRANTS
 .. _show-create-table-statement:
 
 SHOW CREATE TABLE
------------------
+=================
 
 테이블 이름을 지정하면 해당 테이블의 **CREATE TABLE** 문을 출력한다. ::
 
@@ -466,7 +482,7 @@ SHOW CREATE TABLE
 .. _show-create-view-statement:
 
 SHOW CREATE VIEW
-----------------
+================
 
 뷰 이름을 지정하면 해당 **CREATE VIEW** 문을 출력한다. ::
 
@@ -492,8 +508,8 @@ SHOW CREATE VIEW
                        CURRENT_USER) AND  au.auth_type = 'SELECT')'
 
 SHOW ACCESS STATUS 
------------------- 
-  
+==================
+ 
 **SHOW ACCESS STATUS** 문은 데이터베이스 계정에 대한 로그인 정보를 출력한다. 이 명령은 데이터베이스 계정이 DBA인 사용자만 사용할 수 있다. 
 
 :: 
@@ -531,7 +547,7 @@ program_name        VARCHAR(32) 클라이언트 프로그램 이름(broker_cub_c
 .. _show-exec-statistics-statement:
 
 SHOW EXEC STATISTICS
---------------------
+====================
 
 실행한 질의들의 실행 통계 정보를 출력한다.
 
@@ -638,6 +654,8 @@ SHOW EXEC STATISTICS
     'adaptive_flush_log_pages'              0
     'adaptive_flush_max_pages'              0
 
+진단
+====
 
 SHOW VOLUME HEADER
 ------------------
@@ -761,8 +779,13 @@ Backup_info_level1                  VARCHAR(128)    백업 수준 1의 상세 �
 Backup_info_level2                  VARCHAR(128)    백업 수준 2의 상세 정보. 현재는 백업 시작 시간만 저장됨
 Ha_server_state                     VARCHAR(32)     HA 서버 상태. 다음 값 중 하나: na, idle, active, to-be-active, standby, to-be-standby,  maintenance, dead
 Ha_file                             VARCHAR(32)     HA 복제 상태. 다음 값 중 하나: clear, archived, sync
-Eof_lsa                             VARCHAR(64)     
-Smallest_lsa_at_last_checkpoint     VARCHAR(64)     
+Eof_lsa                             VARCHAR(64)     EOF LSA
+Smallest_lsa_at_last_checkpoint     VARCHAR(64)     The smallest LSA of the last checkpoint, can be NULL LSA
+Next_mvcc_id                        BIGINT          The next MVCCID will be used for the next transaction
+Mvcc_op_log_lsa                     VARCHAR(32)     The LSA used to link log entries for MVCC operation
+Last_block_oldest_mvcc_id           BIGINT          Used to find the oldest MVCCID in a block of log data, can be NULL
+Last_block_newest_mvcc_id           BIGINT          Used to find the newest MVCCID in a block of log data, Can be NULL
+
 =================================== =============== ======================================================================================================================================
 
 다음은 이 구문을 수행한 예이다.
@@ -777,38 +800,42 @@ Smallest_lsa_at_last_checkpoint     VARCHAR(64)
     <00001> Volume_id                      : -2
             Magic_symbol                   : 'CUBRID/LogActive'
             Magic_symbol_location          : 16
-            Creation_time                  : 04:42:28.000 PM 12/11/2013
+            Creation_time                  : 05:27:05.000 PM 02/05/2016
             Release                        : '10.0.0'
-            Compatibility_disk_version     : '9.2'
+            Compatibility_disk_version     : '10'
             Db_page_size                   : 16384
             Log_page_size                  : 16384
             Shutdown                       : 0
-            Next_trans_id                  : 607149
-            Num_avg_trans                  : 0
-            Num_avg_locks                  : 0
+            Next_trans_id                  : 17
+            Num_avg_trans                  : 3
+            Num_avg_locks                  : 30
             Num_active_log_pages           : 1279
-            Db_charset                     : 5
-            First_active_log_page          : 66508
-            Current_append                 : '(66637|14672)'
-            Checkpoint                     : '(66637|14280)'
-            Next_archive_page_id           : 66456
-            Active_physical_page_id        : 1228
-            Next_archive_num               : 52
-            Last_archive_num_for_syscrashes: 52
+            Db_charset                     : 3
+            First_active_log_page          : 0
+            Current_append                 : '(102|5776)'
+            Checkpoint                     : '(101|7936)'
+            Next_archive_page_id           : 0
+            Active_physical_page_id        : 1
+            Next_archive_num               : 0
+            Last_archive_num_for_syscrashes: -1
             Last_deleted_archive_num       : -1
-            Backup_lsa_level0              : '(66636|5240)'
+            Backup_lsa_level0              : '(-1|-1)'
             Backup_lsa_level1              : '(-1|-1)'
             Backup_lsa_level2              : '(-1|-1)'
-            Log_prefix                     : 'demodb'
+            Log_prefix                     : 'mvccdb'
             Has_logging_been_skipped       : 0
             Perm_status                    : 'LOG_PSTAT_CLEAR'
-            Backup_info_level0             : 'time: Mon Dec 16 14:33:17 2013'
-            Backup_info_level1             : 'time: none'
-            Backup_info_level2             : 'time: none'
+            Backup_info_level0             : 'time: N/A'
+            Backup_info_level1             : 'time: N/A'
+            Backup_info_level2             : 'time: N/A'
             Ha_server_state                : 'idle'
-            Ha_file                        : 'unknown'
-            Eof_lsa                        : '(66637|14672)'
-            Smallest_lsa_at_last_checkpoint: '(66637|14280)'
+            Ha_file                        : 'UNKNOWN'
+            Eof_lsa                        : '(102|5776)'
+            Smallest_lsa_at_last_checkpoint: '(101|7936)'
+            Next_mvcc_id                   : 6
+            Mvcc_op_log_lsa                : '(102|5488)'
+            Last_block_oldest_mvcc_id      : 4
+            Last_block_newest_mvcc_id      : 5
 
 .. code-block:: sql
             
@@ -819,39 +846,52 @@ Smallest_lsa_at_last_checkpoint     VARCHAR(64)
     <00001> Volume_id                      : -2
             Magic_symbol                   : 'CUBRID/LogActive'
             Magic_symbol_location          : 16
-            Creation_time                  : 04:42:28.000 PM 12/11/2013
+            Creation_time                  : 05:27:05.000 PM 02/05/2016
             Release                        : '10.0.0'
-            Compatibility_disk_version     : '9.2'
+            Compatibility_disk_version     : '10'
             Db_page_size                   : 16384
             Log_page_size                  : 16384
             Shutdown                       : 0
-            Next_trans_id                  : 607146
-            Num_avg_trans                  : 0
-            Num_avg_locks                  : 0
+            Next_trans_id                  : 15
+            Num_avg_trans                  : 3
+            Num_avg_locks                  : 30
             Num_active_log_pages           : 1279
-            Db_charset                     : 5
-            First_active_log_page          : 66508
-            Current_append                 : '(66637|14280)'
-            Checkpoint                     : '(66637|14280)'
-            Next_archive_page_id           : 66456
-            Active_physical_page_id        : 1228
-            Next_archive_num               : 52
-            Last_archive_num_for_syscrashes: 52
+            Db_charset                     : 3
+            First_active_log_page          : 0
+            Current_append                 : '(101|8016)'
+            Checkpoint                     : '(101|7936)'
+            Next_archive_page_id           : 0
+            Active_physical_page_id        : 1
+            Next_archive_num               : 0
+            Last_archive_num_for_syscrashes: -1
+            Db_charset                     : 3
+            First_active_log_page          : 0
+            Current_append                 : '(101|8016)'
+            Checkpoint                     : '(101|7936)'
+            Next_archive_page_id           : 0
+            Active_physical_page_id        : 1
+            Next_archive_num               : 0
+            Last_archive_num_for_syscrashes: -1
             Last_deleted_archive_num       : -1
-            Backup_lsa_level0              : '(66636|5240)'
+            Backup_lsa_level0              : '(-1|-1)'
             Backup_lsa_level1              : '(-1|-1)'
             Backup_lsa_level2              : '(-1|-1)'
-            Log_prefix                     : 'demodb'
+            Log_prefix                     : 'mvccdb'
             Has_logging_been_skipped       : 0
             Perm_status                    : 'LOG_PSTAT_CLEAR'
-            Backup_info_level0             : 'time: Mon Dec 16 14:33:17 2013'
-            Backup_info_level1             : 'time: none'
-            Backup_info_level2             : 'time: none'
+            Backup_info_level0             : 'time: N/A'
+            Backup_info_level1             : 'time: N/A'
+            Backup_info_level2             : 'time: N/A'
             Ha_server_state                : 'idle'
-            Ha_file                        : 'unknown'
-            Eof_lsa                        : '(66637|14280)'
-            Smallest_lsa_at_last_checkpoint: '(66637|14280)'
+            Ha_file                        : 'UNKNOWN'
+            Eof_lsa                        : '(101|8016)'
+            Smallest_lsa_at_last_checkpoint: '(101|7936)'
+            Next_mvcc_id                   : 4
+            Mvcc_op_log_lsa                : '(-1|-1)'
+            Last_block_oldest_mvcc_id      : NULL
+            Last_block_newest_mvcc_id      : NULL
 
+            
 SHOW ARCHIVE LOG HEADER
 -----------------------
 
@@ -1243,6 +1283,7 @@ Contiguous_free_area                INT             페이지 내 연속된 여�
 Free_space_offset                   INT             페이지의 처음부터 페이지 내 첫번째 여유 공간 바이트 영역까지의 바이트 오프셋
 Need_update_best_hint               INT             undo 복구를 위해 저장이 필요하면 true
 Is_saving                           INT             이 페이지를 위해 베스트 페이지를 업데이트해야 되면 true
+Flags                               INT             Flag value of the page
 =================================== =============== ======================================================================================================================================
 
 다음은 이 구문을 수행한 예이다.
@@ -1265,6 +1306,7 @@ Is_saving                           INT             이 페이지를 위해 베�
             Free_space_offset    : 460
             Need_update_best_hint: 1
             Is_saving            : 0
+            Flags                : 0
 
 SHOW SLOTTED PAGE SLOTS
 -----------------------
@@ -1351,7 +1393,8 @@ Num_keys                            INT             B-트리에 존재하는 고
 Topclass_oid                        VARCHAR(64)     탑클래스 OID 또는 NULL OID(비고유 인덱스)(volid|pageid|slotid)
 Unique                              INT             고유 또는 비고유
 Overflow_vfid                       VARCHAR(32)     VFID (volid|fileid)
-Key_type                            VARCHAR(32)     타입 이름
+Key_type                            VARCHAR(256)     타입 이름
+Columns                             VARCHAR(256)    the list of columns which consists of the index
 =================================== =============== ======================================================================================================================================
 
 다음은 이 구문을 수행한 예이다.
