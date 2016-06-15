@@ -671,6 +671,7 @@ I/O 읽기를 많이 발생시킨 질의를 기록한다. cubrid.conf의 **sql_t
 교착 상태(deadlock)가 발생했을 때, cycle에 속해있는 트랜잭션의 잠금(lock) 정보들을 기록한다. 다음은 출력 예이다.
  
 ::
+
     02/02/16 20:56:17.638 - DEADLOCK
     client: public@testhost|csql(21541)
     hold:
