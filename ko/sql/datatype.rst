@@ -221,17 +221,17 @@ DOUBLE, DOUBLE PRECISION
 +------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
 | **DATETIME**     | 8         | 0001년 1월 1일 0시 0분 0.000초  | 9999년 12월 31일 23시 59분 59.999초 | 예외적으로 DATETIME '0000-00-00 00:00:00'을 입력할 수 있다.           |
 +------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
-| **TIMESTAMPLTZ** | 4         | Depends on timezone             | Depends on timezone                 | Timestamp with local timezone.                                        |
-|                  |           | 1970-01-01 00:00:01 (GMT)       | 2038-01-19 03:14:07 (GMT)           | As an exception, TIMESTAMPLTZ'0000-00-00 00:00:00' format is allowed. |
+| **TIMESTAMPLTZ** | 4         | timezone에 따라 다름             | timezone에 따라 다름               | 지역 timezone의 타임스탬프.                                           |
+|                  |           | 1970-01-01 00:00:01 (GMT)       | 2038-01-19 03:14:07 (GMT)           | 예외적으로, TIMESTAMPLTZ'0000-00-00 00:00:00' 형태가 허용된다.        |
 +------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
-| **TIMESTAMPTZ**  | 8         | Depends on timezone             | Depends on timezone                 | Timestamp with timezone.                                              |
-|                  |           | 1970-01-01 00:00:01 (GMT)       | 2038-01-19 03:14:07 (GMT)           | As an exception, TIMESTAMPTZ '0000-00-00 00:00:00' format is allowed. |
+| **TIMESTAMPTZ**  | 8         | timezone에 따라 다름             | timezone에 따라 다름               | 지역 timezone의 타임스탬프.                                           |
+|                  |           | 1970-01-01 00:00:01 (GMT)       | 2038-01-19 03:14:07 (GMT)           | 예외적으로, TIMESTAMPTZ '0000-00-00 00:00:00' 형태가 허용된다.        |
 +------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
-| **DATETIMELTZ**  | 8         | Depends on timezone             | Depends on timezone                 | Datetime with local timezone.                                         |
-|                  |           | 0001-01-01 00:00:0.000 UTC      | 9999-12-31 23:59:59.999             | As an exception, DATETIMELTZ '0000-00-00 00:00:00' format is allowed. |
+| **DATETIMELTZ**  | 8         | timezone에 따라 다름             | timezone에 따라 다름               | 지역 timezone의 날짜 시간                                             |
+|                  |           | 0001-01-01 00:00:0.000 UTC      | 9999-12-31 23:59:59.999             | 예외적으로, DATETIMELTZ '0000-00-00 00:00:00' 형태가 허용된다.        |
 +------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
-| **DATETIMETZ**   | 12        | Depends on timezone             | Depends on timezone                 | Datetime with timezone.                                               |
-|                  |           | 0001-01-01 00:00:0.000 UTC      | 9999-12-31 23:59:59.999             | As an exception, DATETIMETZ '0000-00-00 00:00:00' format is allowed.  |
+| **DATETIMETZ**   | 12        | timezone에 따라 다름             | timezone에 따라 다름               | timezone의 날짜 시간.                                                 |
+|                  |           | 0001-01-01 00:00:0.000 UTC      | 9999-12-31 23:59:59.999             | 예외적으로, DATETIMETZ '0000-00-00 00:00:00' 형태가 허용된다.         |
 +------------------+-----------+---------------------------------+-------------------------------------+-----------------------------------------------------------------------+
 
 **범위와 해상도(Range and Resolution)**
@@ -701,8 +701,13 @@ DATETIME
 
 타임존이 있는 날짜/시간 타입의 최대값, 최소값, 범위와 해상도 등 나머지 특징들은 일반적인 날짜/시간 타입의 특징과 동일하다.
 
-다음은 세션 타임존의 변경에 따라 DATETIME, DATETIMETZ와 DATETIMELTZ의 출력 값이 다르게 나타나는 예이다.
+.. note::
 
+    *   CUBRID에서, TIMESTAMP가 1970년 1월 1일 UTC 이후 경과된 '초'로 보관된다(UNIX 시간).
+    *   몇 DBMS의 TIMESTAMP는 DATETIME CUBRID와 비슷한 방식이며 'milliseconds'를 보관한다.
+
+다음은 세션 타임존의 변경에 따라 DATETIME, DATETIMETZ와 DATETIMELTZ의 출력 값이 다르게 나타나는 예이다.
+ 
 .. code-block:: sql
 
     --  csql> ;set timezone="+09"
@@ -754,73 +759,73 @@ DATETIME
 
 **string 타입을 timestamp 타입으로 변환**
 
-Conversion from string to timestamp/timestampltz/timestamptz are performed in context for creating timestamp objects from literals.
+문자열에서 timestamp/timestampltz/timestamptz으로의 변환은 상수로부터 타임스탬프 오브젝트를 생성하는 문맥에 의해서 수행된다.
 
 +----------------------------+-----------------------------+----------------------------+------------------------------+
 | From/to                    | Timestamp                   | Timestampltz               | Timestamptz                  |
 +============================+=============================+============================+==============================+
-| String (without timezone)  | Interpret the date/time     | Interpret the date/time    | Interpret the date/time      |
-|                            | parts in session timezone.  | parts in session timezone. | parts in session timezone.   |
-|                            | Convert to UTC, encode and  | Convert to UTC, encode and | Convert to UTC, encode and   |
-|                            | store the Unix epoch.       | store the Unix epoch.      | store the Unix epoch and     |
-|                            |                             |                            | TZ_ID of session             |
+| String (timezone 생략)  | 날짜/시간 부분을               | 날짜/시간 부분을           | 날짜/시간 부분을             |
+|                            | 세션 타임존으로 해석.       | 세션 타임존으로 해석.      | 세션 타임존으로 해석.        |
+|                            | UTC로 변환, 암호화하여      | UTC로 변환, 암호화하여     | UTC로 변환, 암호화하여       |
+|                            | Unix 시간으로 저장.         | Unix 시간으로 저장.        | Unix 시간과                  |
+|                            |                             |                            | 세션의 TZ_ID로 저장          |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
-| String (with timezone)     | Error (timezone part is not | Convert from value's       | Convert from value's         |
-|                            | supported for timestamp).   | timezone to UTC.           | timezone to UTC.             |
-|                            |                             | Encode and store the Unix  | Encode and store the Unix    |
-|                            |                             | epoch.                     | epoch and TZ_ID of value's   |
-|                            |                             |                            | timezone.                    |
+| String (timezone과 함께)   | 오류 (timezone 부분은       | 값의 타임존에서            | 값의 타임존에서              |
+|                            | timestamp에서 허용 안됨).   | UTC로 변경.                | UTC로 변경.                  |
+|                            |                             | 암호화후 Unix              | 암호화후 Unix                |
+|                            |                             | 시간으로 저장.             | 시간으로 저장 '값 타임존'의  |
+|                            |                             |                            |  TZ_ID로 저장.               |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
 
 **string 타입을 datetime 타입으로 변환**
 
-Conversion from string to datetime/datetimeltz/datetimetz are performed in context for creating datetime objects from literals.
+문자열에서 datetime/datetimeltz/datetimetz 으로의 변환은 상수로부터 datetime 오브젝트를 생성하는 문맥에 의해서 수행된다.
 
 +----------------------------+-----------------------------+----------------------------+------------------------------+
 | From/to                    | Datetime                    | Datetimeltz                | Datetimetz                   |
 +============================+=============================+============================+==============================+
-| String (without timezone)  | Store the parsed values     | Interpret the date/time    | Interpret the date/time      |
-|                            | from string.                | parts in session timezone. | parts in session timezone.   |
-|                            |                             | Convert to UTC and store   | Convert to UTC and store the |
-|                            |                             | the new values.            | new values and TZ_ID of      |
-|                            |                             |                            | session                      |
+| String (timezone 생략)     | 문자열에서 분석된           | 날짜/시간 부분을           | 날짜/시간 부분을             |
+|                            | 값을 저장.                  | 세션 타임존으로 해석.      | 세션 타임존으로 해석.        |
+|                            |                             | UTC로 변환 후              | 세션 타임존으로 해석         |
+|                            |                             | 새로운 값들로 저장.        | 새로운 값들로 저장하고       |
+|                            |                             |                            | 세션의 TZ_ID로 저장          |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
-| String (with timezone)     | Error (timezone part is not | Convert from value's       | Convert from value's         |
-|                            | supported for datetime).    | timezone to UTC.           | timezone to UTC.             |
-|                            |                             | Store the new values in    | Store the new values in UTC  |
-|                            |                             | UTC reference.             | reference TZ_ID of           |
-|                            |                             |                            | string's timezone.           |
+| String (timezone과 함께)   | 오류 (timezone 부분은       | '값'의 타임존에서          | '값'의 타임존에              |
+|                            | datetime에서 허용 안됨).    | UTC로 변환.                | UTC로 변환.                  |
+|                            |                             | 새로운 값을 UTC            | UTC 참조의 새로운 값을       |
+|                            |                             | 참조 형태로 저장.          | 문자열 타임존의              |
+|                            |                             |                            | TZ_ID로 저장 .               |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
 
 **datetime, timestamp 타입을 string (값의 출력) 타입으로 변환**
 
 +----------------------------+-----------------------------+----------------------------+------------------------------+
-| From/to                    | String (timezone printing   | String (timezone force     | String (no requirement for   |
-|                            | not allowed)                | print)                     | timezone - free choice)      |
+| From/to                    | String (타임존 출력이       | String (타임존             | String (타임존 요구사항      |
+|                            | 허용되지 않음)              | 강제출력)                  | 없음 - 자유 선택)            |
 +============================+=============================+============================+==============================+
-| TIMESTAMP                  | Decode Unix epoch to        | Decode Unix epoch to       | Decode Unix epoch to session |
-|                            | session timezone and print  | session timezone and print | timezone and print.          |
-|                            |                             | with session timezone.     | Do not print timezone string |
+| TIMESTAMP                  | Unix 시간에서 세션          | Unix 시간에서 세션         | Unix 시간에서 세션 타임존으로|
+|                            | 타임존으로 복호화 후 출력   | 타임존으로 복호화 후       | 복호화 후 출력. 타임존       |
+|                            |                             | 세션 타임존과 같이 출력.   |  문자렬은 출력하지 않는다.   |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
-| TIMESTAMPLTZ               | Decode Unix epoch to        | Decode Unix epoch to       | Decode Unix epoch to session |
-|                            | session timezone and print  | session timezone and print | timezone and print.          |
-|                            |                             | with session timezone.     | Print session timezone.      |
+| TIMESTAMPLTZ               | Unix 시간에서 세션          | Unix 시간에서 세션         | Unix 시간에서 세션           |
+|                            | 타임존으로 복호화 후 출력   | 타임존으로 복호화 후       | 타임존으로 복호화 후 출력.   |
+|                            |                             | 세션 타임존과 같이 출력.   | 세션 타임존 출력.            |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
-| TIMESTAMPTZ                | Decode Unix epoch to        | Decode Unix epoch to       | Decode Unix epoch to         |
-|                            | timezone from value and     | timezone from value and    | timezone from value and      |
-|                            | print it.                   | print it; print timezone   | print it; print timezone     |
-|                            |                             | from value.                | from value.                  |
+| TIMESTAMPTZ                | 값으로부터 Unix 시간을      | 값으로부터 Unix 시간을     | 값으로부터 Unix 시간을       |
+|                            | 타임존으로 복호화후         | 타임존으로 복호화후        | 타임존으로 복호화후          |
+|                            | 출력.                       | 출력.                      | 출력.                        |
+|                            |                             | 값에서 타임존 출력.        | 값에서 타임존 출력.          |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
-| DATETIME                   | Print the stored values.    | Print the stored value and | Print the stored value.      |
-|                            |                             | session timezone.          | Do not print any timezone.   |
+| DATETIME                   | 저장된 값을 출력.           | 저장된 값과                | 저장된 값을 출력.            |
+|                            |                             | 세션 타임존을 출력         | 타임존을 출력하지 않음.      |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
-| DATETIMELTZ                | Convert from UTC to session | Convert from UTC to        | Convert from UTC to session  |
-|                            | timezone and print the new  | session timezone and print | timezone and print it.       |
-|                            | value.                      | it. Print session timezone | Print session timezone.      |
+| DATETIMELTZ                | UTC에서 세션 타임존으로     | UTC에서 세션 타임존으로    | UTC에서 세션 타임존으로      |
+|                            | 변환후 새로운 값을 출력     | 변환후 새로운 값을 출력    | 변환후 새로운 값을 출력.     |
+|                            |                             | 세션 타임존 출력.          | 세션 타임존 출력.            |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
-| DATETIMELTZ                | Convert from UTC to value's | Convert from UTC to        | Convert from UTC to value's  |
-|                            | timezone and print the new  | value's timezone and print | timezone and print it.       |
-|                            | value.                      | it. Print value's timezone | Print value's timezone.      |
+| DATETIMELTZ                | UTC에서 값의 타임존으로     | UTC에서 값의 타임존으로    | UTC에서 값의 타임존으로      |
+|                            | 변환후 새로운 값을 출력     | 변환후 출력                | 변환후 출력                  |
+|                            |                             | 값의 타임존을 출력.        | 값의 타임존을 출력.          |
 +----------------------------+-----------------------------+----------------------------+------------------------------+
 
 
