@@ -130,10 +130,10 @@ DB 서버 연결은 **cubrid_broker.conf**\ 의 **PREFERRED_HOSTS**, **CONNECT_O
 
 .. image:: /images/image20.png
 
-databases.txt의 db-host가 node B:node C:node A 순이므로, B, C, A 순으로 접속을 시도한다. 이때 db-host에 명시된 "node B:node C:node A"는 /etc/hosts 파일에 정의된 실제 호스트 이름이다.
+databases.txt의 db-host가 node B:node C:node A 순이므로, *B*, *C*, *A* 순으로 접속을 시도한다. 이때 db-host에 명시된 "node B:node C:node A"는 /etc/hosts 파일에 정의된 실제 호스트 이름이다.
 
-*   Example 1.  node B는 비정상 종료된 상태이고, node C는 standby 상태이며, node A는 active 상태이다. 따라서 최종적으로 node A와 연결한다.
-*   Example 2.  node B는 비정상 종료된 상태이고, node C는 active 상태이다. 따라서 최종적으로 node C와 연결한다.
+*   Example 1.  *node B*는 비정상 종료된 상태이고, *node C*는 standby 상태이며, *node A*는 active 상태이다. 따라서 최종적으로 *node A*와 연결한다.
+*   Example 2.  *node B*는 비정상 종료된 상태이고, *node C*는 active 상태이다. 따라서 최종적으로 *node C*와 연결한다.
 
 **Read Only**
 
@@ -147,11 +147,11 @@ databases.txt의 db-host가 node B:node C:node A 순이므로, B, C, A 순으로
 
 .. image:: /images/image21.png
 
-databases.txt의 db-host가 node A:node B:node C 순이므로, A, B, C 순으로 접속을 시도한다. 이때 db-host에 명시된 "node A:node B:node C"는 /etc/hosts 파일에 정의된 실제 호스트 이름이다.
+databases.txt의 db-host가 node A:node B:node C 순이므로, *A*, *B*, *C* 순으로 접속을 시도한다. 이때 db-host에 명시된 "node A:node B:node C"는 /etc/hosts 파일에 정의된 실제 호스트 이름이다.
 
-*   Example 1.  node A는 active 상태이고, node B는 standby 상태이다. 따라서 최종적으로 node B와 연결된다.
-*   Example 2.  node A는 active 상태이고, node B는 비정상 종료된 상태이며, node C는 standby 상태이다. 따라서 최종적으로 node C와 연결된다.
-*   Example 3.  node A는 active 상태이고, node B와 node C는 비정상 종료된 상태이다. 따라서 최종적으로 node A와 연결된다.
+*   Example 1.  *node A*는 active 상태이고, *node B*는 standby 상태이다. 따라서 최종적으로 *node B*와 연결된다.
+*   Example 2.  *node A*는 active 상태이고, *node B*는 비정상 종료된 상태이며, *node C*는 standby 상태이다. 따라서 최종적으로 *node C*와 연결된다.
+*   Example 3.  *node A*는 active 상태이고, *node B*와 *node C*는 비정상 종료된 상태이다. 따라서 최종적으로 *node A*와 연결된다.
 
 **Standby Only**
 
@@ -163,11 +163,11 @@ databases.txt의 db-host가 node A:node B:node C 순이므로, A, B, C 순으로
 
 .. image:: /images/image22.png
 
-databases.txt의 db-host가 node A:node B:node C 순이므로, A, B, C 순으로 접속을 시도한다. 이때 db-host에 명시된 "node A:node B:node C"는 /etc/hosts 파일에 정의된 실제 호스트 이름이다.
+databases.txt의 db-host가 node A:node B:node C 순이므로, *A*, *B*, *C* 순으로 접속을 시도한다. 이때 db-host에 명시된 "node A:node B:node C"는 /etc/hosts 파일에 정의된 실제 호스트 이름이다.
 
-*   Example 1.  node A는 active 상태이고, node B는 standby 상태이다. 따라서 최종적으로 node B와 연결된다.
-*   Example 2.  node A는 active 상태이고, node B는 비정상 종료된 상태이며, node C는 standby 상태이다. 따라서 최종적으로 node C와 연결된다.
-*   Example 3.  node A는 active 상태이고, node B와 node C는 비정상 종료된 상태이다. 따라서 최종적으로 어떤 노드와도 연결되지 않는다. 이 부분이 Read Only 브로커와의 차이점이다.
+*   Example 1.  *node A*는 active 상태이고, *node B*는 standby 상태이다. 따라서 최종적으로 *node B*와 연결된다.
+*   Example 2.  *node A*는 active 상태이고, *node B*는 비정상 종료된 상태이며, *node C*는 standby 상태이다. 따라서 최종적으로 *node C*와 연결된다.
+*   Example 3.  *node A*는 active 상태이고, *node B*와 *node C*는 비정상 종료된 상태이다. 따라서 최종적으로 어떤 노드와도 연결되지 않는다. 이 부분이 Read Only 브로커와의 차이점이다.
 
 CUBRID HA 기능
 ==============
@@ -206,7 +206,7 @@ CUBRID는 3-tier DBMS로, 응용 프로그램과 데이터베이스 서버를 �
 
 .. image:: /images/image25.png
 
-다음은 마스터 노드, 슬레이브 노드의 각 장비 내에 Read Write(RW) 브로커와 Read Only(RO) 브로커를 구성한 예이다. app1과 app2 URL의 첫 번째 접속은 각각 *broker A1* (RW), *broker B2* (RO) 이고, 두 번째 접속(**altHosts**)은 각각 *broker A2* (RO), *broker B1* (RW)이다. *nodeA* 를 포함한 장비가 고장나면, app1과 app2는 *nodeB* 를 포함한 장비의 브로커에 접속한다.
+다음은 마스터 노드, 슬레이브 노드의 각 장비 내에 Read Write(RW) 브로커와 Read Only(RO) 브로커를 구성한 예이다. *app1*과 *app2* URL의 첫 번째 접속은 각각 *broker A1* (RW), *broker B2* (RO) 이고, 두 번째 접속(**altHosts**)은 각각 *broker A2* (RO), *broker B1* (RW)이다. *nodeA* 를 포함한 장비가 고장나면, *app1*과 *app2*는 *nodeB* 를 포함한 장비의 브로커에 접속한다.
 
 .. image:: /images/image26.png
 
@@ -755,13 +755,9 @@ CUBRID HA의 복제 로그 반영 프로세스에서 에러가 발생하면 해�
 
 복제 지연으로 인해 우선 순위가 낮은 DB에 연결된 CAS는 **cubrid_broker.conf**\의 :ref:`RECONNECT_TIME <reconnect_time>` 파라미터로 명시한 시간이 경과하면 복제 지연이 해소되었을 것으로 기대하여, 우선 순위가 높은 standby DB에 재접속을 시도한다. 
 
-**ha_delay_limit_delta** 
-  
-위의 **ha_delay_limit** 설명을 참고한다. 
-
 **ha_copy_log_timeout**
 
-어떤 노드의 데이터베이스 서버 프로세스가 상대방 노드의 복제 로그 복사 프로세스로부터 응답을 대기하는 최대 시간이다. 기본값은 5(초)이다. 이 값이 -1이면 무한 대기한다.
+어떤 노드의 데이터베이스 서버 프로세스가 상대방 노드의 복제 로그 복사 프로세스로부터 응답을 대기하는 최대 시간이다. 기본값은 5(초)이다. 이 값이 -1이면 무한 대기한다. 오직 **SYNC** 로그 복제 모드(**ha_copy_sync_mode**) 파라미터와 함께 작동한다.
 
 **ha_monitor_disk_failure_interval** 
   
@@ -774,25 +770,6 @@ CUBRID HA의 복제 로그 반영 프로세스에서 에러가 발생하면 해�
 
 서버 프로세스의 비정상 상황이 지속되는 경우 서버 재시작이 무한 반복될 수 있고, 이런 경우를 유발하는 노드는 HA 구성에서 제외하는 것이 바람직하다. 비정상 상황이 지속되면 보통 짧은 시간 간격 이내에 서버가 재시작되므로, 이를 감지하기 위해 이 파라미터로 시간 간격을 명시한다. 명시한 시간 간격 이내에 서버가 재시작되면 CUBRID는 이 서버를 비정상으로 간주하고 해당 노드를 HA 구성에서 제외(demote)한다.
 기본값은 2min이며, 단위를 지정하지 않으면 밀리초(msec)로 지정된다.
-
-Prefetch Log 
-^^^^^^^^^^^^ 
-  
-다음은 **prefetchlogdb** 유틸리티에서 사용하는 파라미터들이다. 
-  
-**ha_prefetchlogdb_enable** 
-  
-**prefetchlogdb** 프로세스를 사용할 것인지 여부를 설정한다. 기본값은 **no**\이다. 
-  
-**ha_prefetchlogdb_max_thread_count** 
-  
-prefetch를 수행하는 최대 스레드 개수이다. 기본값은 **4**\이다. "(장비의 CPU core 수)/2" 정도가 적절한 설정값이다. 
-  
-이 값을 크게 설정하면 CPU 사용량이 급증할 수 있고, 너무 작게 설정하면 prefetch 효과가 작을 수 있다. 
-  
-**ha_prefetchlogdb_max_page_count** 
-  
-최대로 prefetch하는 페이지 개수이다. 기본값은 **1000**\이다.
 
 SQL 로깅
 ^^^^^^^^
@@ -881,8 +858,8 @@ cubrid_broker.conf
 
 CAS가 연결할 호스트 순서를 결정할 때 **$CUBRID_DATABASES/databases.txt**\의 **db-host**\ 에 설정된 호스트에서 순서대로 연결을 시도할지 랜덤한 순서대로 연결을 시도할지를 지정하는 파라미터이다. 
 
-기본값은 **SEQ**\ 이며 순서대로 연결을 시도한다. 이 값이 **RANDOM**\ 이면 랜덤한 순서대로 연결을 시도한다.
-**PREFERRED_HOSTS** 파라미터 값이 명시되어 있으면 먼저 **PREFERRED_HOSTS**\ 에 명시된 호스트의 순서대로 연결을 시도한 후 실패할 경우에만 **db-host**\의 설정 값을 사용한다. 그리고 **CONNECT_ORDER**\는 **PREFERRED_HOSTS**\의 순서에는 영향을 주지 않는다.
+기본값은 **SEQ**\ 이며 순서대로 연결을 시도한다. **RANDOM**\ 이면 랜덤한 순서대로 연결을 시도한다.
+**PREFERRED_HOSTS** 파라미터 값이 주어지면 먼저 **PREFERRED_HOSTS**\ 에 명시된 호스트의 순서대로 연결을 시도한 후 실패할 경우에만 **db-host**\의 설정 값을 사용한다. 그리고 **CONNECT_ORDER**\는 **PREFERRED_HOSTS**\의 순서에는 영향을 주지 않는다.
 
 한 곳으로 DB 접속이 집중되는 상황이 우려되는 경우 이 값을 **RANDOM**\으로 설정한다.
 
@@ -923,15 +900,15 @@ CAS가 연결할 호스트 순서를 결정할 때 **$CUBRID_DATABASES/databases
 
 **databases.txt**\ 의 **db-host**\ 에 여러 대의 DB 서버를 명시한 HA 환경에서 거의 모든 DB 서버에서 복제 지연이 발생하는 경우, **MAX_NUM_DELAYED_HOSTS_LOOKUP** 파라미터에서 명시한 대수의 복제 지연 서버까지만 연결 여부를 검토한 후 연결을 결정한다(어떤 DB 서버의 복제 지연 여부는 standby 상태의 호스트만을 대상으로 판단하며, :ref:`ha_delay_limit <ha_delay_limit>` 파라미터의 설정에 따라 결정됨). 또한 **PREFERRED_HOSTS**\ 에는 **MAX_NUM_DELAYED_HOSTS_LOOKUP**\ 이 적용되지 않는다.
 
-예를 들어 **db-host**\ 가 "host1:host2:host3:host4:host5"로 명시되고 "MAX_NUM_DELAYED_HOSTS_LOOKUP=2"일 때, 
+예를 들어 **db-host**\ 가 "host1:host2:host3:host4:host5"로 명시되고 "MAX_NUM_DELAYED_HOSTS_LOOKUP=2"일 때, 만약 호스트들의 상태는 다음과 같을 경우 :
 
-*   host1: active 상태
-*   host2: standby 상태, 복제 지연
-*   host3: 접속 불가
-*   host4: standby 상태, 복제 지연
-*   host5: standby 상태, 복제 지연 없음
+*   *host1*: active 상태
+*   *host2*: standby 상태, 복제 지연
+*   *host3*: 접속 불가
+*   *host4*: standby 상태, 복제 지연
+*   *host5*: standby 상태, 복제 지연 없음
 
-이면 브로커는 먼저 복제 지연 상태인 2개의 호스트 host2, host4까지 접속을 시도하고, host4에 접속하는 것으로 결정한다.
+이면 브로커는 먼저 복제 지연 상태인 2개의 호스트 *host2*, *host4*까지 접속을 시도하고, *host4*에 접속하는 것으로 결정한다.
 
 이렇게 동작하는 이유는 **MAX_NUM_DELAYED_HOSTS_LOOKUP**\ 에서 명시한 개수까지만 복제 지연이 있다면 이후의 호스트들에도 복제 지연이 있을 것이라는 가정을 하기 때문이며, 따라서 더 이상 뒤의 호스트에 대해 접속 시도를 하지 않고 복제 지연이 있지만 가장 마지막에 접속을 시도했던 호스트에 접속하기로 결정하는 것이다. 단, **PREFERRED_HOSTS**\ 가 같이 명시되는 경우 **PREFERRED_HOSTS**\ 에 명시된 모든 호스트들에 대해 접속을 먼저 시도한 후 다시 db-host 리스트의 처음부터 접속을 시도한다. 
 
@@ -941,11 +918,11 @@ CAS가 연결할 호스트 순서를 결정할 때 **$CUBRID_DATABASES/databases
 
     먼저 **PREFERRED_HOSTS**\ 의 호스트들에 접속을 시도한 후, databases.txt의 호스트들에 접속을 시도한다. 이때는 **ACCESS_MODE**\ 에 따라 DB의 상태가 active인지, standby인지도 검사하여 접속을 결정한다.
 
-*   2차 연결: 1차 연결 실패 후 실패한 위치에서부터 두번째로 접속을 시도하는 단계. DB 상태(active/standby)와 복제 지연 여부를 무시. 단, SO 브로커는 항상 standby DB에만 접속 허용.
+*   2차 연결: 1차 연결 실패 후 실패한 위치에서부터 두번째로 접속을 시도하는 단계. DB 상태(active/standby)와 복제 지연 여부를 무시. 단, **SO** 브로커는 항상 standby DB에만 접속 허용.
 
-    이때는 DB의 상태(active/standby) 및 복제 지연 여부와 무관하게 접속이 가능하면 접속을 결정한다. 하지만 질의 수행 단계에서 에러가 발생할 수 있다. 예를 들어 ACCESS_MODE=RW인데 standby 상태의 서버에 접속하면 INSERT 질의 수행 시 에러가 발생한다. 에러 발생과는 무관하게, standby로 연결되어 트랜잭션이 수행된 이후에는 1차 연결을 다시 시도한다. 단, SO 브로커는 절대로 active DB에 연결될 수 없다.
+    이때는 DB의 상태(active/standby) 및 복제 지연 여부와 무관하게 접속이 가능하면 접속을 결정한다. 하지만 질의 수행 단계에서 에러가 발생할 수 있다. 예를 들어 **ACCESS_MODE** 가 **RW**인데 standby 상태의 서버에 접속하면 INSERT 질의 수행 시 에러가 발생한다. 에러 발생과는 무관하게, standby로 연결되어 트랜잭션이 수행된 이후에는 1차 연결을 다시 시도한다. 단, **SO** 브로커는 절대로 active DB에 연결될 수 없다.
     
-**MAX_NUM_DELAYED_HOSTS_LOOKUP**\ 의 값에 따라 접속을 시도하는 호스트의 개수가 제한되는 방법은 다음과 같다.
+**MAX_NUM_DELAYED_HOSTS_LOOKUP**\ 의 값에 따라 접속을 시도하는 호스트의 개수가 제한되는 방법은 다음과 같다:
 
 *   MAX_NUM_DELAYED_HOSTS_LOOKUP=-1
 
@@ -953,7 +930,7 @@ CAS가 연결할 호스트 순서를 결정할 때 **$CUBRID_DATABASES/databases
 
 *   MAX_NUM_DELAYED_HOSTS_LOOKUP=0
 
-    1차 연결에서 **PREFERRED_HOSTS**\ 에만 연결을 시도한 후 2차 연결이 진행되며, 2차 연결에서는 복제 지연이 있는 DB 서버이거나 원하는 DB 상태(active/standby)가 아니더라도 연결을 시도한다. 즉, 2차 연결이므로 RW 브로커도 standby 호스트에 연결될 수 있으며, RO 브로커도 active 호스트에 연결될 수 있다. 단, SO 브로커는 절대로 active DB에 연결될 수 없다.
+    1차 연결에서 **PREFERRED_HOSTS**\ 에만 연결을 시도한 후 2차 연결이 진행되며, 2차 연결에서는 복제 지연이 있는 DB 서버이거나 원하는 DB 상태(active/standby)가 아니더라도 연결을 시도한다. 즉, 2차 연결이므로 **RW** 브로커도 standby 호스트에 연결될 수 있으며, **RO** 브로커도 active 호스트에 연결될 수 있다. 단, **SO** 브로커는 절대로 active DB에 연결될 수 없다.
 
 *   MAX_NUM_DELAYED_HOSTS_LOOKUP=n(>0)
 
@@ -964,7 +941,7 @@ CAS가 연결할 호스트 순서를 결정할 때 **$CUBRID_DATABASES/databases
 
 **RECONNECT_TIME**
 
-브로커가 **PREFERRED_HOSTS**\ 가 아닌 DB 서버에 접속하려고 하거나, RO 브로커가 active DB 서버에 접속하려고 하거나, 브로커가 복제 지연 DB 서버에 접속하려는 경우, **RECONNECT_TIME**\ (기본값: 10분)을 초과하면 DB 서버에 재연결을 시도한다.
+브로커가 **PREFERRED_HOSTS**\ 가 아닌 DB 서버에 접속하려고 하거나, **RO** 브로커가 active DB 서버에 접속하려고 하거나, 브로커가 복제 지연 DB 서버에 접속하려는 경우, **RECONNECT_TIME**\ (기본값: 10분)을 초과하면 DB 서버에 재연결을 시도한다.
 
 보다 자세한 내용은 :ref:`RECONNECT_TIME <reconnect_time>`\ 을 참고한다.
 
@@ -1085,9 +1062,9 @@ HA 환경에서 브로커는 여러 개의 DB 서버 중 하나와 접속을 결
     1.  **PREFERRED_HOSTS**\ 에 명시된 순서로 접속을 시도한다. **ACCESS_MODE**\ 와 맞지 않는 상태의 DB 또는 복제 지연이 발생하는 DB에는 접속을 거부한다.
     2.  **CONNECT_ORDER**\ 의 값에 따라 **databases.txt**\에 명시된 순서 혹은 무작위로 접속을 시도한다. **ACCESS_MODE**\ 에 따라 DB 서버의 상태를 확인하며, **MAX_NUM_DELAYED_HOSTS_LOOKUP** 개수까지 복제 지연 여부도 확인한다.
 
-*   2차 연결: DB 상태(active/standby)와 복제 지연 여부를 무시. 단, SO 브로커는 항상 standby DB에만 접속 허용.
+*   2차 연결: DB 상태(active/standby)와 복제 지연 여부를 무시. 단, **SO** 브로커는 항상 standby DB에만 접속 허용.
 
-    1.  **PREFERRED_HOSTS**\ 에 명시된 순서로 접속을 시도한다. DB 서버의 상태가 **ACCESS_MODE**\ 와 맞지 않거나 DB에서 복제 지연이 발생하더라도 접속을 허용한다. 단, SO 브로커는 절대로 active DB에 연결될 수 없다.
+    1.  **PREFERRED_HOSTS**\ 에 명시된 순서로 접속을 시도한다. DB 서버의 상태가 **ACCESS_MODE**\ 와 맞지 않거나 DB에서 복제 지연이 발생하더라도 접속을 허용한다. 단, **SO** 브로커는 절대로 active DB에 연결될 수 없다.
     2.  **CONNECT_ORDER**\ 의 값에 따라 **databases.txt**\에 명시된 순서 혹은 무작위로 접속을 시도한다. DB 서버의 상태 및 복제 지연 여부와 무관하게 접속이 가능하면 된다. 
    
 파라미터 설정에 따른 동작의 예
@@ -1097,11 +1074,11 @@ HA 환경에서 브로커는 여러 개의 DB 서버 중 하나와 접속을 결
 
 **호스트 DB 상태**
 
-*   host1: active
-*   host2: standby, 복제 지연
-*   host3: standby, replica, 접속 불가
-*   host4: standby, replica, 복제 지연
-*   host5: standby, replica, 복제 지연
+*   *host1*: active
+*   *host2*: standby, 복제 지연
+*   *host3*: standby, replica, 접속 불가
+*   *host4*: standby, replica, 복제 지연
+*   *host5*: standby, replica, 복제 지연
 
 호스트 DB의 상태가 위와 같을 때, 설정에 따른 동작의 예는 다음과 같다.
 
@@ -1116,8 +1093,8 @@ HA 환경에서 브로커는 여러 개의 DB 서버 중 하나와 접속을 결
 +=======+============================================+======================================================================================================+
 | 1     | * **ACCESS_MODE=RW**                       | 1차 연결 시도 시 DB 상태가 active인지 확인한다.                                                      |
 |       | * PREFERRED_HOSTS=host2:host3              |                                                                                                      |
-|       | * db-host=host1:host2:host3:host4:host5    | * PREFERRED_HOSTS의 host2는 복제 지연이고 host3는 접속 불가이므로 db-host에 접속을 시도한다.         |
-|       | * MAX_NUM_DELAYED_HOSTS_LOOKUP=-1          | * host1이 active이므로 접속에 성공한다.                                                              |
+|       | * db-host=host1:host2:host3:host4:host5    | * PREFERRED_HOSTS의 host2는 복제 지연이고 *host3*는 접속 불가이므로 db-host에 접속을 시도한다.       |
+|       | * MAX_NUM_DELAYED_HOSTS_LOOKUP=-1          | * *host1*이 active이므로 접속에 성공한다.                                                            |
 |       | * CONNECT_ORDER=SEQ                        |                                                                                                      |
 |       |                                            | PREFERRED_HOSTS에 접속하지 않았으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
@@ -1127,39 +1104,39 @@ HA 환경에서 브로커는 여러 개의 DB 서버 중 하나와 접속을 결
 |       | * CONNECT_ORDER=SEQ                        |                                                                                                      |
 |       |                                            | 2차 연결 시도 시 DB 상태와 복제 지연 여부는 확인하지 않는다.                                         |
 |       |                                            |                                                                                                      |
-|       |                                            | * 가장 마지막에 접속했던 host5가 접속에 성공한다.                                                    |
+|       |                                            | * 가장 마지막에 접속했던 *host5*가 접속에 성공한다.                                                  |
 |       |                                            |                                                                                                      |
 |       |                                            | 복제 지연 서버와 접속했으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                        |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
 | 2-1   | * (+)PREFERRED_HOSTS=host1:host3           | 1차 연결 시도 시 DB 상태가 standby인지 확인한다.                                                     |
 |       |                                            |                                                                                                      |
-|       |                                            | * PREFERRED_HOSTS의 host1은 active이고 host3는 접속이 불가하므로 db-host에 접속을 시도한다.          |
+|       |                                            | * PREFERRED_HOSTS의 *host1*은 active이고 *host3*는 접속이 불가하므로 db-host에 접속을 시도한다.      |
 |       |                                            | * DB 상태가 standby인 호스트는 모두 복제 지연 또는 접속 불가이므로 1차 연결에는 실패한다.            |
 |       |                                            |                                                                                                      |
 |       |                                            | 2차 연결 시도 시 DB 상태와 복제 지연 여부는 확인하지 않는다.                                         |
 |       |                                            |                                                                                                      |
-|       |                                            | * PREFERRED_HOSTS의 host1은 active이지만 접속이 가능하므로 브로커와의 접속에 성공한다.               |
+|       |                                            | * PREFERRED_HOSTS의 *host1*은 active이지만 접속이 가능하므로 브로커와의 접속에 성공한다.             |
 |       |                                            |                                                                                                      |
 |       |                                            | active 서버와 접속했으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                           |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
 | 2-2   | * (+)PREFERRED_HOSTS=host1:host3           | 1차 연결 시도 시 DB 상태가 standby인지 확인한다.                                                     |
 |       |                                            |                                                                                                      |
-|       | * (#)MAX_NUM_DELAYED_HOSTS_LOOKUP=0        | * PREFERRED_HOSTS의 host1은 active이고 host3는 접속이 불가하다.                                      |
+|       | * (#)MAX_NUM_DELAYED_HOSTS_LOOKUP=0        | * PREFERRED_HOSTS의 *host1*은 active이고 *host3*는 접속이 불가하다.                                  |
 |       |                                            | * db-host에는 접속을 시도하지 않는다.                                                                |
 |       |                                            |                                                                                                      |
 |       |                                            | 2차 연결 시도 시 DB 상태와 복제 지연 여부는 확인하지 않는다.                                         |
 |       |                                            |                                                                                                      |
-|       |                                            | * PREFERRED_HOSTS의 host1은 active이지만 접속이 가능하므로 접속에 성공한다.                          |
+|       |                                            | * PREFERRED_HOSTS의 *host1*은 active이지만 접속이 가능하므로 접속에 성공한다.                        |
 |       |                                            |                                                                                                      |
 |       |                                            | active 서버와 접속했으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                           |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
 | 2-3   | * (#)MAX_NUM_DELAYED_HOSTS_LOOKUP=2        | 1차 연결 시도 시  DB 상태가 standby인지 확인한다.                                                    |
 |       |                                            |                                                                                                      |
-|       |                                            | * DB 상태가 standby인 호스트에서 host2, host4까지 복제 지연임을 확인한 후, 1차 연결에는 실패한다.    |
+|       |                                            | * DB 상태가 standby 호스트에서 *host2*, *host4*까지 복제 지연임을 확인한 후, 1차 연결에는 실패한다.  |
 |       |                                            |                                                                                                      |
 |       |                                            | 2차 연결 시도 시 DB 상태와 복제 지연 여부는 확인하지 않는다.                                         |
 |       |                                            |                                                                                                      |
-|       |                                            | * 가장 마지막에 접속했던 host4가 접속에 성공한다.                                                    |
+|       |                                            | * 가장 마지막에 접속했던 *host4*가 접속에 성공한다.                                                  |
 |       |                                            |                                                                                                      |
 |       |                                            | 복제 지연 서버와 접속했으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                        |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
@@ -1169,41 +1146,41 @@ HA 환경에서 브로커는 여러 개의 DB 서버 중 하나와 접속을 결
 |       | * MAX_NUM_DELAYED_HOSTS_LOOKUP=-1          |                                                                                                      |
 |       | * CONNECT_ORDER=SEQ                        | 2차 연결 시도 시 DB 상태가 standby인지 확인하지만 복제 지연 여부는 확인하지 않는다.                  |
 |       |                                            |                                                                                                      |
-|       |                                            | * 가장 마지막에 접속했던 host5가 접속에 성공한다.                                                    |
+|       |                                            | * 가장 마지막에 접속했던 *host5*가 접속에 성공한다.                                                  |
 |       |                                            |                                                                                                      |
 |       |                                            | 복제 지연 서버와 접속했으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                        |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
 | 3-1   | * ACCESS_MODE=SO                           | 1차 연결 시도 시 DB 상태가 standby인지 확인한다.                                                     |
 |       |                                            |                                                                                                      |
-|       | * PREFERRED_HOSTS=host1:host3              | * PREFERRED_HOSTS의 host1은 active이고 host3는 접속이 불가하므로 db-host에 접속을 시도한다.          |
+|       | * PREFERRED_HOSTS=host1:host3              | * PREFERRED_HOSTS의 *host1*은 active이고 *host3*는 접속이 불가하므로 db-host에 접속을 시도한다.      |
 |       | * db-host=host1:host2:host3:host4:host5    | * DB 상태가 standby인 호스트는 모두 복제 지연 또는 접속 불가이므로 1차 연결에는 실패한다.            |
 |       | * MAX_NUM_DELAYED_HOSTS_LOOKUP=-1          |                                                                                                      |
 |       | * CONNECT_ORDER=SEQ                        | 2차 연결 시도 시 DB 상태가 standby인지 확인하지만 복제 지연 여부는 확인하지 않는다.                  |
 |       |                                            |                                                                                                      |
-|       |                                            | * PREFERRED_HOSTS의 host1은 active이고 host3는 접속 불가이므로 db-host에 접속을 시도한다.            |
-|       |                                            | * DB 상태가 standby인 첫번째 호스트는 host2이므로 host2에 연결한다.                                  |
+|       |                                            | * PREFERRED_HOSTS의 host1은 active이고 *host3*는 접속 불가이므로 db-host에 접속을 시도한다.          |
+|       |                                            | * DB 상태가 standby인 첫번째 호스트는 *host2*이므로 *host2*에 연결한다.                              |
 |       |                                            |                                                                                                      |
 |       |                                            | 복제 지연 서버와 접속했으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                        |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
 | 3-2   | * PREFERRED_HOSTS=host1:host3              | 1차 연결 시도 시 DB 상태가 standby인지 확인한다.                                                     |
 |       |                                            |                                                                                                      |
-|       | * (#)MAX_NUM_DELAYED_HOSTS_LOOKUP=0        | * PREFERRED_HOSTS의 host1은 active이고 host3는 접속이 불가하다.                                      |
+|       | * (#)MAX_NUM_DELAYED_HOSTS_LOOKUP=0        | * PREFERRED_HOSTS의 *host1*은 active이고 *host3*는 접속이 불가하다.                                  |
 |       |                                            | * db-host에는 접속을 시도하지 않는다.                                                                |
 |       |                                            |                                                                                                      |
 |       |                                            | 2차 연결 시도 시 DB 상태가 standby인지 확인하지만 복제 지연 여부는 확인하지 않는다.                  |
 |       |                                            |                                                                                                      |
-|       |                                            | * PREFERRED_HOSTS의 host1은 active이고 host3는 접속 불가이므로 db-host에 접속을 시도한다.            |
-|       |                                            | * DB 상태가 standby인 첫번째 호스트는 host2이므로 host2에 연결한다.                                  |
+|       |                                            | * PREFERRED_HOSTS의 *host1*은 active이고 *host3*는 접속 불가이므로 db-host에 접속을 시도한다.        |
+|       |                                            | * DB 상태가 standby인 첫번째 호스트는 *host2*이므로 *host2*에 연결한다.                              |
 |       |                                            |                                                                                                      |
 |       |                                            | 복제 지연 서버와 접속했으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                        |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
 | 3-3   | * (#)MAX_NUM_DELAYED_HOSTS_LOOKUP=2        | 1차 연결 시도 시  DB 상태가 standby인지 확인한다.                                                    |
 |       |                                            |                                                                                                      |
-|       |                                            | * DB 상태가 standby인 호스트에서 host2, host4까지 복제 지연임을 확인한 후, 1차 연결에는 실패한다.    |
+|       |                                            | * DB 상태가 standby 호스트에서 *host2*, *host4*까지 복제 지연임을 확인한 후, 1차 연결에는 실패한다.  |
 |       |                                            |                                                                                                      |
 |       |                                            | 2차 연결 시도 시 DB 상태가 standby인지 확인하지만 복제 지연 여부는 확인하지 않는다.                  |
 |       |                                            |                                                                                                      |
-|       |                                            | * 1차 연결에서 가장 마지막에 복제 지연 상태를 확인한 host4에 연결한다.                               |
+|       |                                            | * 1차 연결에서 가장 마지막에 복제 지연 상태를 확인한 *host4*에 연결한다.                             |
 |       |                                            |                                                                                                      |
 |       |                                            | 복제 지연 서버와 접속했으므로 RECONNECT_TIME 시간이 지나면 재접속을 시도한다.                        |
 +-------+--------------------------------------------+------------------------------------------------------------------------------------------------------+
@@ -1265,7 +1242,11 @@ CUBRID HA 구성에서 특정 peer_node의 db_name에 대한 트랜잭션 로그
 
 사용법은 다음과 같다. ::
 
-    $ cubrid heartbeat copylogdb <start|stop> db_name peer_node
+    $ cubrid heartbeat copylogdb <start|stop> [ -h <host-name> ] db_name peer_node
+
+::
+
+    <host-name>: the name of the remote host where copylogdb command will be executed
 
 명령을 수행하는 노드가 *nodeB*\ 이고, *peer_node*\가 *nodeA*\ 라면, 다음과 같이 명령을 수행할 수 있다.
     
@@ -1285,7 +1266,11 @@ CUBRID HA 구성에서 특정 peer_node의 db_name에 대한 트랜잭션 로그
 
 사용법은 다음과 같다. ::
 
-    $ cubrid heartbeat applylogdb <start|stop> db_name peer_node
+    $ cubrid heartbeat applylogdb <start|stop> [ -h <host-name> ] db_name peer_node
+
+::
+
+    <host-name>: the name of the remote host where appplylogdb command will be executed
 
 명령을 수행하는 노드가 *nodeB*\ 이고, peer_node가 *nodeA*\ 라면, 다음과 같이 명령을 수행할 수 있다.
     
@@ -1335,6 +1320,15 @@ replication(또는 repl) stop
 
 status
 ^^^^^^
+
+::
+
+    $ cubrid heartbeat status [-v] [ -h <host-name> ]
+
+::
+
+    <host-name>: the name of the remote host where status command will be executed
+
 
 CUBRID HA 그룹 정보와 CUBRID HA 구성 요소의 정보를 확인할 수 있다. 사용법은 다음과 같다. ::
 
@@ -3399,7 +3393,7 @@ HA 서비스 운영 중 슬레이브를 새로 추가하려면 기존의 마스�
 복제 불일치 감지 방법
 ---------------------
 
-마스터 노드와 슬레이브 노드의 데이터가 일치하지 않는 복제 노드 간 데이터 불일치 현상은 다음과 같은 과정을 통해 어느 정도 감지할 수 있다. 그러나, 마스터 노드와 슬레이브 노드의 데이터를 서로 직접 비교해보는 방법보다 더 정확한 확인 방법은 없음에 주의해야 한다. 복제 불일치 상태라는 판단이 서면, 마스터 노드의 데이터베이스를 슬레이브 노드에 새로 구축해야 한다(:ref:`rebuilding-replication` 참고).
+마스터 노드와 슬레이브 노드의 데이터가 일치하지 않는 복제 노드 간 데이터 불일치 현상은 다음과 같은 과정을 통해 어느 정도 감지할 수 있다. 또한 :ref:`cubrid-checksumdb` 유틸리티를 이용하여 복제 불일치를 감지할 수 있다. 그러나, 마스터 노드와 슬레이브 노드의 데이터를 서로 직접 비교해보는 방법보다 더 정확한 확인 방법은 없음에 주의해야 한다. 복제 불일치 상태라는 판단이 서면, 마스터 노드의 데이터베이스를 슬레이브 노드에 새로 구축해야 한다(:ref:`rebuilding-replication` 참고).
 
 *   **cubrid statdump** 명령을 수행하여 **Time_ha_replication_delay** 시간을 확인한다. 이 값이 클 수록 복제 지연 정도가 클 수 있다는 것을 의미하며, 지연된 시간만큼 복제 불일치가 존재할 가능성이 커진다.
 
