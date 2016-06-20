@@ -1483,7 +1483,7 @@ PERCENTILE_DISC
     
         :ref:`Difference between PERCENTILE_DISC and PERCENTILE_CONT <compare-pd-pc>`
 
-집계 함수인 경우, **PERCENTILE_DISC** 함수는 **ORDER BY** 절에 명시된 순서로 정렬한 후, 집계 그룹에 있는 행에서 백분위에 위치한 값을 반환한다.
+집계 함수의 경우, 이것은 **ORDER BY** 절에 기술된 순서로 결과를 정렬한다; 그리고 집계 그룹에 있는 행에서 백분위에 위치한 값을 반환한다.
 
 분석 함수인 경우, **PARTITION BY**\ 에 의해 나누어진 그룹별로 각 행을 **ORDER BY** 절에 명시된 순서로 정렬한 후 그룹 내의 행에서 백분위에 위치한 값을 반환한다. 
 

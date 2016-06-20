@@ -79,7 +79,6 @@ CUBRID에서 SystemTap 스크립트를 실행하려면 SystemTap 2.2 이상 버�
         $ sudo rpm -ivh systemtap-client-2.3-3.el6.x86_64.rpm
         $ sudo rpm -ivh systemtap-2.3-3.el6.x86_64.rpm
 
-
 관련 용어
 =========
 
@@ -89,6 +88,7 @@ CUBRID에서 SystemTap 스크립트를 실행하려면 SystemTap 2.2 이상 버�
 ------------
 
 코드 안에 위치하는 마커는 실행 중에 제공할 수 있는 함수(프로브)를 호출하기 위한 훅(hook)을 제공한다. 마커가 발동될 때마다 사용자가 제공한 함수가 호출되고, 해당 함수가 종료되면 호출자에게 돌아온다.
+
 마커 발동 시 사용자가 정의하는 함수, 즉 프로브는 추적 및 성능 측정을 위해 사용될 수 있다.
 
 프로브(Probe)

@@ -116,8 +116,6 @@ CSQL 시작 옵션
       -r, --read-only              read-only mode
       -t, --plain-output           display results in a script-friendly format (only works with -c and -i)
       -N, --skip-column-names      do not display column names in results (only works with -c and -i)
-      -t, --plain-output           display results in a script-friendly format (only works with -c and -i)
-      -N, --skip-column-names      do not display column names in results (only works with -c and -i)
           --string-width           display each column which is a string type in this width
           --no-auto-commit         disable auto commit mode execution
           --no-pager               do not use pager
@@ -549,7 +547,8 @@ CSQL 인터프리터에서 작업 중인 데이터베이스 이름 및 호스트
 **문자열 타입과 비트 타입 칼럼의 출력 길이 지정(;STring-width)** 
 
 문자열 타입과 비트 타입 칼럼의 출력 길이를 제한하기 위해서 사용할 수 있다. 
-;ST 뒤에 값을 주지 않으면 현재의 출력 길이를 보여준다. 값이 0이면, 해당 칼럼의 값을 모두 출력한다. 값이 0보다 크다면, 해당 길이만큼 칼럼의 값을 출력한다.
+
+**;string-width** 뒤에 값을 주지 않으면 현재의 출력 길이를 보여준다. 값이 0이면, 해당 칼럼의 값을 모두 출력한다. 값이 0보다 크다면, 해당 길이만큼 칼럼의 값을 출력한다.
 
 ::
 
@@ -640,8 +639,7 @@ CSQL 인터프리터에서 작업 중인 데이터베이스 이름 및 호스트
 
 참고로, DB 서버의 모든 질의 실행 통계 정보를 확인하기 위해서는 **cubrid statdump** 유틸리티를 사용해야 한다.
 
-다음 예제는 현재 연결에 대한 서버 실행 통계 정보를 확인하는 예제이다.
-출력되는 통계 정보 항목 또는 **cubrid statdump**\ 에 대한 설명은 :ref:`statdump`\ 을 참고한다.
+다음 예제는 현재 연결에 대한 서버 실행 통계 정보를 확인하는 예제이다.  출력되는 통계 정보 항목 또는 **cubrid statdump**\ 에 대한 설명은 :ref:`statdump`\ 을 참고한다.
 
 ::
 

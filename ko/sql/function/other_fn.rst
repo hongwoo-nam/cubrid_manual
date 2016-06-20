@@ -16,7 +16,13 @@ SLEEP
     :param sec: sleep 시간. 단위는 초이며, double 타입 값을 입력한다.
     :rtype: INT
 
+   .. code-block:: sql
 
+        SELECT SLEEP(3);
+
+    3초간 멈춰있다가 수행한다.
+    
+    
 SYS_GUID
 ========
 
@@ -34,5 +40,3 @@ SYS_GUID
         sys_guid() 
         ================================== 
         '938210043A7B4455927A8697FB2571FF'
-
-
