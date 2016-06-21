@@ -1302,23 +1302,21 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Time_data_page_hash_anchor_wait          | The total time in microseconds any hash anchor had to wait for mutex acquisition       |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_fixed                      | The number of fixed pages in data buffer (snapshot counter)                            |
+    |                  | Num_data_page_fixed                      | 데이타 버퍼의 고정 페이지 수 (snapshot counter)                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_dirty                      | The number of dirty pages in data buffer (snapshot counter)                            |
+    |                  | Num_data_page_dirty                      | 데이타 버퍼의 dirty page 수  (snapshot counter)                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_lru1                       | The number of pages in LRU1 zone in data buffer (snapshot counter)                     |
+    |                  | Num_data_page_lru1                       | 데이타 버퍼의 LRU1 수     (snapshot counter)                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_lru2                       | The number of pages in LRU2 zone in data buffer (snapshot counter)                     |
+    |                  | Num_data_page_lru2                       | 데이타 버퍼의 LRU2 수     (snapshot counter)                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_ain                        | The number of pages in AIN zone in data buffer (snapshot counter)                      |
+    |                  | Num_data_page_ain                        | 데이타 버퍼의 AIN 존 수   (snapshot counter)                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_avoid_dealloc              | The number of pages in data buffer having 'avoid_dealloc_cnt > 0' (snapshot counter)   |
+    |                  | Num_data_page_avoid_dealloc              | 데이타 버퍼의 avoid_dealloc_cnt 가 0보다 큰 페이지 수 (snapshot counter)               |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_avoid_victim               | The number of pages in data buffer having 'avoid_victim' flag set (snapshot counter)   |
+    |                  | Num_data_page_avoid_victim               | 데이타 버퍼의 avoid_victim 플래그 세트를 가지고 있는 페이지 수 (snapshot counter)      |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_victim_cand                | The number of pages in data buffer which are victim candidates (snapshot counter)      |
-    |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_data_page_victim_cand                | The number of pages in data buffer which are victim candidates (snapshot counter)      |    
+    |                  | Num_data_page_victim_cand                | 데이타 버퍼의 victim 후보 페이지 수 (snapshot counter)                                 |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_adaptive_flush_pages                 | 데이터 버퍼로부터 디스크로 내려 쓰기(flush)한 데이터 페이지 수                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
@@ -1408,103 +1406,103 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_btree_merges                         | B-tree 노드 합병 연산 회수                                                             |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_find_unique                       | The number of B-tree 'find-unique' operations                                          |
+    |                  | Num_bt_find_unique                       | B-tree 노드 'find-unique' 연산 횟수                                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_btrange_search                       | The number of B-tree 'range-search' operations                                         |
+    |                  | Num_btrange_search                       | B-tree 노드 'range-search' 연산 횟수                                                   |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_insert_obj                        | The number of B-tree 'insert object' operations                                        |
+    |                  | Num_bt_insert_obj                        | B-tree 노드 'insert object' 연산 횟수                                                  |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_delete_obj                        | The number of B-tree 'physical delete object' operations                               |
+    |                  | Num_bt_delete_obj                        | B-tree 노드 'physical delete object' 연산 횟수                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_mvcc_delete                       | The number of B-tree 'mvcc delete' operations                                          |
+    |                  | Num_bt_mvcc_delete                       | B-tree 노드 'mvcc delete' 연산 횟수                                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_mark_delete                       | The number of B-tree mark delete operations                                            |
+    |                  | Num_bt_mark_delete                       | B-tree 노드 'mark delete' 연산 횟수                                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_update_sk_cnt                     | The number of B-tree 'update same key' operations                                      |
+    |                  | Num_bt_update_sk_cnt                     | B-tree 노드 'update same key' 연산 횟수                                                |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_undo_insert                       | The number of B-tree 'undo insert' operations                                          |
+    |                  | Num_bt_undo_insert                       | B-tree 노드 'undo insert' 연산 횟수                                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_undo_delete                       | The number of B-tree 'undo physical delete' operations                                 |
+    |                  | Num_bt_undo_delete                       | B-tree 노드 'undo physical delete' 연산 횟수                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_undo_mvcc_delete                  | The number of B-tree 'undo mvcc delete' operations                                     |
+    |                  | Num_bt_undo_mvcc_delete                  | B-tree 노드 'undo mvcc delete' 연산 횟수                                               |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_undo_update_sk                    | The number of B-tree 'undo update same key' operations                                 |
+    |                  | Num_bt_undo_update_sk                    | B-tree 노드 'undo update samekey' 연산 횟수                                            |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_vacuum                            | The number of B-tree vacuum deleted object operations                                  |
+    |                  | Num_bt_vacuum                            | B-tree 노드 'vacuum deleted object' 연산 횟수                                          |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_vacuum_insid                      | The number of vacuum operations on B-tree 'insert id'                                  |
+    |                  | Num_bt_vacuum_insid                      | B-tree 노드 'vacumm insert id' 연산 횟수The                                            |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_vacuum_update_sk                  | The number of vacuum operations on B-tree 'update same key'                            |
+    |                  | Num_bt_vacuum_update_sk                  | B-tree 노드 'vacumm update samekey' 연산 횟수                                          |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_fix_ovf_oids_cnt                  | The number of B-tree overflow page fixes                                               |
+    |                  | Num_bt_fix_ovf_oids_cnt                  | B-tree 노드 오버플로우 페이지 수정                                                     |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_unique_rlocks_cnt                 | The number of blocked read locks on unique indexes                                     |
+    |                  | Num_bt_unique_rlocks_cnt                 | 유니크 인덱스에 대한 블록된  읽기 수                                                   |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_bt_unique_wlocks_cnt                 | The number of blocked write locks on unique indexes                                    |
+    |                  | Num_bt_unique_wlocks_cnt                 | 유니크 인덱스에 대한 블록된 쓰기  수                                                   |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_find_unique                      | Time consumed on B-tree 'find-unique' operations                                       |
+    |                  | Time_bt_find_unique                      | B-tree 노드의 'find-unique' 연산에 걸린 시간                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_range_search                     | Time consumed on B-tree 'range search' operations                                      |
+    |                  | Time_bt_range_search                     | B-tree 노드의 'ranage search' 연산에 걸린 시간                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_insert                           | Time consumed on B-tree insert object operations                                       |
+    |                  | Time_bt_insert                           | B-tree 노드의 'insert object' 연산에 걸린 시간                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_delete                           | Time consumed on B-tree physical delete operations                                     |
+    |                  | Time_bt_delete                           | B-tree 노드의 'physical delete' 연산에 걸린 시간                                       |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_mvcc_delete                      | Time consumed on B-tree mvcc delete operations                                         |
+    |                  | Time_bt_mvcc_delete                      | B-tree 노드의 'mvcc delete' 연산에 걸린 시간                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_mark_delete                      | Time consumed on B-tree mark delete operations                                         |
+    |                  | Time_bt_mark_delete                      | B-tree 노드의 'mark delete' 연산에 걸린 시간                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_update_sk                        | Time consumed on B-tree 'update same key' operations                                   |
+    |                  | Time_bt_update_sk                        | B-tree 노드의 'update same key' 연산에 걸린 시간                                       |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_undo_insert                      | Time consumed on B-tree 'undo insert' operations                                       |
+    |                  | Time_bt_undo_insert                      | B-tree 노드의 'undo insert' 연산에 걸린 시간                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_undo_delete                      | Time consumed on B-tree 'undo physical delete' operations                              |
+    |                  | Time_bt_undo_delete                      | B-tree 노드의 'undo physical delete' 연산에 걸린 시간                                  |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_undo_mvcc_delete                 | Time consumed on B-tree 'undo mvcc delete' operations                                  |
+    |                  | Time_bt_undo_mvcc_delete                 | B-tree 노드의 'undo mvcc delete' 연산에 걸린 시간                                      |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_undo_update_sk                   | Time consumed on B-tree 'undo update same key' operations                              |
+    |                  | Time_bt_undo_update_sk                   | B-tree 노드의 'undo update same key' 연산에 걸린 시간                                  |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_vacuum                           | Time consumed on B-tree vacuum deleted object operations                               |
+    |                  | Time_bt_vacuum                           | B-tree 노드의 'vacuum deleted object' 연산에 걸린 시간                                 |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_vacuum_insid                     | Time consumed on B-tree vacuum operations of 'insert id'                               |
+    |                  | Time_bt_vacuum_insid                     | B-tree 노드의 'vacuum insert id' 연산에 걸린 시간Time                                  |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_vacuum_update_sk                 | Time consumed on B-tree vacuum operations of 'update same key'                         |
+    |                  | Time_bt_vacuum_update_sk                 | B-tree 노드의 'vacuum update same key' 연산에 걸린 시간                                |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_traverse                         | Time consumed on B-tree traverse operations                                            |
+    |                  | Time_bt_traverse                         | B-tree 노드의 'traverse' 연산에 걸린 시간                                              |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_find_unique_traverse             | Time consumed on B-tree traverse operations for 'find unique'                          |
+    |                  | Time_bt_find_unique_traverse             | B-tree 노드의 'find unique traverse' 연산에 걸린 시간                                  |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_range_search_traverse            | Time consumed on B-tree traverse operations for 'range search'                         |
+    |                  | Time_bt_range_search_traverse            | B-tree 노드의 'range search traverse' 연산에 걸린 시간                                 |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_insert_traverse                  | Time consumed on B-tree traverse operations for 'insert'                               |
+    |                  | Time_bt_insert_traverse                  | B-tree 노드의 'insert travers' 연산에 걸린 시간                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_delete_traverse                  | Time consumed on B-tree traverse operations for 'physical delete'                      |
+    |                  | Time_bt_delete_traverse                  | B-tree 노드의 'physical delete travers' 연산에 걸린 시간                               |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_mvcc_delete_traverse             | Time consumed on B-tree traverse operations for 'mvcc delete'                          |
+    |                  | Time_bt_mvcc_delete_traverse             | B-tree 노드의 'mvcc delete traverse' 연산에 걸린 시간                                  |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_mark_delete_traverse             | Time consumed on B-tree traverse operations for 'mark delete'                          |
+    |                  | Time_bt_mark_delete_traverse             | B-tree 노드의 'mark delete traverse' 연산에 걸린 시간                                  |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_update_sk_traverse               | Time consumed on B-tree traverse operations for 'update same key'                      |
+    |                  | Time_bt_update_sk_traverse               | B-tree 노드의 'update same key traverse' 연산에 걸린 시간                              |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_undo_insert_traverse             | Time consumed on B-tree traverse operations for 'undo physical insert'                 |
+    |                  | Time_bt_undo_insert_traverse             | B-tree 노드의 'undo insert traverse' 연산에 걸린 시간Time                              |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_undo_delete_traverse             | Time consumed on B-tree traverse operations for 'undo physical delete'                 |
+    |                  | Time_bt_undo_delete_traverse             | B-tree 노드의 'undo delete traverse' 연산에 걸린 시간Time                              |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_undo_mvcc_delete_traverse        | Time consumed on B-tree traverse operations for 'undo delete'                          |
+    |                  | Time_bt_undo_mvcc_delete_traverse        | B-tree 노드의 'undo mvcc delete traverse' 연산에 걸린 시간                             |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_undo_update_sk_traverse          | Time consumed on B-tree traverse operations for 'undo update same key'                 |
+    |                  | Time_bt_undo_update_sk_traverse          | B-tree 노드의 'undo update sk traverse' 연산에 걸린 시간                               |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_vacuum_traverse                  | Time consumed on B-tree traverse operations for vacuum deleted object                  |
+    |                  | Time_bt_vacuum_traverse                  | B-tree 노드의 'vacumm traverse ' 연산에 걸린 시간                                      |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_vacuum_insid_traverse            | Time consumed on B-tree traverse operations for vacuum 'insert id'                     |
+    |                  | Time_bt_vacuum_insid_traverse            | B-tree 노드의 'vacuum insid traverse' 연산에 걸린 시간                                 |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_vacuum_update_sk_traverse        | Time consumed on B-tree traverse operations for vacuum 'update same key'               |
+    |                  | Time_bt_vacuum_update_sk_traverse        | B-tree 노드의 'vacuum update sk traverse' 연산에 걸린 시간                             |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_fix_ovf_oids                     | Time consumed on B-tree overflow pages fix                                             |
+    |                  | Time_bt_fix_ovf_oids                     | B-tree 노드의  오퍼플로우 페이지 수정에 걸린 시간                                      |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_unique_rlocks                    | Time consumed on read locks on unique indexes                                          |
+    |                  | Time_bt_unique_rlocks                    | 유니크 인덱스에 대한 블록된 읽기에 걸린 시간                                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_bt_unique_wlocks                    | Time consumed on write locks on unique indexes                                         |
+    |                  | Time_bt_unique_wlocks                    | 유니크 인덱스에 대한 블록된 쓰기에 걸린 시간                                           |
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
     | 쿼리 관련        | Num_query_selects                        | SELECT 쿼리의 수행 횟수                                                                |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
@@ -1535,6 +1533,7 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     | 정렬 관련        | Num_sort_io_pages                        | 정렬하는 동안 디스크에서 페치한 페이지 개수(이 값이 클수록 덜 효율적임)                |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_sort_data_pages                      | 정렬하는 동안 페이지 버퍼에서 발견된 페이지 개수(이 값이 클수록 더 효율적임)           |
+
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
     | 네트워크         | Num_network_requests                     | 네트워크 요청 횟수                                                                     |
     | 요청 관련        |                                          |                                                                                        |
@@ -1553,87 +1552,87 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  |                                          | 페이지가 여전히 없으면 새 페이지에 레코드를 저장함.                                    |
     |                  |                                          |                                                                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_inserts                    | The number of inserts in heap HOME type records                                        |
+    |                  | Num_heap_home_inserts                    | HOME 타입 레코드 힙에 대한 insert 수                                                   |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_big_inserts                     | The number of inserts in heap BIG type records                                         |
+    |                  | Num_heap_big_inserts                     | BIG 타입 레코드 힙에 대한 insert 수                                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_assign_inserts                  | The number of inserts in heap ASSIGN type records                                      |
+    |                  | Num_heap_assign_inserts                  | ASSIGN 타입 레코드 힙에 대한 insert 수                                                 |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_deletes                    | The number of deletes from heap HOME type records in non-MVCC mode                     |
+    |                  | Num_heap_home_deletes                    | MVCC 모드가 아닌 HOME 타입 레코드에 대한 delete 수                                     |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_mvcc_deletes               | The number of deletes from heap HOME type records in MVCC mode                         |
+    |                  | Num_heap_home_mvcc_deletes               | MVCC 모드 HOME 타입 레코드로부터 delete 수                                             |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_to_rel_deletes             | The number of deletes from heap HOME to RELOCATION type records in MVCC mode           |
+    |                  | Num_heap_home_to_rel_deletes             | MVCC 모드 HOME 타입 레코드로부터 RELOCATION 타입 레코드의 delete 수                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_to_big_deletes             | The number of deletes from heap HOME to BIG type records in MVCC mode                  |
+    |                  | Num_heap_home_to_big_deletes             | MVCC 모드 HOME 타입 레코드로부터 BIG 타입 레코드의 delete 수                           |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_deletes                     | The number of deletes from heap RELOCATION type records in non-MVCC mode               |
+    |                  | Num_heap_rel_deletes                     | MVCC 모드가 아닌 RELOCATION 타입 레코드에 대한 delete 수                               |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_mvcc_deletes                | The number of deletes from heap RELOCATION type records in MVCC mode                   |
+    |                  | Num_heap_rel_mvcc_deletes                | MVCC 모드 RELOCATION 타입 레코드로부터 delete 수                                       |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_to_home_deletes             | The number of deletes from heap RELOCATION to HOME type records in MVCC mode           |
+    |                  | Num_heap_rel_to_home_deletes             | MVCC 모드 RELOCATION 타입 레코드로부터 HOME 타입 레코드의 delete 수                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_to_big_deletes              | The number of deletes from heap RELOCATION to BIG type records in MVCC mode            |
+    |                  | Num_heap_rel_to_big_deletes              | MVCC 모드 RELOCATION 타입 레코드로부터 BIG 타입 레코드의 delete 수                     |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_to_rel_deletes              | The number of deletes from heap RELOCATION to RELOCATION type records in MVCC mode     |
+    |                  | Num_heap_rel_to_rel_deletes              | MVCC 모드 RELOCATION 타입 레코드로부터 RELOCATION 타입 레코드의 delete 수              |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_big_deletes                     | The number of deletes from heap BIG type records in non-MVCC mode                      |
+    |                  | Num_heap_big_deletes                     | MVCC 모드가 아닌 BIG 타입 레코드에 대한 delete 수                                      |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_big_mvcc_deletes                | The number of deletes from heap BIG type records in MVCC mode                          |
+    |                  | Num_heap_big_mvcc_deletes                | MVCC 모드 BIG 타입 레코드로부터 HOME 타입 레코드의 mvcc  delete 수                     |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_new_ver_inserts                 | The number of inserts of new versions of the same object in MVCC mode                  |
+    |                  | Num_heap_new_ver_inserts                 | MVCC 모드에서 같은 객체에 대한 새로운 버전의 insert 수                                 |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_updates                    | The number of updates in place of heap HOME type records in non-MVCC mode(*)           |
+    |                  | Num_heap_home_updates                    | MVCC 모드가 아닌 HEAP HOME 타입 레코드에서 update 수                                   |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_to_rel_updates             | The number of updates of heap HOME to RELOCATION type records in non-MVCC mode(*)      |
+    |                  | Num_heap_home_to_rel_updates             | MVCC 모드가 아닌  HOME 타입 레코드로부터 RELOCATION 타입 레코드의 update 수            |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_to_big_updates             | The number of updates of heap HOME to BIG type records in non-MVCC mode(*)             |
+    |                  | Num_heap_home_to_big_updates             | MVCC 모드가 아닌 HOME 타입 레코드로부터 BIG 타입 레코드의 update  수                   |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_updates                     | The number of updates of heap RELOCATION type records in non-MVCC mode(*)              |
+    |                  | Num_heap_rel_updates                     | MVCC 모드가 아닌 RELOCATION 타입 레코드의 update 수                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_to_home_updates             | The number of updates of heap RELOCATION to HOME type records in non-MVCC mode(*)      |
+    |                  | Num_heap_rel_to_home_updates             | MVCC 모드가 아닌  RELOCATION 타입 레코드로부터 HOME 타입 레코드의 update 수            |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_to_rel_updates              | The number of updates of heap RELOCATION to RELOCATION type records in non-MVCC mode(*)|
+    |                  | Num_heap_rel_to_rel_updates              | MVCC 모드가 아닌  RELOCATION 타입 레코드로부터 RELOCATION 타입 레코드의 update 수      |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_to_big_updates              | The number of updates of heap RELOCATION to BIG type records in non-MVCC mode(*)       |
+    |                  | Num_heap_rel_to_big_updates              | MVCC 모드가 아닌  RELOCATION 타입 레코드로부터 BIG 타입 레코드의 update 수             |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_big_updates                     | The number of updates of heap BIG type records in non-MVCC mode(*)                     |
+    |                  | Num_heap_big_updates                     | MVCC 모드가 아닌 HEAP BIG 타입 레코드에서 update 수                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_home_vacuums                    | The number of vacuumed heap HOME type records                                          |
+    |                  | Num_heap_home_vacuums                    | HOME 타입 레코드의 vacuumed HEAP 수                                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_big_vacuums                     | The number of vacuumed heap BIG type records                                           |
+    |                  | Num_heap_big_vacuums                     | BIG 타입 레코드의 vacuumed HEAP 수                                                     |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_rel_vacuums                     | The number of vacuumed heap RELOCATION type records                                    |
+    |                  | Num_heap_rel_vacuums                     | RELOCATION 타입 레코드의 vacuumed HEAP 수                                              |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_insid_vacuums                   | The number of vacuumed heap newly inserted records                                     |
+    |                  | Num_heap_insid_vacuums                   | 새롭게 추가된 vacuumed heap 의 수                                                      |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_remove_vacuums                  | The number of vacuum operations that remove version and don’t keep next version        |
+    |                  | Num_heap_remove_vacuums                  | 버전정보를 제거하고 다음 버전정보를 보관하지 않는 vacuum 연산의 수                     |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_heap_next_ver_vacuums                | The number of vacuum operations that remove version and keep their next version        |
+    |                  | Num_heap_next_ver_vacuums                | 버전정보를 제거하고 다음 버전정보를 보관하는 vacuum 연산의 수                          |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_insert_prepare                 | The time spend on preparing heap insert operation                                      |
+    |                  | Time_heap_insert_prepare                 | 힙 insert 연산을 준비하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_insert_execute                 | The time spend on executing heap insert operation                                      |
+    |                  | Time_heap_insert_execute                 | 힙 insert 연산을 실행하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_insert_log                     | The time spend on logging heap insert operation                                        |
+    |                  | Time_heap_insert_log                     | 힙 insert 연산을 기록하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_delete_prepare                 | The time spend on preparing heap delete operation                                      |
+    |                  | Time_heap_delete_prepare                 | 힙 delete 연산을 준비하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_delete_execute                 | The time spend on executing heap delete operation                                      |
+    |                  | Time_heap_delete_execute                 | 힙 delete 연산을 실행하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_delete_log                     | The time spend on logging heap delete operation                                        |
+    |                  | Time_heap_delete_log                     | 힙 delete 연산을 기록하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_update_prepare                 | The time spend on preparing heap update operation                                      |
+    |                  | Time_heap_update_prepare                 | 힙 update 연산을 준비하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_update_execute                 | The time spend on executing heap update operation                                      |
+    |                  | Time_heap_update_execute                 | 힙 update 연산을 실행하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_update_log                     | The time spend on logging heap update operation                                        |
+    |                  | Time_heap_update_log                     | 힙 update 연산을 기록하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_vacuum_prepare                 | The time spend on preparing heap vacuum operation                                      |
+    |                  | Time_heap_vacuum_prepare                 | 힙 vacuum 연산을 준비하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_vacuum_execute                 | The time spend on executing heap vacuum operation                                      |
+    |                  | Time_heap_vacuum_execute                 | 힙 vacuum 연산을 실행하는 시간                                                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_heap_vacuum_log                     | The time spend on logging heap vacuum operation                                        |
+    |                  | Time_heap_vacuum_log                     | 힙 vacuum 연산을 기록하는 시간                                                         |
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
     | 질의 계획        | Num_plan_cache_add                       | 캐시 엔트리(entry)가 새로 추가된 횟수                                                  |
     | 캐시 관련        +------------------------------------------+----------------------------------------------------------------------------------------+
@@ -1664,15 +1663,15 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_vacuum_log_pages_to_vacuum           | vacuum 작업자에 의해 정리될(to be vacuumed) 로그 페이지의 개수                         |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_vacuum_prefetch_requests_log_pages   | The number of requests to prefetch buffer for log pages from vacuum                    |
+    |                  | Num_vacuum_prefetch_requests_log_pages   | vacuum 로그 페이지 prefetch 요청 수                                                    |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_vacuum_prefetch_hits_log_pages       | The number of hits to prefetch buffer for log pages from vacuum                        |
+    |                  | Num_vacuum_prefetch_hits_log_pages       | vacuum 로그 페이지 prefetch hit 수                                                     |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_vacuum_master                       | Time consumed by vacuum master thread                                                  |
+    |                  | Time_vacuum_master                       | vacuum 마스터 쓰레드의 사용시간                                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_vacuum_worker_process_log           | Time consumed by vacuum worker thread for logging                                      |
+    |                  | Time_vacuum_worker_process_log           | vacuum 로그 워커 쓰레드의 사용시간                                                     |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_vacuum_worker_execute               | Time consumed by vacuum worker thread for execution                                    |    
+    |                  | Time_vacuum_worker_execute               | vacuum 워커 쓰레드의 실행 시간                                                         |    
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
     | 기타             | Data_page_buffer_hit_ratio               | 데이터 페이지 버퍼의 히트율                                                            |
     |                  |                                          | (Num_data_page_fetches - Num_data_page_ioreads)*100 / Num_data_page_fetches            |
@@ -1701,11 +1700,11 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  |                                          | 이 값이 클수록 I/O가 주요 병목의 원인이며, 작을수록 동시성 처리가 주요 병목의 원인임   |
     |                  |                                          |                                                                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Data_page_total_promote_success          | Cumulated number of successfully latch promote                                         |
+    |                  | Data_page_total_promote_success          | latch promote 가 성공한 누적 수                                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Data_page_total_promote_fail             | Cumulated number of failed latch promote                                               |
+    |                  | Data_page_total_promote_fail             | latch promote 가 실패한 누적 수                                                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Data_page_total_promote_time_msec        | Cumulated time to promote latch                                                        |    
+    |                  | Data_page_total_promote_time_msec        | latch promote 의 누적 시간                                                             |    
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Num_data_page_fix_ext:                   | 모듈, 페이지 타입, 그리고 페이지 버퍼에서 발견된 페이지 타입의 신구 여부에 따른        |
     |                  |                                          | 페이지 픽스 개수.                                                                      |
@@ -1720,22 +1719,22 @@ CSQL의 해당 연결에 대해서만 통계 정보를 확인하려면 CSQL의 �
     |                  | Time_data_page_fix_acquire_time:         | 모듈, 페이지 타입, 페이지 모드, 래치 모드, 그리고 컨디션 모드에 따른 페이지 픽스(fix)  |
     |                  |                                          | 획득 시간.                                                                             |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Num_mvcc_snapshot_ext:                   | The number of snapshot validation functions are called (partitioned by snapshot type,  |
-    |                  |                                          | record type, visibility result upon validation).                                       |
+    |                  | Num_mvcc_snapshot_ext:                   | 스냅 샷 유효성 검사 기능의 수                                                          |
+    |                  |                                          | (스냅 샷 유형, 레코드 유형, 유효성 검사시 시정 결과에 의해 분할)                       |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_obj_lock_acquire_time:              | Time required to acquire object lock (partitioned by module, lock type)                |
+    |                  | Time_obj_lock_acquire_time:              | 객체 잠금 획득하는 데 필요한시간  (모듈잠금 타입으로 파티션됨 )                        |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_get_snapshot_acquire_time:          | Time required by snapshot validation functions (partitioned by snapshot type,          |
+    |                  | Time_get_snapshot_acquire_time:          | 스냅 샷 유효성 검사 기능에 필요한 시간 (partitioned by snapshot type,                  |
     |                  |                                          | record type, visibility result upon validation).                                       |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
     |                  | Count_get_snapshot_retry:                | The number of retries to acquire MVCC snapshot (partitioned by module)                 |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_tran_complete_time:                 | Time spent to invalidate snapshot and MVCCID on transaction commit/rollback            |
+    |                  | Time_tran_complete_time:                 | 스냅샷 무효화 및  MVCCID 트랜잭션 커밋/롤백 시간                                       |
     |                  |                                          | (partitioned by module)                                                                |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Time_get_oldest_mvcc_acquire_time:       | Time spend to acquire "oldest MVCC ID" (partitioned by module)                         |
+    |                  | Time_get_oldest_mvcc_acquire_time:       | 가장 오랜된 MVCCID 를 획득 소용 시간  (partitioned by module)                          |
     |                  +------------------------------------------+----------------------------------------------------------------------------------------+
-    |                  | Count_get_oldest_mvcc_retry:             | The number of retries to acquire "oldest MVCC ID"  (partitioned by module)             |    
+    |                  | Count_get_oldest_mvcc_retry:             | 가장 오래된 MVCCID 를 획득하는 재시도 횟수   (partitioned by module)                   |    
     +------------------+------------------------------------------+----------------------------------------------------------------------------------------+
 
 .. Note::  
