@@ -746,15 +746,15 @@ CUBRID는 트랜잭션이 수행하고자 하는 연산의 종류에 따라 획�
     |                                                               |                                                               |
     |  CREATE INDEX i_t_i on t(i) WHERE i > 0;                      |   CREATE INDEX i_t_j on t(j) WHERE j > 0;                     |
     +---------------------------------------------------------------+---------------------------------------------------------------+
-    | SCH_S_LOCK during checking types of "i > 0" case.             |                                                               |
+    | "i > 0" 경우의 타입 검사중에 SCH_S_LOCK.                      |                                                               |
     +---------------------------------------------------------------+---------------------------------------------------------------+
-    |                                                               | SCH_S_LOCK during checking types of "j > 0" case."j > 0"      |
+    |                                                               |  "j > 0" case."j > 0" 타입 검사중에 SCH_S_LOCK                |
     +---------------------------------------------------------------+---------------------------------------------------------------+
-    | SIX_LOCK during index loading.                                |                                                               |
+    | 인덱스 로딩 중에 SIX_LOCK.                                    |                                                               |
     +---------------------------------------------------------------+---------------------------------------------------------------+
-    |                                                               | requesting SIX_LOCK but waiting T1's SIX_LOCK is released     |
+    |                                                               | SIX_LOCK을 요구하나 T1이 SIX_LOCK의 반환을 대기               |
     +---------------------------------------------------------------+---------------------------------------------------------------+
-    | requesting SCH_M_LOCK but waiting T2's SCH_S_LOCK is released |                                                               |
+    | SCH_M_LOCK을 요구하나 T2가 SCH_S_LOCK의 반환을 대기           |                                                               |
     +---------------------------------------------------------------+---------------------------------------------------------------+
    
 .. note:: 잠금에 대해 요약하면 다음과 같다.
@@ -771,7 +771,7 @@ CUBRID는 트랜잭션이 수행하고자 하는 연산의 종류에 따라 획�
 
 **잠금 호환성**
 
-*   **NULL**\: The status that any lock exists.
+*   **NULL**\: lock이 존재하는 상태.
 
 (O: TRUE, X: FALSE)
 
@@ -824,15 +824,15 @@ CUBRID는 트랜잭션이 수행하고자 하는 연산의 종류에 따라 획�
 |                      | **SCH-M** | SCH-M     | SCH-M     | SCH-M     | SCH-M     | SCH-M     | SCH-M     | SCH-M     | SCH-M     |    
 +----------------------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+
 
-Examples using locks
-++++++++++++++++++++
+lock을 사용한 예
+++++++++++++++++
 
-For next few examples, REPEATABLE READ(5) isolation level will be used. READ COMMITTED has different rules for updating rows and will be presented in next section (reference here).
-The examples will make use of lockdb utility to show existing locks.
+다음 몇개의 예에 걸쳐서 REPEATABLE READ(5) 격리 수준이 사용될 것이다. READ COMMITTED는 열을 갱신하는데 다른 원칙을 가지고 있으며 다음 장에서 다루기로 한다 (여기를 참조)
+다음 예제들은 기존의 lock을 보여주기 위해서 lockdb 유틸리티를 사용할 것이다.
 
-**Locking example:**
-For next example REPEATABLE READ(5) isolation will be used and it will prove that read and write on same row are not blocked. Also conflicting updates will be tried, where the second updater is blocked. When transaction T1 commits, T2 is unblocked but update is not permitted because of isolation level restrictions. If T1 would rollback, then T2 can proceed with its update.
-
+**Lock 예:**
+다음의 예에서 REPEATABLE READ(5)이 사용될 것이며, 이것은 같은 열에 대해서 읽기와 쓰기가 블록되지 않는다는 것을 증명할 것이다. 그리고 충돌하는 갱신이 시도될 것인데, 두번째 갱신자가 블록된다. 트랜잭션 T1이 커밋될때, T2는 블럭에서 해제된다 하지만 격리 수준의 제약 때문에 갱신은 허용되지 않는다. 만약 T1이 롤백할 수 있는데, 이 경우 T2는 갱신을 진행할 수 있다.
+ 
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
 | T1                                                      | T2                                                      | Description                                                                |
 +=========================================================+=========================================================+============================================================================+
@@ -852,8 +852,8 @@ For next example REPEATABLE READ(5) isolation will be used and it will prove tha
 |                (70, 70);                                |                                                         |                                                                            |
 |   csql> COMMIT;                                         |                                                         |                                                                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-| .. code-block :: sql                                    |                                                         | First version of row where a = 10 is locked and updated. A new version     |
-|                                                         |                                                         | where row has a = 90 is created and also locked. ::                        |
+| .. code-block :: sql                                    |                                                         | a = 10인 첫번째 버전의 열이 잠기고 갱신됨. a = 90 인 열의 새로운 버전이    |
+|                                                         |                                                         | 생성되고 잠김 ::                                                           |
 |   csql> UPDATE tbl SET a = 90 WHERE a = 10;             |                                                         |                                                                            |
 |                                                         |                                                         |   cubrid lockdb:                                                           |
 |                                                         |                                                         |                                                                            |
@@ -886,8 +886,8 @@ For next example REPEATABLE READ(5) isolation will be used and it will prove tha
 |                                                         |                                                         |   LOCK HOLDERS:                                                            |
 |                                                         |                                                         |       Tran_index =   1, Granted_mode =   X_LOCK                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-|                                                         | .. code-block :: sql                                    | Transaction T2 reads all rows where a <= 20. Since T1 did not commit its   |
-|                                                         |                                                         | update, T2 will continue to see the row with a = 10 and will not lock it.::|
+|                                                         | .. code-block :: sql                                    | 트랜잭션 T2가 모든 열을 읽음, a <= 20. T1이 갱신에 대해 커밋을 하지 않았기 |
+|                                                         |                                                         | 때문에 T2는 a = 10인 열을 보려고 계속 시도하지만 잠금을 하지는 않음 .::    |
 |                                                         |   csql> SELECT * FROM tbl WHERE a <= 20;                |                                                                            |
 |                                                         |                                                         |   cubrid lockdb:                                                           |
 |                                                         |                                                         |                                                                            |
@@ -901,10 +901,10 @@ For next example REPEATABLE READ(5) isolation will be used and it will prove tha
 |                                                         |                                                         |       Tran_index =   1, Granted_mode =  IX_LOCK                            |
 |                                                         |                                                         |       Tran_index =   2, Granted_mode =  IS_LOCK                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-|                                                         | .. code-block :: sql                                    | Transaction T2 now tries to update all rows having a <= 20. This means     |
-|                                                         |                                                         | T2 will upgrade its lock on class to IX_LOCK and will also try to update   |
-|                                                         |                                                         | the row = 10 by first locking it. However, T1 has locked it already, so    |
-|                                                         |   csql> UPDATE tbl                                      | T2 will be blocked. ::                                                     |
+|                                                         | .. code-block :: sql                                    | 트랜잭션 T2 a <= 20인 모든 열을 갱신을 시도한다. 이것은                    |
+|                                                         |                                                         | T2의 잠금 클래스를 IX_LOCK로 업그레이드하고, 첫번째 잠금으로써             |
+|                                                         |                                                         | row = 10의 갱신을 시도하는 것을 의미한다. 하지만, T1 이 이미 잠근          |
+|                                                         |   csql> UPDATE tbl                                      | 상태이고, 따라서 T2 가 블럭될 것이다. ::                                   |
 |                                                         |         SET a = a + 100                                 |                                                                            |
 |                                                         |         WHERE a <= 20;                                  |                                                                            |
 |                                                         |                                                         |                                                                            |
@@ -941,24 +941,24 @@ For next example REPEATABLE READ(5) isolation will be used and it will prove tha
 |                                                         |                                                         |   LOCK WAITERS:                                                            |
 |                                                         |                                                         |       Tran_index =   2, Blocked_mode =   X_LOCK                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-| .. code-block :: sql                                    |                                                         | T1's locks are released.                                                   |
+| .. code-block :: sql                                    |                                                         | T1의 잠금이 해제되었다.                                                    |
 |                                                         |                                                         |                                                                            |
 |   csql> COMMIT;                                         |                                                         |                                                                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-|                                                         | ::                                                      | T2 is unblocked and will try to update the object T1 already updated.      |
-|                                                         |                                                         | This is however not allowed in REPEATABLE READ isolation level and an      |
-|                                                         |     ERROR: Serializable conflict due                    | error is thrown.                                                           |
-|                                                         |     to concurrent updates                               |                                                                            |
+|                                                         | ::                                                      | T2가 블럭에서 해제되어 T1이 이미 갱신한 개체의 갱신을 시도한다.            |
+|                                                         |                                                         | REPEATABLE READ 격리 수준에서 이것은 허용되지 않고                         |
+|                                                         |     ERROR: 동시 갱신의 충돌로                           | 오류가 전송된.                                                             |
+|                                                         |     직렬성 위반                                         |                                                                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
 
-Locking to protect unique constraint
-------------------------------------
+고유한 제약을 보호하기 위한 잠금
+--------------------------------
 
-Two phase locking protocol in older CUBRID versions used index key locks to protect unique constraints and higher isolation restrictions. In CUBRID 10.0, key locking was removed. Isolation level restrictions are solved by MVCC snapshot, however unique constraint still needed some type of protection.
+이전 버전의 CUBRID에서 사용한 2단계 잠금 프로토콜 (2PL)은 고유한 제약 조건을 유지하고 높은 격리 제약을 위해서 인덱스 키를 잠그는데 사용되었다. CUBRID 10.0에서 키 잠금은 제거되었다. 격리 수준의 제약은 다중 버전 동시성 제어 (MVCC) 스냅샷으로 해결되었다, 하지만 고유한 제약은 여전히 어떤 형태의 보호를 필요로 한다.
 
-With MVCC, unique index can keep multiple versions at the same time, similarly to rows, each visible to different transactions. One is the last version, while the other versions are kept temporarily until they become invisible and can be removed by **VACUUM**. The rule to protect unique constraint is that all transactions trying to modify a key has to lock key's last existing version.
+다중 버전 동시정 제어 (MVCC)를 이용하여, 고유한 인덱스는, 열과 같은 형태로, 동시에 여러 개의 버전을 유지할 수 있으며, 각각이 서로 다른 트랜잭션에 보이게 할 수있다. 하나는 최종 버전이다, 반면 다른 버전들은 보이지 않게 되어서 **VACUUM**에 의해 제거될 수 있으며 이때까지는 임시적으로 유지될 수 있다. 고유한 제약 조건을 유지하기 위한 조건은 어떤 키를 수정하고자 하는 모든 트랜잭션은 해당 키의 존재하는 마지막 버전의 잠금을 획득해야만 한다는 것이다.
 
-The below example uses **REPEATABLE READ** isolation to show the way locking prevents unique constraint violations.
+아래의 예는 **REPEATABLE READ** 격리 수준을 사용하였는데 이는 잠금이 고유한 제약을 위반하는 방법을 보여주기 위함이다.
 
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
 | T1                                                      | T2                                                      | Description                                                                |
@@ -979,14 +979,14 @@ The below example uses **REPEATABLE READ** isolation to show the way locking pre
 |                (70, 70);                                |                                                         |                                                                            |
 |   csql> COMMIT;                                         |                                                         |                                                                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-| .. code-block :: sql                                    |                                                         | T1 inserts a new row into table and also locks it. The key 20 is therefore |
-|                                                         |                                                         | protected.                                                                 |
+| .. code-block :: sql                                    |                                                         | T1이 새로운 열을 테이블에 삽입하고 그것을 잠금. 키 20은 따라서             |
+|                                                         |                                                         | 보호.                                                                      |
 |   csql> INSERT INTO tbl VALUES (20, 20);                |                                                         |                                                                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-|                                                         | .. code-block :: sql                                    | T2 also inserts a new row into table and locks it. However, when it tries  |
-|                                                         |                                                         | to insert it in primary key, it discovers key 20 already exists. T2 has    |
-|                                                         |    INSERT INTO tbl VALUES (20, 120);                    | to lock existing object, that T1 inserted, and is blocked until T1         |
-|                                                         |                                                         | commits. ::                                                                |
+|                                                         | .. code-block :: sql                                    | T2 또한 테이블에 새로운 열을 삽입하고 그것을 잠금. 하지만, T2가            |
+|                                                         |                                                         | 주키에 그것을 삽입하려고 할 때, 키 20이 이미 있는 것이 발견된다. T2는      |
+|                                                         |    INSERT INTO tbl VALUES (20, 120);                    | T1ㅣ 삽입한 기존의 오브젝트의 잠금을 시도하고, T1이                        |
+|                                                         |                                                         | 커밋할 때까지 블럭된다. ::                                                 |
 |                                                         |                                                         |                                                                            |
 |                                                         |                                                         |   cubrid lockdb:                                                           |
 |                                                         |                                                         |                                                                            |
@@ -1022,12 +1022,12 @@ The below example uses **REPEATABLE READ** isolation to show the way locking pre
 |                                                         |                                                         |   LOCK HOLDERS:                                                            |
 |                                                         |                                                         |       Tran_index =   2, Granted_mode =   X_LOCK                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-| .. code-block :: sql                                    |                                                         | T1's locks are released.                                                   |
+| .. code-block :: sql                                    |                                                         | T1의 잠금이 해제된다.                                                      |
 |                                                         |                                                         |                                                                            |
 |   COMMIT;                                               |                                                         |                                                                            |
 +---------------------------------------------------------+---------------------------------------------------------+----------------------------------------------------------------------------+
-|                                                         | ::                                                      | T2 is unlocked, finds the key has been committed and throws unique         |
-|                                                         |                                                         | constraint violation error.                                                |
+|                                                         | ::                                                      | T2 가 해제된다, 커밋된 키를 찾지만                                         |
+|                                                         |                                                         | 고유키 제약이 발생된다.                                                    |
 |                                                         |    ERROR: Operation would have caused                   |                                                                            |
 |                                                         |    one or more unique constraint violations.            |                                                                            |
 |                                                         |    INDEX pk_tbl_a(B+tree: 0|186|640)                    |                                                                            |
@@ -1044,9 +1044,9 @@ The below example uses **REPEATABLE READ** isolation to show the way locking pre
 
 에러 심각성 수준을 설정하는 시스템 파라미터인 **error_log_level** 의 값을 NOTIFICATION으로 설정하면 교착 상태 발생 시 서버 에러 로그 파일에 잠금 관련 정보가 기록된다.
 
-Compared to older versions, CUBRID 10.0 no longer uses index key locking to read and write in index, thus deadlock occurrences have been reduced greatly. Another reason that deadlocks do not occur as often is that reading a range in index could lock many objects with high isolation levels in previous CUBRID versions, whereas CUBRID 10.0 uses no locks.
+이전 버전들과 달리 CUBRID 10.0은 더 이상 인덱스를 읽고 쓰는데 인덱스 키 잠금을 사용하지 않는다, 따라서 교착상태의 발생이 현저하게 줄어들었다. 교착상태가 자주 발생하지 않는 또 하나의 이유는 이전의 CUBRID 버전들이 범위의 인덱스를 읽는 것에 높은 격리 수준을 사용하는데 이것이 많은 오브젝트들을 잠글 수 있기 때문이다, 반면 이러한 경우 CUBRID 10.0은 더 이상 잠금을 사용하지 않는다.
 
-However, deadlocks are still possible when two transaction update same objects, but in a different order
+하지만, 교착상태는 같은 오브젝트들을 서로 다른 순서로 갱신하는 두개의 트랜잭션에서 아직도 발생할 수 있다.
 
 **예제**
 
@@ -1253,26 +1253,26 @@ You can set the level of transaction isolation by using **isolation_level** and 
 
 .. _isolation-level-4:
 
-READ COMMITTED Isolation Level
-------------------------------
+READ COMMITTED 격리 수준
+------------------------
 
-A relatively low isolation level (4). A dirty read does not occur, but non-repeatable or phantom read may. That is, transaction *T1* can read another value because insert or update by transaction *T2* is allowed while transaction *T1* is repeatedly retrieving one object.
+상대적으로 낮은 수준 (4). 더티 리드는 일어나지 않는다, 하지만 비 반복적이거나 허구의 읽기는 발생할 수 있다. 즉, 트랜잭션 *T2*가 삽입이나 갱신이 허용되고 반면 *T1*은 반복적으로 한 개체를 읽는 경우 *T1*은 다른 값을 읽을 수 있다.
 
-The following are the rules of this isolation level:
+다음은 이 격리 수준의 규칙이다:
 
-*   Transaction *T1* cannot read or modify the record inserted by another transaction *T2*. The record is instead ignored.
-*   Transaction *T1* can read the record being updated by another transaction *T2* and it sees the record's last committed version (but it cannot see uncommitted versions).
-*   Transaction *T1* cannot modify the record being updated by another transaction *T2*. *T1* waits for *T2* to commit and it re-evaluates record values. If the re-evaluation test is passed, *T1* modifies the record, otherwise it ignores it.
-*   Transaction *T1* can modify the record being viewed by another transaction *T2*.
-*   Transaction *T1* can update/insert record to the table being viewed by another transaction *T2*.
-*   Transaction *T1* cannot change the schema of the table being viewed by another transaction *T2*.
-*   Transaction *T1* creates a new snapshot with each executed statement, thus phantom or non-repeatable read may occur.
+*   트랜잭션 *T1*은 다른 트랜잭션 *T2*에 의해서 삽입된 레코드를 읽거나 갱신할 수 없다. 이런 레코드는 읽거나 갱신하지 않고 차라리 무시된다.
+*   트랜잭션 *T1*은 또 다른 트랜잭션 *T2*에 의해서 갱신된 레코드를 읽을 수 있지만 그 레코드의 마지막 커밋된 버전 만을 볼 수 있다 (*T1*은 커밋되지 않은 다른 버전들은 볼 수 없다).
+*   트랜잭션 *T1*은 다른 트랜잭션 *T2*에 의해서 갱신중인 레코드를 수정할 수 없다. *T1*은 *T2*가 커밋하기를 기다린후, 레코드의 값을 다시 계산한다. 재 계산 검사를 통과하면 T1은 그 레코드를 수정한다, 통과하지 못하면 그 레코드를 무시한다.
+*   트랜잭션 *T1*은 다른 트랜잭션 *T2*가 보고 있는 레코드를 수정할 수 있다.
+*   트랜잭션 *T1*은 다른 트랜잭션 *T2*가 보고 있는 테이블에 레코드를 갱신/삽입할 수 있다.
+*   트랜잭션 *T1*은 다른 트랜잭션 *T2*가 보고 있는 테이블의 스키마를 변경할 수 없다.
+*   트랜잭션 *T1*은 실행된 문장에 대해서 새로운 스냅샷을 생성한다, 따라서 허구나 비 반복적인 읽기가 발생할 수 있다.
 
-This isolation level follows MVCC locking protocol for an exclusive lock. A shared lock on a row is not required; however, an intent lock on a table is released when a transaction terminates to ensure repeatable read on the schema.
+이 격리 수준은 배타적인 잠금을 위해서 MVCC 잠금 프로토콜을 따른다. 하나의 열에 대해서 공유된 잠금은 필요하지 않다; 그러나, 한 테이블에 대한 잠금 의향은 그 스키마에 대한 반복적인 읽기를 확보하기 위해서 트랜잭션이 종료되었을 때 해제된다.
 
-*Example:*
+*예:*
 
-The following example shows that a phantom or non-repeatable read may occur because another transaction can add or update a record while one transaction is performing the object read but repeatable read for the table schema update is ensured when the transaction level of the concurrent transactions is **READ COMMITTED**.
+다음의 예는 팬텀 읽기나 비 반복적인 읽기가 발생할 수 있음을 보여준다. 왜냐하면, 트랜잭션의 동시성 수준이 **READ COMMITTED**이고 한 트랜잭션이 객체의 읽기를 수행하나 테이블 스키마 갱신에 대해서 반복적인 읽기가 보장되었을때, 다른 트랜잭션이 레코드의 추가나 갱신을 수행할 수 있기 때문이다.
 
 +-------------------------------------------------------------------------+----------------------------------------------------------------------------------+
 | session 1                                                               | session 2                                                                        |
@@ -1385,9 +1385,9 @@ The following example shows that a phantom or non-repeatable read may occur beca
 READ COMMITTED UPDATE RE-EVALUATION
 +++++++++++++++++++++++++++++++++++
 
-**READ COMMITTED** isolation treats concurrent row updates differently than higher isolation levels. In higher isolation levels, if *T2* tries to modify a row already updated by concurrent transaction *T1*, it is blocked until *T1* commits and rollbacks, and if *T1* commits, *T2* aborts its statement execution, throwing serialization error. Under **READ COMMITTED** isolation, after *T1* commits, *T2* does not immediately abort its statement execution and re-evaluates the new version, which is not considered committed and would not violate any restrictions for this isolation. If the predicate used to select previous version is still true for the new version, *T2* goes ahead and modifies the new version. If the predicate is no longer true, *T2* just ignores the record as if the predicate was never satisfied.
+**READ COMMITTED** 격리는 높은 격리 수준과 달르게 열을 동시에 갱신하는 것을 다르게 처리한다. 높은 격리 수준에서는, 만약 *T2*가 동시에 실행중인 트랜잭션 *T1*에 의해서 이미 갱신된 열을 수정하려고 하면, *T2*는 *T1*이 커밋이나 롤백할 때까지 블록된다, 만일 *T1*이 커밋하면 *T2*는 직렬화 오류를 방지하기 위해서 문장의 수행을 중단한다. **READ COMMITTED** 격리 수준에서, *T1*이 카밋후에, *T2*는 문장의 실행을 즉시 중단하지는 않는다 반면 새로운 버전을 다시 계산한다, 그것은 커밋된 것으로 간주되지 않고 띠리사 이 격리 수준의 제약을 위반하지 않을 수도 있다. 이전 버전의 select를 위해서 사용된 술부가 아직도 참이라면, *T2*는 계속 진행하여 새로운 버전을 수정한다. 만일 술부가 참이 아니라면, *T2*는 술부가 만족한적이 없는 것처럼 단순히 레코드를  무시한다.
 
-*Example:*
+*예:*
 
 +-------------------------------------------------------------------------+----------------------------------------------------------------------------------+
 | session 1                                                               | session 2                                                                        |
@@ -1472,26 +1472,26 @@ READ COMMITTED UPDATE RE-EVALUATION
 
 .. _isolation-level-5:
 
-REPEATABLE READ Isolation Level
--------------------------------
+REPEATABLE READ 격리 수준
+-------------------------
 
-A relatively high isolation level (5). Dirty, non-repeatable, and phantom reads do not occur due to **snapshot isolation**. However, it's still not truly **serializable**, transaction execution cannot be defined *as if there were no other transactions running* at the same time. More complex anomalies, like write skews, that a **serializable snapshot isolation** level should not allow still occur.
+비교적 높은 수준 (5). **snapshot isolation**으로 인해서 더티 리드, 비 반복적 읽기, 팬텀 읽기는 일어나지 않는다. 하지만, 이것이 진정한 **직렬성**은 아니다, 트랜잭션의 실행은 *동시에 실행중인 트랜잭션이 없는 것처럼* 계획될 수 없다. 쓰기 왜곡과 같은, **직렬화 스냅샷 격리*리 수준이 허용하지 않는 더욱 이상한 현상들이 발생할 수 있다.
 
-In a write skew anomaly, two transactions concurrently read overlapping data sets and make disjoint updates on the overlapped data set, neither having seen the update performed by the other. In a serializable system, such anomaly would be impossible, since one transaction must occur first and the second transaction should see the update of the first transaction.
+쓰기 이상 현상에서, 중복되는 데이터 셋에서 동시에 읽기를 수행하고 중복된 데이터 셋에 대해서 독립적인 갱신을 트랜잭션들은 상대방에 의해서 실행된 갱신을 보는 경우가 없게 된다. 직렬화가능 시스템에서, 한 트랜잭션은 첫번째에 발생하고 두번째 트랜잭션은 첫번째 트랜잭션의 결과를 볼수 있어야 하기 때문에 이러한 이상 현상은 불가능할 것이다.
 
-The following are the rules of this isolation level:
+다음은 아 격리 수준의 규칙이다:
 
-*   Transaction *T1* cannot read or modify the record inserted by another transaction *T2*. The record is instead ignored.
-*   Transaction *T1* can read the record being updated by another transaction *T2* and it will see the record's last committed version.
-*   Transaction *T1* cannot modify the record being updated by another transaction *T2*.
-*   Transaction *T1* can modify the record being viewed by another transaction *T2*.
-*   Transaction *T1* can update/insert record to the table being viewed by another transaction *T2*.
-*   Transaction *T1* cannot change the schema of the table being viewed by another transaction *T2*.
-*   Transaction *T1* creates a unique snapshot valid throughout the entire duration of the transaction.
+*   트랜잭션 *T1* 은 또 다른 트랜잭션 *T2*에 의해서 삽입된 레코드를 읽거나 수정할 수 없다. 이런 레코드는 차라리 무시된다.
+*   트랜잭션 *T1* 은 또 다른 트랜잭션 *T2*에 의해서 갱신된 레코드를 읽을 수 있지만 *T1*은 그 레코드가 최종으로 커밋된 버전만을 볼 수 있다.
+*   트랜잭션 *T1* 은 또 다른 트랜잭션 *T2*에 의해서 수정된 레코드를 수정할 수 없다.
+*   트랜잭션 *T1* 은 또 다른 트랜잭션 *T2*가 보고 있는 레코드를 수정할 수 있다.
+*   트랜잭션 *T1* 은 또 다른 트랜잭션 *T2*가 보고 있는 테이블에 레코드를 삽입하거나 갱신할 수 있다.
+*   트랜잭션 *T1* 은 또 다른 트랜잭션 *T2*가 보고 있는 테이블의 스키마를 변경할 수 없다.
+*   트랜잭션 *T1* 은 트랜잭션의 전체 기간에 걸쳐서 유효한 고유한 스냅샷을 생성한다.
 
 **예제**
 
-The following example shows that non-repeatable and phantom reads may not occur because of **snapshot isolation**. However, write skews are possible, which means the isolation level is not **serializable**.
+다음의 예는 **snapshot isolation** 때문에 비 반복적인 읽기와 팬텀 읽기가 발생하지 않는 것을 보여준다. 하지만, 쓰기 이상은 가능한데, 이것은 격리가 바로 **직렬화가능**은 아니라는 것을 의미한다.
 
 +----------------------------------------------------------------------------+-----------------------------------------------------------------------------+
 | session 1                                                                  | session 2                                                                   |
@@ -1651,12 +1651,12 @@ The following example shows that non-repeatable and phantom reads may not occur 
 
 .. _isolation-level-6:
 
-SERIALIZABLE Isolation Level
+SERIALIZABLE 격리 수준
 ----------------------------
 
-CUBRID 10.0 **SERIALIZABLE** isolation level is identical to **REPEATABLE READ** isolation level. As explained in :ref:`isolation-level-5` section, even though **SNAPSHOT** isolation ensures non-repeatable read and phantom read anomalies do not happen, write skew anomalies are still possible. To protect against write skew, index key locks for read may be used. Alternatively, there are many works that describe complex systems to provide **SERIALIZABLE SNAPSHOT ISOLATION**, by aborting transactions with the potential of creating an isolation conflict. One such system will be provided in a future CUBRID version.
+CUBRID 10.0 **SERIALIZABLE** 격리 수준은 **REPEATABLE READ** 격리 수준과 같다. :ref:`isolation-level-5` 장에서 설명한 것과 같이, **SNAPSHOT** 격리 수준이 비 반복적인 읽기와 팬텀 읽기 이상 현상이 발생이지 않는다는 것을 보증하더라도, 쓰기 이상은 여전히 가능하다. 쓰기 이상으로부터 보호를 위해서, 읽기를 위한 인덱스 키 잠금이 사용될 것이다. 그 대신에 잠재적으로 격리 충돌이 발생할 수 있는 트랜잭션들을 중지시킴으로써, **SERIALIZABLE SNAPSHOT ISOLATION**을 제공하기 위한 복잡한 시스템을 기술하는 많은 작업들이 있다. 그러한 시스템이 추후 CUBRID 버전으로 공급될 것이다.
 
-The keyword was not removed for backward compatibility reasons, but remember, it is similar to **REPEATABLE READ**.
+핵심 주제어는 과거의 버전과의 호환성 이유로 제거되지 않았다, 하지만 기억하라, 이것은 **REPEATABLE READ**와 비슷하다.
 
 .. _dirty-record-flush:
 
