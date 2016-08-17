@@ -1723,6 +1723,8 @@ cci_get_db_parameter
     +---------------------------------+--------------+----------+
     | **CCI_PARAM_MAX_STRING_LENGTH** | int \*       | get only |
     +---------------------------------+--------------+----------+
+    | **CCI_PARAM_AUTO_COMMIT**       | int \*       | get only |
+    +---------------------------------+--------------+----------+
 
     :c:func:`cci_get_db_parameter`, :c:func:`cci_set_db_parameter`\ 에서 **CCI_PARAM_LOCK_TIMEOUT** 의 입출력 단위는 밀리초이다.
 
