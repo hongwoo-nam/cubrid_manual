@@ -34,13 +34,13 @@ cci_bind_param
     
     .. code-block:: c
     
-        res = cci_bind_param (req, 2 /* binding index*/, CCI_A_TYPE_STR, NULL, CCI_U_TYPE_STRING, CCI_BIND_PTR);
+        res = cci_bind_param (req, 2 /* binding index */, CCI_A_TYPE_STR, NULL, CCI_U_TYPE_STRING, CCI_BIND_PTR);
         
     or
     
     .. code-block:: c
     
-        res = cci_bind_param (req, 2 /* binding index*/, CCI_A_TYPE_STR, data, CCI_U_TYPE_NULL, CCI_BIND_PTR);
+        res = cci_bind_param (req, 2 /* binding index */, CCI_A_TYPE_STR, data, CCI_U_TYPE_NULL, CCI_BIND_PTR);
 
     can be used.
     
