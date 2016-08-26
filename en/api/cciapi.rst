@@ -73,6 +73,13 @@ cci_bind_param
     +-----------------------------+-----------------------------+
     | **CCI_A_TYPE_CLOB**         | **T_CCI_CLOB**              |
     +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_UINT**         | unsigned int \*             |
+    +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_UBIGINT**      | uint64_t \*                 |
+    |                             | (For Windows: __uint64 \*)  |
+    +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_DATE_TZ**      | **T_CCI_DATE_TZ**           |
+    +-----------------------------+-----------------------------+
 
     **T_CCI_U_TYPE** is a column type of database and data bound though the *value* argument is converted into this type. 
     The **cci_bind_param** () function uses two kinds of types to send information which is used to convert U-type data from A-type data; the U-type data can be interpreted by database language and the A-type data can be interpreted by C language.
