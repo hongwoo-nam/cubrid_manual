@@ -134,18 +134,18 @@ cci_bind_param
 
         // "CREATE TABLE tbl(aa date, bb datetime)";
          
-        char *values[][3] =
+        char *values[][2] =
         {
             {"1994/11/30", "1994/11/30 20:08:08"},
             {"2008-10-31", "2008-10-31 20:08:08"}
         };
         
-        req = cci_prepare(conn, "insert into tbl (aa, bb) values ( ?, ?)", CCI_PREPARE_INCLUDE_OID, &error);
+        req = cci_prepare(conn, "insert into tbl (aa, bb) values (?, ?)", CCI_PREPARE_INCLUDE_OID, &error);
         
         for(i=0; i< 2; i++)
         {
-            res = cci_bind_param(req, 1, CCI_A_TYPE_STR, values[i][0], CCI_U_TYPE_DATE, (char)NULL);
-            res = cci_bind_param(req, 2, CCI_A_TYPE_STR, values[i][1], CCI_U_TYPE_DATETIME, (char)NULL);
+            res = cci_bind_param(req, 1, CCI_A_TYPE_STR, values[i][0], CCI_U_TYPE_DATE, (char)0);
+            res = cci_bind_param(req, 2, CCI_A_TYPE_STR, values[i][1], CCI_U_TYPE_DATETIME, (char)0);
             cci_execute(req, CCI_EXEC_QUERY_ALL, 0, err_buf);
         }
 
@@ -208,7 +208,7 @@ cci_bind_param_ex
      
     .. code-block:: c 
   
-        cci_bind_param_ex(statement, 1, CCI_A_TYPE_STR, "aaa\0bbb", 7, CCI_U_TYPE_STRING, 0); 
+        cci_bind_param_ex(req, 1, CCI_A_TYPE_STR, "aaa\0bbb", 7, CCI_U_TYPE_STRING, 0); 
 
 cci_blob_free
 -------------
