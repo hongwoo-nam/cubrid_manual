@@ -217,6 +217,7 @@ cci_blob_free
 
     **BLOB** 구조체에 대한 메모리를 해제한다.
 
+    :param blob: (IN) **LOB** Locator
     :return: 에러 코드(0: 성공)
     
         *   **CCI_ER_INVALID_LOB_HANDLE**
@@ -245,12 +246,12 @@ cci_blob_new
 cci_blob_read
 -------------
 
-.. c:function:: int cci_blob_read(int conn_handle, T_CCI_BLOB blob, long start_pos, int length, char *buf, T_CCI_ERROR* error_buf)
+.. c:function:: int cci_blob_read(int conn_handle, T_CCI_BLOB blob, long long start_pos, int length, char *buf, T_CCI_ERROR* error_buf)
 
     *blob* 에 명시한 **LOB** 데이터 파일의 *start_pos* 부터 *length* 만큼 데이터를 읽어 *buf* 에 저장한 후 이를 반환한다.
 
     :param conn_handle: (IN) 연결 핸들
-    :param blob: (OUT) **LOB** Locator
+    :param blob: (IN) **LOB** Locator
     :param start_pos: (IN) **LOB** 데이터 파일의 위치 인덱스
     :param length: (IN) 파일로부터 가져올 **LOB** 데이터 길이
     :param buf: (IN) 데이터 읽기 버퍼
@@ -271,11 +272,11 @@ cci_blob_read
 cci_blob_size
 -------------
 
-.. c:function:: long long cci_blob_size(T_CCI_BLOB* blob)
+.. c:function:: long long cci_blob_size(T_CCI_BLOB blob)
 
     *blob* 에 명시한 데이터 파일의 크기를 반환한다.
 
-    :param blob: (OUT) **LOB** Locator
+    :param blob: (IN) **LOB** Locator
     :return: **BLOB** 데이터 파일의 크기(>=0 : 성공), 에러 코드(<0 : 에러)
 
         *   **CCI_ER_INVALID_LOB_HANDLE**
@@ -283,12 +284,12 @@ cci_blob_size
 cci_blob_write
 --------------
 
-.. c:function:: int cci_blob_write(int conn_handle, T_CCI_BLOB blob, long start_pos, int length, const char *buf, T_CCI_ERROR* error_buf)
+.. c:function:: int cci_blob_write(int conn_handle, T_CCI_BLOB blob, long long start_pos, int length, const char *buf, T_CCI_ERROR* error_buf)
 
     *buf* 로부터 *length* 만큼 데이터를 읽어 *blob* 에 명시한 **LOB** 데이터 파일의 *start_pos* 부터 저장한다.
 
     :param conn_handle: (IN) 연결 핸들
-    :param blob: (OUT) **LOB** Locator
+    :param blob: (IN) **LOB** Locator
     :param start_pos: (IN) **LOB** 데이터 파일의 위치 인덱스
     :param length: (IN) 버퍼로부터 가져올 데이터 길이
     :param buf: (OUT) 데이터 쓰기 버퍼
@@ -1639,7 +1640,7 @@ cci_get_data
     :param col_no: (IN) 칼럼 인덱스. 1부터 시작.
     :param type: (IN) *value* 변수의 데이터 타입(**T_CCI_A_TYPE** 에 정의된 타입을 사용)
     :param value: (OUT) 데이터를 저장할 변수의 주소. *type*\이 CCI_A_TYPE_STR, CCI_A_TYPE_SET, CCI_A_TYPE_BLOB 또는 CCI_A_TYPE_CLOB이고 칼럼의 값이 NULL이면 value의 값도 NULL이다.
-    :param indicator: (OUT) **NULL** indicator. (-1: **NULL**, >0: 문자열의 길이)
+    :param indicator: (OUT) **NULL** indicator. (-1: **NULL**)
     
         *   *type* 이 **CCI_A_TYPE_STR** 인 경우: **NULL** 이면 -1을 반환하고, **NULL** 이 아니면 *value* 에 저장된 문자열의 바이트 길이를 반환
         *   *type* 이 **CCI_A_TYPE_STR** 이 아닌 경우: **NULL** 이면 -1을 반환하고, **NULL** 이 아니면 0을 반환

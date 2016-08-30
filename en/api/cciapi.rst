@@ -217,6 +217,7 @@ cci_blob_free
 
     The **cci_blob_free** function frees memory of *blob* struct.
 
+    :param blob: (IN) **LOB** locator
     :return: Error code (0: success)
     
         *   **CCI_ER_INVALID_LOB_HANDLE**
@@ -245,12 +246,12 @@ cci_blob_new
 cci_blob_read
 -------------
 
-.. c:function:: int cci_blob_read(int conn_handle, T_CCI_BLOB blob, long start_pos, int length, char *buf, T_CCI_ERROR* error_buf)
+.. c:function:: int cci_blob_read(int conn_handle, T_CCI_BLOB blob, long long start_pos, int length, char *buf, T_CCI_ERROR* error_buf)
 
     The **cci_blob_read** function reads as much as data from *start_pos* to *length* of the **LOB** data file specified in *blob*; then it stores it in *buf* and returns it.
 
     :param conn_handle: (IN) Connection handle
-    :param blob: (OUT) **LOB** locator
+    :param blob: (IN) **LOB** locator
     :param start_pos: (IN) Index location of **LOB** data file
     :param length: (IN) **LOB** data length from buffer
     :param buf: (IN) Data buffer to read
@@ -271,11 +272,11 @@ cci_blob_read
 cci_blob_size
 -------------
 
-.. c:function:: long long cci_blob_size(T_CCI_BLOB* blob)
+.. c:function:: long long cci_blob_size(T_CCI_BLOB blob)
 
     The **cci_blob_size** function returns data file size that is specified in *blob*.
 
-    :param blob: (OUT) **LOB** locator
+    :param blob: (IN) **LOB** locator
     :return: Size of **BLOB** data file (>= 0: success), Error code (< 0: error)
 
         *   **CCI_ER_INVALID_LOB_HANDLE**
@@ -283,12 +284,12 @@ cci_blob_size
 cci_blob_write
 --------------
 
-.. c:function:: int cci_blob_write(int conn_handle, T_CCI_BLOB blob, long start_pos, int length, const char *buf, T_CCI_ERROR* error_buf)
+.. c:function:: int cci_blob_write(int conn_handle, T_CCI_BLOB blob, long long start_pos, int length, const char *buf, T_CCI_ERROR* error_buf)
 
     The **cci_blob_write** function reads as much as data from *buf* to *length* and stores it from *start_pos* of the **LOB** data file specified in *blob*.
 
     :param conn_handle: (IN) Connection handle
-    :param blob: (OUT) **LOB** locator
+    :param blob: (IN) **LOB** locator
     :param start_pos: (IN) Index location of **LOB** data file
     :param length: (IN) Data length from buffer
     :param buf: (OUT) Data buffer to write
