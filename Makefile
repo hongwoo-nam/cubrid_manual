@@ -1,6 +1,5 @@
 # Makefile for Sphinx documentation
 # this is test 
-# new addition by hwnam
 
 .PHONY: clean html
 
