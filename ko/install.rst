@@ -11,9 +11,9 @@ CUBRID가 지원하는 플랫폼과 설치를 위한 하드웨어/소프트웨�
 +--------------------------------------------------------------+------------------+----------------------+--------------------------+
 | 지원 플랫폼                                                  | 요구되는 메모리  | 요구되는 디스크 공간 | 필요 소프트웨어          |
 +==============================================================+==================+======================+==========================+
-| * Windows 32/64 Bit XP, 2003, Vista, Windows 7               | 1G 이상          | 2G 이상(\*)          | JRE 또는 JDK 1.6 이상,   |
+| * Windows 32/64 Bit Windows 7                                | 1G 이상          | 2G 이상(\*)          | JRE 또는 JDK 1.6 이상,   |
 |                                                              |                  |                      | Java 저장 프로시저를     |
-| * Linux 계열 32/64 Bit(Linux kernel 2.4 및 glibc 2.3.4 이상) |                  |                      | 사용하는 경우 필요       |
+| * Linux 계열 64 Bit(Linux kernel 2.4 및 glibc 2.3.4 이상)    |                  |                      | 사용하는 경우 필요       |
 +--------------------------------------------------------------+------------------+----------------------+--------------------------+
 
 (\*): 처음 설치 시 약 500MB의 디스크 공간이 필요하며, 하나의 DB를 기본 옵션으로 생성할 경우 약 1.5GB의 디스크 공간이 필요하다.
@@ -24,27 +24,12 @@ CUBRID 매니저 및 CUBRID 쿼리 브라우저 설치 패키지와 JDBC, PHP, O
 
 CUBRID 엔진, 사용 도구 및 드라이버에 대한 자세한 정보는 http://www.cubrid.org\ 를 참고한다.
 
-.. note:: 
-  
-    AIX OS에서 ksh를 사용하여 CUBRID SH 설치 패키지를 설치하는 경우 다음의 경고 메시지와 함께 실패하므로, 
-  
-    :: 
-  
-        0403-065 An incomplete or invalid multibyte character encountered. 
-  
-    ksh 대신 ksh93 또는 bash를 사용할 것을 권장한다. 
-  
-    :: 
-  
-        $ ksh93 ./CUBRID-10.0.0.0146-AIX-ppc64.sh 
-        $ bash ./CUBRID-10.0.0.0146-AIX-ppc64.sh 
-
 버전 호환성
 -----------
 
 **응용 프로그램의 호환성**
 
-*   2008 R4.1 또는 그 이상 버전에서 JDBC, PHP, CCI API 등을 사용하는 응용 프로그램은 CUBRID 10.0 브로커에 접근할 수 있다. 다만, JDBC, PHP, CCI 인터페이스에 추가/개선된 기능을 사용하기 위해서는 CUBRID 10.0 버전의 라이브러리를 링크하거나 드라이버를 사용해야 한다.
+*   2008 R4.1 또는 그 이상 버전에서 JDBC, PHP, CCI API 등을 사용하는 응용 프로그램은 CUBRID 10.0 브로커에 접근할 수 있다. 다만, JDBC, PHP, CCI 인터페이스에 추가/개선된 기능을 사용하기 위해서는 CUBRID 10.0 버전의 라이브러리를 링크하거나 드라이버를 사용해야 한다. 10.0에서 추가된 :ref:`timezone-type` 을 사용하기 위해서는 드라이버를 업그레이드 해야 한다.
 
 *   새로운 예약어 추가 및 일부 질의에 대한 스펙 변경으로 인해 질의 결과가 과거 버전과 다를 수 있으므로 주의한다.
 
@@ -60,7 +45,7 @@ CUBRID 엔진, 사용 도구 및 드라이버에 대한 자세한 정보는 http
 
 *   CUBRID 2008 R2.2 이상 버전의 드라이버는 CUBRID 매니저에 기본으로 내장되어 있으며, cubrid.org에서 별도로 받을 수도 있다.
 
-.. note:: 과거 버전 사용자는 드라이버, 브로커, DB 서버 모두를 반드시 업그레이드해야 하며, DB 볼륨이 10.0과 호환되지 않으므로 반드시 데이터 마이그레이션을 해야 한다.
+.. note:: 과거 버전 사용자들은 드라이버, 브로커, DB 서버 모두를 반드시 업그레이드해야 하며, DB 볼륨이 10.0과 호환되지 않으므로 반드시 데이터 마이그레이션을 해야 한다.
     업그레이드 및 데이터 마이그레이션은 :doc:`/upgrade`\ 를 참고한다.
 
 **CUBRID DB 서버와 브로커 간 상호 운용성**
@@ -73,7 +58,7 @@ CUBRID 엔진, 사용 도구 및 드라이버에 대한 자세한 정보는 http
 
     예를 들어, Linux용 64Bit 버전 DB 서버는 Windows용 64Bit 버전 브로커 서버와 상호 운용이 가능하지만, 32Bit 버전 브로커 서버와는 상호 운용이 불가능하다.
 
-    DB 서버와 브로커 서버 사이의 관계에 대한 설명은 :doc:`intro`\를 참고한다. CUBRID SHARD에 대한 설명은 :doc:`shard`\를 참고한다.
+    DB 서버와 브로커 서버 사이의 관계에 대한 설명은 :doc:`intro`\를 참고한다. 
     
 .. _Installing-and-Running-on-Linux:
     
@@ -91,15 +76,15 @@ Linux 버전의 CUBRID 데이터베이스를 설치하기 전에 다음 사항�
       
         % rpm -q glibc
 
-*   64비트 여부 
+*   32비트 또는 64비트 
     
-    CUBRID는 32비트 버전과 64비트 버전을 각각 지원한다.
+    10.0에서 CUBRID는 64비트 버전만 지원한다.
     Linux버전은 다음과 같은 방법으로 확인한다. ::
         
         % uname -a
         Linux host_name 2.6.18-53.1.14.el5xen #1 SMP Wed Mar 5 12:08:17 EST 2008 x86_64 x86_64 x86_64 GNU/Linux
     
-    32비트 Linux에서는 CUBRID 32비트 버전을, 64비트 Linux에서는 CUBRID 64비트 버전을 설치한다. 
+    64비트 Linux에서는 CUBRID 64비트 버전을 설치한다. 
     
 *   추가로 설치할 라이브러리
     
@@ -117,7 +102,7 @@ Linux 버전의 CUBRID 데이터베이스를 설치하기 전에 다음 사항�
 
 ::
 
-    $ sh CUBRID-10.0.0.0201-linux.x86_64.sh
+    $ sh CUBRID-10.0.0.1376-linux.x86_64.sh
     Do you agree to the above license terms? (yes or no) : yes
     Do you want to install this software(CUBRID) to the default(/home1/cub_user/CUBRID) directory? (yes or no) [Default: yes] : yes
     Install CUBRID to '/home1/cub_user/CUBRID' ...
@@ -134,7 +119,7 @@ Linux 버전의 CUBRID 데이터베이스를 설치하기 전에 다음 사항�
     $ . /home1/cub_user/.cubrid.sh
     $ cubrid service start
 
-위의 예제와 같이 다운로드한 파일(CUBRID-10.0.0.0201-linux.x86_64.sh)을 설치한 후, CUBRID 데이터베이스를 사용하기 위해서는 CUBRID 관련 환경 정보를 설정해야 한다. 이 설정은 해당 터미널에 로그인할 때 자동 설정되도록 지정되어 있으므로 설치 후 최초 한 번만 수행하면 된다. ::
+위의 예제와 같이 다운로드한 파일(CUBRID-10.0.0.1376-linux.x86_64.sh)을 설치한 후, CUBRID 데이터베이스를 사용하기 위해서는 CUBRID 관련 환경 정보를 설정해야 한다. 이 설정은 해당 터미널에 로그인할 때 자동 설정되도록 지정되어 있으므로 설치 후 최초 한 번만 수행하면 된다. ::
 
     $ . /home1/cub_user/.cubrid.sh
 
@@ -165,7 +150,7 @@ cubrid service를 구동시킨 후 정상적으로 구동되었는지 확인하�
 
 CentOS 5 환경에서 생성한 RPM 파일을 사용하여 CUBRID를 설치할 수 있으며, 일반적인 RPM 유틸리티와 동일한 방법으로 설치하고 삭제할 수 있다. 설치하면 새로운 시스템 그룹(cubrid) 및 사용자 계정(cubrid)이 생성되며, 설치 후에는 cubrid 사용자 계정으로 로그인하여 CUBRID 서비스를 시작해야 한다. ::
 
-    $ rpm -Uvh cubrid-10.0.0.0201-el5.x86_64.rpm
+    $ rpm -Uvh cubrid-10.0.0.1376-el5.x86_64.rpm
 
 RPM을 실행하면 CUBRID는 "cubrid" 홈 디렉터리(/opt/cubrid)에 설치되고, CUBRID 관련 환경 설정 파일(cubrid.[c]sh)이 /etc/profile.d 디렉터리에 설치된다. 단, demodb는 자동으로 설치되지 않으므로 "cubrid" Linux 계정으로 로그인하여 /opt/cubrid/demo/make_cubrid_demo.sh를 실행하여야 한다. CUBRID가 설치 완료되면 "cubrid" Linux 계정으로 로그인하여 CUBRID 서비스를 다음과 같이 시작한다. ::
 
@@ -333,13 +318,13 @@ Linux 버전의 CUBRID 데이터베이스를 설치하기 전에 다음 사항�
 
 *   64비트 여부 
     
-    CUBRID 2008 R2.0 버전부터 32비트 버전과 64비트 버전을 각각 지원한다.
+    10.0에서 CUBRID는 64비트 버전만 지원한다.
     Linux 버전은 다음과 같은 방법으로 확인한다. ::
         
         % uname -a
         Linux host_name 2.6.18-53.1.14.el5xen #1 SMP Wed Mar 5 12:08:17 EST 2008 x86_64 x86_64 x86_64 GNU/Linux
     
-    32비트 Linux에서는 CUBRID 32비트 버전을, 64비트 Linux에서는 CUBRID 64비트 버전을 설치한다. 
+    64비트 Linux에서는 CUBRID 64비트 버전을 설치한다. 
     
 *   추가로 설치할 라이브러리
     

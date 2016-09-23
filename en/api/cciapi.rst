@@ -34,13 +34,13 @@ cci_bind_param
     
     .. code-block:: c
     
-        res = cci_bind_param (req, 2 /* binding index*/, CCI_A_TYPE_STR, NULL, CCI_U_TYPE_STRING, CCI_BIND_PTR);
+        res = cci_bind_param (req, 2 /* binding index */, CCI_A_TYPE_STR, NULL, CCI_U_TYPE_STRING, CCI_BIND_PTR);
         
     or
     
     .. code-block:: c
     
-        res = cci_bind_param (req, 2 /* binding index*/, CCI_A_TYPE_STR, data, CCI_U_TYPE_NULL, CCI_BIND_PTR);
+        res = cci_bind_param (req, 2 /* binding index */, CCI_A_TYPE_STR, data, CCI_U_TYPE_NULL, CCI_BIND_PTR);
 
     can be used.
     
@@ -72,6 +72,13 @@ cci_bind_param
     | **CCI_A_TYPE_BLOB**         | **T_CCI_BLOB**              |
     +-----------------------------+-----------------------------+
     | **CCI_A_TYPE_CLOB**         | **T_CCI_CLOB**              |
+    +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_UINT**         | unsigned int \*             |
+    +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_UBIGINT**      | uint64_t \*                 |
+    |                             | (For Windows: __uint64 \*)  |
+    +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_DATE_TZ**      | **T_CCI_DATE_TZ**           |
     +-----------------------------+-----------------------------+
 
     **T_CCI_U_TYPE** is a column type of database and data bound though the *value* argument is converted into this type. 
@@ -127,18 +134,18 @@ cci_bind_param
 
         // "CREATE TABLE tbl(aa date, bb datetime)";
          
-        char *values[][3] =
+        char *values[][2] =
         {
             {"1994/11/30", "1994/11/30 20:08:08"},
             {"2008-10-31", "2008-10-31 20:08:08"}
         };
         
-        req = cci_prepare(conn, "insert into tbl (aa, bb) values ( ?, ?)", CCI_PREPARE_INCLUDE_OID, &error);
+        req = cci_prepare(conn, "insert into tbl (aa, bb) values (?, ?)", CCI_PREPARE_INCLUDE_OID, &error);
         
         for(i=0; i< 2; i++)
         {
-            res = cci_bind_param(req, 1, CCI_A_TYPE_STR, values[i][0], CCI_U_TYPE_DATE, (char)NULL);
-            res = cci_bind_param(req, 2, CCI_A_TYPE_STR, values[i][1], CCI_U_TYPE_DATETIME, (char)NULL);
+            res = cci_bind_param(req, 1, CCI_A_TYPE_STR, values[i][0], CCI_U_TYPE_DATE, (char)0);
+            res = cci_bind_param(req, 2, CCI_A_TYPE_STR, values[i][1], CCI_U_TYPE_DATETIME, (char)0);
             cci_execute(req, CCI_EXEC_QUERY_ALL, 0, err_buf);
         }
 
@@ -201,7 +208,7 @@ cci_bind_param_ex
      
     .. code-block:: c 
   
-        cci_bind_param_ex(statement, 1, CCI_A_TYPE_STR, "aaa\0bbb", 7, CCI_U_TYPE_STRING, 0); 
+        cci_bind_param_ex(req, 1, CCI_A_TYPE_STR, "aaa\0bbb", 7, CCI_U_TYPE_STRING, 0); 
 
 cci_blob_free
 -------------
@@ -210,6 +217,7 @@ cci_blob_free
 
     The **cci_blob_free** function frees memory of *blob* struct.
 
+    :param blob: (IN) **LOB** locator
     :return: Error code (0: success)
     
         *   **CCI_ER_INVALID_LOB_HANDLE**
@@ -238,12 +246,12 @@ cci_blob_new
 cci_blob_read
 -------------
 
-.. c:function:: int cci_blob_read(int conn_handle, T_CCI_BLOB blob, long start_pos, int length, char *buf, T_CCI_ERROR* error_buf)
+.. c:function:: int cci_blob_read(int conn_handle, T_CCI_BLOB blob, long long start_pos, int length, char *buf, T_CCI_ERROR* error_buf)
 
     The **cci_blob_read** function reads as much as data from *start_pos* to *length* of the **LOB** data file specified in *blob*; then it stores it in *buf* and returns it.
 
     :param conn_handle: (IN) Connection handle
-    :param blob: (OUT) **LOB** locator
+    :param blob: (IN) **LOB** locator
     :param start_pos: (IN) Index location of **LOB** data file
     :param length: (IN) **LOB** data length from buffer
     :param buf: (IN) Data buffer to read
@@ -264,11 +272,11 @@ cci_blob_read
 cci_blob_size
 -------------
 
-.. c:function:: long long cci_blob_size(T_CCI_BLOB* blob)
+.. c:function:: long long cci_blob_size(T_CCI_BLOB blob)
 
     The **cci_blob_size** function returns data file size that is specified in *blob*.
 
-    :param blob: (OUT) **LOB** locator
+    :param blob: (IN) **LOB** locator
     :return: Size of **BLOB** data file (>= 0: success), Error code (< 0: error)
 
         *   **CCI_ER_INVALID_LOB_HANDLE**
@@ -276,12 +284,12 @@ cci_blob_size
 cci_blob_write
 --------------
 
-.. c:function:: int cci_blob_write(int conn_handle, T_CCI_BLOB blob, long start_pos, int length, const char *buf, T_CCI_ERROR* error_buf)
+.. c:function:: int cci_blob_write(int conn_handle, T_CCI_BLOB blob, long long start_pos, int length, const char *buf, T_CCI_ERROR* error_buf)
 
     The **cci_blob_write** function reads as much as data from *buf* to *length* and stores it from *start_pos* of the **LOB** data file specified in *blob*.
 
     :param conn_handle: (IN) Connection handle
-    :param blob: (OUT) **LOB** locator
+    :param blob: (IN) **LOB** locator
     :param start_pos: (IN) Index location of **LOB** data file
     :param length: (IN) Data length from buffer
     :param buf: (OUT) Data buffer to write
@@ -1720,6 +1728,8 @@ cci_get_db_parameter
     | **CCI_PARAM_LOCK_TIMEOUT**      | int \*       | get/set  |
     +---------------------------------+--------------+----------+
     | **CCI_PARAM_MAX_STRING_LENGTH** | int \*       | get only |
+    +---------------------------------+--------------+----------+
+    | **CCI_PARAM_AUTO_COMMIT**       | int \*       | get only |
     +---------------------------------+--------------+----------+
 
     In :c:func:`cci_get_db_parameter` and :c:func:`cci_set_db_parameter`, the input/output unit of **CCI_PARAM_LOCK_TIMEOUT** is milliseconds.

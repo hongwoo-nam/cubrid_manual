@@ -25,13 +25,15 @@ The following table shows the data type mapping relationship between CUBRID and 
 +-------------------------+--------------------------------+
 | BIT                     | SQL_BINARY                     |
 +-------------------------+--------------------------------+
-| VARYING BIT             | SQL_VARBINARY                  |
+| BIT VARYING             | SQL_VARBINARY                  |
 +-------------------------+--------------------------------+
 | NUMERIC                 | SQL_NUMERIC                    |
 +-------------------------+--------------------------------+
 | INT                     | SQL_INTEGER                    |
 +-------------------------+--------------------------------+
 | SHORT                   | SQL_SMALLINT                   |
++-------------------------+--------------------------------+
+| MONETARY                | SQL_DOUBLE                     |
 +-------------------------+--------------------------------+
 | FLOAT                   | SQL_FLOAT                      |
 +-------------------------+--------------------------------+
@@ -50,6 +52,8 @@ The following table shows the data type mapping relationship between CUBRID and 
 | OID                     | SQL_CHAR(32)                   |
 +-------------------------+--------------------------------+
 | SET, MULTISET, SEQUENCE | SQL_VARCHAR(MAX_STRING_LENGTH) |
++-------------------------+--------------------------------+
+| ENUM                    | SQL_VARCHAR                    |
 +-------------------------+--------------------------------+
 
 Configuring and Environment ODBC

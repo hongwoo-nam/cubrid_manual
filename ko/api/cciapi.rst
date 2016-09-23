@@ -34,13 +34,13 @@ cci_bind_param
     
     .. code-block:: c
     
-        res = cci_bind_param (req, 2 /* binding index*/, CCI_A_TYPE_STR, NULL, CCI_U_TYPE_STRING, CCI_BIND_PTR);
+        res = cci_bind_param (req, 2 /* binding index */, CCI_A_TYPE_STR, NULL, CCI_U_TYPE_STRING, CCI_BIND_PTR);
         
     또는 
     
     .. code-block:: c
     
-        res = cci_bind_param (req, 2 /* binding index*/, CCI_A_TYPE_STR, data, CCI_U_TYPE_NULL, CCI_BIND_PTR);
+        res = cci_bind_param (req, 2 /* binding index */, CCI_A_TYPE_STR, data, CCI_U_TYPE_NULL, CCI_BIND_PTR);
 
     가 사용될 수 있다.
     
@@ -72,6 +72,13 @@ cci_bind_param
     | **CCI_A_TYPE_BLOB**         | **T_CCI_BLOB**              |
     +-----------------------------+-----------------------------+
     | **CCI_A_TYPE_CLOB**         | **T_CCI_CLOB**              |
+    +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_UINT**         | unsigned int \*             |
+    +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_UBIGINT**      | uint64_t \*                 |
+    |                             | (For Windows: __uint64 \*)  |
+    +-----------------------------+-----------------------------+
+    | **CCI_A_TYPE_DATE_TZ**      | **T_CCI_DATE_TZ**           |
     +-----------------------------+-----------------------------+
 
     :c:type:`T_CCI_U_TYPE`\ 은 데이터베이스의 칼럼 타입으로, value 인자를 통해 바인딩된 데이터를 이 타입으로 변환한다.
@@ -127,18 +134,18 @@ cci_bind_param
 
         // "CREATE TABLE tbl(aa date, bb datetime)";
          
-        char *values[][3] =
+        char *values[][2] =
         {
             {"1994/11/30", "1994/11/30 20:08:08"},
             {"2008-10-31", "2008-10-31 20:08:08"}
         };
         
-        req = cci_prepare(conn, "insert into tbl (aa, bb) values ( ?, ?)", CCI_PREPARE_INCLUDE_OID, &error);
+        req = cci_prepare(conn, "insert into tbl (aa, bb) values (?, ?)", CCI_PREPARE_INCLUDE_OID, &error);
         
         for(i=0; i< 2; i++)
         {
-            res = cci_bind_param(req, 1, CCI_A_TYPE_STR, values[i][0], CCI_U_TYPE_DATE, (char)NULL);
-            res = cci_bind_param(req, 2, CCI_A_TYPE_STR, values[i][1], CCI_U_TYPE_DATETIME, (char)NULL);
+            res = cci_bind_param(req, 1, CCI_A_TYPE_STR, values[i][0], CCI_U_TYPE_DATE, (char)0);
+            res = cci_bind_param(req, 2, CCI_A_TYPE_STR, values[i][1], CCI_U_TYPE_DATETIME, (char)0);
             cci_execute(req, CCI_EXEC_QUERY_ALL, 0, err_buf);
         }
 
@@ -201,7 +208,7 @@ cci_bind_param_ex
      
     .. code-block:: c 
   
-        cci_bind_param_ex(statement, 1, CCI_A_TYPE_STR, "aaa\0bbb", 7, CCI_U_TYPE_STRING, 0); 
+        cci_bind_param_ex(req, 1, CCI_A_TYPE_STR, "aaa\0bbb", 7, CCI_U_TYPE_STRING, 0); 
 
 cci_blob_free
 -------------
@@ -210,6 +217,7 @@ cci_blob_free
 
     **BLOB** 구조체에 대한 메모리를 해제한다.
 
+    :param blob: (IN) **LOB** Locator
     :return: 에러 코드(0: 성공)
     
         *   **CCI_ER_INVALID_LOB_HANDLE**
@@ -238,12 +246,12 @@ cci_blob_new
 cci_blob_read
 -------------
 
-.. c:function:: int cci_blob_read(int conn_handle, T_CCI_BLOB blob, long start_pos, int length, char *buf, T_CCI_ERROR* error_buf)
+.. c:function:: int cci_blob_read(int conn_handle, T_CCI_BLOB blob, long long start_pos, int length, char *buf, T_CCI_ERROR* error_buf)
 
     *blob* 에 명시한 **LOB** 데이터 파일의 *start_pos* 부터 *length* 만큼 데이터를 읽어 *buf* 에 저장한 후 이를 반환한다.
 
     :param conn_handle: (IN) 연결 핸들
-    :param blob: (OUT) **LOB** Locator
+    :param blob: (IN) **LOB** Locator
     :param start_pos: (IN) **LOB** 데이터 파일의 위치 인덱스
     :param length: (IN) 파일로부터 가져올 **LOB** 데이터 길이
     :param buf: (IN) 데이터 읽기 버퍼
@@ -264,11 +272,11 @@ cci_blob_read
 cci_blob_size
 -------------
 
-.. c:function:: long long cci_blob_size(T_CCI_BLOB* blob)
+.. c:function:: long long cci_blob_size(T_CCI_BLOB blob)
 
     *blob* 에 명시한 데이터 파일의 크기를 반환한다.
 
-    :param blob: (OUT) **LOB** Locator
+    :param blob: (IN) **LOB** Locator
     :return: **BLOB** 데이터 파일의 크기(>=0 : 성공), 에러 코드(<0 : 에러)
 
         *   **CCI_ER_INVALID_LOB_HANDLE**
@@ -276,12 +284,12 @@ cci_blob_size
 cci_blob_write
 --------------
 
-.. c:function:: int cci_blob_write(int conn_handle, T_CCI_BLOB blob, long start_pos, int length, const char *buf, T_CCI_ERROR* error_buf)
+.. c:function:: int cci_blob_write(int conn_handle, T_CCI_BLOB blob, long long start_pos, int length, const char *buf, T_CCI_ERROR* error_buf)
 
     *buf* 로부터 *length* 만큼 데이터를 읽어 *blob* 에 명시한 **LOB** 데이터 파일의 *start_pos* 부터 저장한다.
 
     :param conn_handle: (IN) 연결 핸들
-    :param blob: (OUT) **LOB** Locator
+    :param blob: (IN) **LOB** Locator
     :param start_pos: (IN) **LOB** 데이터 파일의 위치 인덱스
     :param length: (IN) 버퍼로부터 가져올 데이터 길이
     :param buf: (OUT) 데이터 쓰기 버퍼
@@ -1632,7 +1640,7 @@ cci_get_data
     :param col_no: (IN) 칼럼 인덱스. 1부터 시작.
     :param type: (IN) *value* 변수의 데이터 타입(**T_CCI_A_TYPE** 에 정의된 타입을 사용)
     :param value: (OUT) 데이터를 저장할 변수의 주소. *type*\이 CCI_A_TYPE_STR, CCI_A_TYPE_SET, CCI_A_TYPE_BLOB 또는 CCI_A_TYPE_CLOB이고 칼럼의 값이 NULL이면 value의 값도 NULL이다.
-    :param indicator: (OUT) **NULL** indicator. (-1: **NULL**, >0: 문자열의 길이)
+    :param indicator: (OUT) **NULL** indicator. (-1: **NULL**)
     
         *   *type* 이 **CCI_A_TYPE_STR** 인 경우: **NULL** 이면 -1을 반환하고, **NULL** 이 아니면 *value* 에 저장된 문자열의 바이트 길이를 반환
         *   *type* 이 **CCI_A_TYPE_STR** 이 아닌 경우: **NULL** 이면 -1을 반환하고, **NULL** 이 아니면 0을 반환
@@ -1722,6 +1730,8 @@ cci_get_db_parameter
     | **CCI_PARAM_LOCK_TIMEOUT**      | int \*       | get/set  |
     +---------------------------------+--------------+----------+
     | **CCI_PARAM_MAX_STRING_LENGTH** | int \*       | get only |
+    +---------------------------------+--------------+----------+
+    | **CCI_PARAM_AUTO_COMMIT**       | int \*       | get only |
     +---------------------------------+--------------+----------+
 
     :c:func:`cci_get_db_parameter`, :c:func:`cci_set_db_parameter`\ 에서 **CCI_PARAM_LOCK_TIMEOUT** 의 입출력 단위는 밀리초이다.
@@ -3005,8 +3015,8 @@ cci_schema_info
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_CLASS_ATTRIBUTE                                                                                            |                  |                    |                     |
     |                                                                                                                    |                  |                    |                     |
-    | CCI_SCH_CLASS_ATTRIBUTE 컬럼이 INSTANCE 또는 SHARED의 속성일 경우에						 |                  |                    |                     | 
-    | 순서와 이름 값은 CCI_SCH_ATTRIBUTE의 컬럼과 동일하다.								 |                  |                    |                     |
+    | CCI_SCH_CLASS_ATTRIBUTE 컬럼이 INSTANCE 또는 SHARED의 속성일 경우에                                                |                  |                    |                     | 
+    | 순서와 이름 값은 CCI_SCH_ATTRIBUTE의 컬럼과 동일하다.                                                              |                  |                    |                     |
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_CLASS_METHOD                                                                                               | 1                | NAME               | char \*             |
     |                                                                                                                    +------------------+--------------------+---------------------+
@@ -3099,11 +3109,11 @@ cci_schema_info
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_IMPORTED_KEYS                                                                                              | 1                | PKTABLE_NAME       | char \*             |
     |                                                                                                                    |                  |                    |                     |
-    | 주어진 테이블의 외래 키 칼럼들이 참조하고 있는 기본 키 칼럼들의 정보를 조회하며					 |                  |                    |                     |
-    | 결과는 PKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다. 									 |                  |                    |                     |
+    | 주어진 테이블의 외래 키 칼럼들이 참조하고 있는 기본 키 칼럼들의 정보를 조회하며                                    |                  |                    |                     |
+    | 결과는 PKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다.                                                                    |                  |                    |                     |
     |                                                                                                                    |                  |                    |                     |
-    | 이 타입을 인자로 지정하면, *class_name*\ 에는 외래 키 테이블,							 |                  |                    |                     |
-    | *attr_name*\ 에는 **NULL**\ 을 지정한다.  									 |                  |                    |                     |
+    | 이 타입을 인자로 지정하면, *class_name*\ 에는 외래 키 테이블,                                                      |                  |                    |                     |
+    | *attr_name*\ 에는 **NULL**\ 을 지정한다.                                                                           |                  |                    |                     |
     |                                                                                                                    +------------------+--------------------+---------------------+
     |                                                                                                                    | 2                | PKCOLUMN_NAME      | char \*             |
     |                                                                                                                    +------------------+--------------------+---------------------+
@@ -3133,10 +3143,10 @@ cci_schema_info
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_EXPORTED_KEYS                                                                                              | 1                | PKTABLE_NAME       | char \*             |
     |                                                                                                                    |                  |                    |                     |
-    | 주어진 테이블의 기본 키 칼럼들을 참조하는 모든 외래 키 칼럼들의 정보를 조회하며, 					 |                  |                    |                     |
-    | 결과는 FKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다.                                       				 | 	            |                    |                     |
-    | 이 타입을 인자로 지정하면, *class_name*\ 에는 기본 키 테이블,							 |                  |                    |                     |
-    | *attr_name*\ 에는 **NULL**\ 을 지정한다.   									 |                  |                    |                     |
+    | 주어진 테이블의 기본 키 칼럼들을 참조하는 모든 외래 키 칼럼들의 정보를 조회하며,                                   |                  |                    |                     |
+    | 결과는 FKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다.                                                                    |                  |                    |                     |
+    | 이 타입을 인자로 지정하면, *class_name*\ 에는 기본 키 테이블,                                                      |                  |                    |                     |
+    | *attr_name*\ 에는 **NULL**\ 을 지정한다.                                                                           |                  |                    |                     |
     |                                                                                                                    +------------------+--------------------+---------------------+
     |                                                                                                                    | 2                | PKCOLUMN_NAME      | char \*             |
     |                                                                                                                    +------------------+--------------------+---------------------+
@@ -3165,11 +3175,11 @@ cci_schema_info
     |                                                                                                                    | 9                | PK_NAME            | char \*             |
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
     | CCI_SCH_CROSS_REFERENCE                                                                                            | 1                | PKTABLE_NAME       | char \*             |
-    |															 |                  |                    |                     |
-    | 주어진 테이블의 기본 키와 주어진 테이블의 외래 키가 상호 참조하는 경우,     					 |                  |                    |                     |
-    | 해당 외래 키 칼럼들의 정보를 조회하며, 결과는 FKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다.				 |                  |                    |                     |
-    | 이 타입을 인자로 *class_name*\ 에는 기본 키 테이블,  								 |                  |                    |                     |
-    | *attr_name*  에는 외래 키 테이블을 지정한다.   									 |                  |                    |                     |
+    |                                                                                                                    |                  |                    |                     |
+    | 주어진 테이블의 기본 키와 주어진 테이블의 외래 키가 상호 참조하는 경우,                                            |                  |                    |                     |
+    | 해당 외래 키 칼럼들의 정보를 조회하며, 결과는 FKTABLE_NAME 및 KEY_SEQ 순서로 정렬된다.                             |                  |                    |                     |
+    | 이 타입을 인자로 *class_name*\ 에는 기본 키 테이블,                                                                |                  |                    |                     |
+    | *attr_name*  에는 외래 키 테이블을 지정한다.                                                                       |                  |                    |                     |
     |                                                                                                                    |                  |                    |                     |
     |                                                                                                                    +------------------+--------------------+---------------------+
     |                                                                                                                    | 2                | PKCOLUMN_NAME      | char \*             |
@@ -3198,6 +3208,7 @@ cci_schema_info
     |                                                                                                                    +------------------+--------------------+---------------------+
     |                                                                                                                    | 9                | PK_NAME            | char \*             |
     +--------------------------------------------------------------------------------------------------------------------+------------------+--------------------+---------------------+
+
     :c:func:`cci_schema_info` 함수에서 인자 *type* 은 인자 *class_name*, *attr_name* 에 대해 **LIKE** 절의 패턴 매칭을 지원한다.
 
     **패턴 매칭을 지원하는 type 및 class_name(테이블 이름), attr_name(칼럼 이름) 입력**
